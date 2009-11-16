@@ -1,0 +1,53 @@
+﻿
+html { background: #83c018; }
+body { width: 52em; margin: 50px auto 2em; font-size: 76%; font-family: Arial, sans-serif; color: #273907; line-height: 1.5;}
+h1 { font-size: 3em; font-weight: normal; text-transform: uppercase; color: #fff; }
+a { color: inherit; }
+code { font-size: 1.3em; }
+ul { list-style: none; padding: 2em 0; }
+ul li { display: inline; padding-right: 1em; text-transform: uppercase; }
+ul li a { padding: 0.5em 1em; background: #69ad0f; border: 1px solid #569f09; color: #fff; text-decoration: none; }
+ul li a:hover { background: #569f09; }
+.box { padding: 2em; background: #98cc2b; border: 1px solid #569f09; }
+.copyright { font-size: 0.9em; text-transform: uppercase; color: #557d10; }
+
+form fieldset{border:0}
+.aligncenter{text-align:center}
+
+.reviews{width:400px; margin:0 auto; text-align:left;}
+.review-rating{float:left; padding:3px 6px; background:#ffffcc;  text-align:center;}
+.review-tag{float:right; text-align:right;}
+.review-body{clear:both; padding:10px; background:#fff;}
+.review-name{text-align:right; margin-bottom:10px;}
+
+button{border:0; background:#fff; padding:2px;}
+button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
+
+/* common tab list for sorting links */
+ ul.sort_list{
+	clear:both;
+	list-style:none;
+	padding:10px 0;
+	margin:10px 0;
+	border-bottom:1px solid green;
+	text-align:right;
+}
+ ul.sort_list li{
+	display:inline;
+}
+ ul.sort_list li a{
+	padding:10px 15px;
+	font-weight:bold;
+	color:black;
+	background:#eee;
+}
+ ul.sort_list li a:hover,
+ ul.sort_list li a.selected{
+	position:relative;
+	background:orange;
+	border:1px solid #999;
+	border-bottom:1px solid #fff;
+}
+
+#add-review{border:1px dashed #fff;margin-top:10px; padding:10px;}
+
