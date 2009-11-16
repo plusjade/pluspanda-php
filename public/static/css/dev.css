@@ -14,7 +14,9 @@ ul li a:hover { background: #569f09; }
 form fieldset{border:0}
 .aligncenter{text-align:center}
 
-.reviews{width:400px; margin:0 auto; text-align:left;}
+
+#panda-toggle-tags{margin:10px 0;}
+.panda-reviews-list{width:400px; margin:0 auto; text-align:left;}
 .review-rating{float:left; padding:3px 6px; background:#ffffcc;  text-align:center;}
 .review-tag{float:right; text-align:right;}
 .review-body{clear:both; padding:10px; background:#fff;}
@@ -24,7 +26,7 @@ button{border:0; background:#fff; padding:2px;}
 button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 
 /* common tab list for sorting links */
- ul.panda-sorter-list{
+ ul.panda-reviews-sorters{
 	clear:both;
 	list-style:none;
 	padding:10px 0;
@@ -32,22 +34,31 @@ button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 	border-bottom:1px solid green;
 	text-align:right;
 }
- ul.panda-sorter-list li{
+ ul.panda-reviews-sorters li{
 	display:inline;
 }
- ul.panda-sorter-list li a{
+ ul.panda-reviews-sorters li a{
 	padding:10px 15px;
 	font-weight:bold;
 	color:black;
 	background:#eee;
 }
- ul.panda-sorter-list li a:hover,
- ul.panda-sorter-list li a.selected{
+ ul.panda-reviews-sorters li a:hover,
+ ul.panda-reviews-sorters li a.selected{
 	position:relative;
 	background:orange;
 	border:1px solid #999;
 	border-bottom:1px solid #fff;
 }
 
+#add_review_toggle{display:block;padding:5px 10px; background:lightblue; float:right; font-size:1.1em; font-weight:bold; text-decoration:none;}
+#add_review_toggle:hover{background:green;}
 #add-review{border:1px dashed #fff;margin-top:10px; padding:10px;}
+
+.panda-reviews-summary{clear:both;padding:10px; background:#ffffcc;}
+.panda-reviews-summary-title{float:left;background:#ffffcc;padding:5px;font-size:1.1em; font-weight:bold;}
+
+
+
+
 

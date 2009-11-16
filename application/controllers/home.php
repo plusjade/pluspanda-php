@@ -23,102 +23,127 @@ class Home_Controller extends Template_Controller {
 	public function index()
 	{
 		$site = ORM::factory('site', $this->site_id);
-				
+
+		# setup active states.
+		$active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
+		$active_sort = (isset($_GET['sort'])) ? $_GET['sort'] : 'newest';
+		
 		if($_POST)
-			$submit_view = self::_submit_handler('normal');
+			$add_review = self::_submit_handler('normal');
 		else
 		{
-			$submit_view = new View('submit_review_form');
-			$submit_view->values = array(
+			$add_review = new View('add_review');
+			$add_review->values = array(
 				'body'					=>'',
 				'display_name'	=> '',
 				'email'					=> ''
 			);
-			$submit_view->site = $site;
 		}
 		
 		$content = new View('wrapper');
 		$content->site = $site;
-		$content->reviews_list = $this->reviews_list();
-		$content->submit_form = $submit_view;
+		$content->set_global('active_tag', $active_tag);
+		$content->set_global('active_sort', $active_sort);
+		$content->get_reviews = $this->get_reviews();
+		$content->add_review = $add_review;
 		
 		$this->template->content = $content;
 	}
 
+	
+/*
+ * get the tags data depending on how we are asking for it.
+ */
+	private function get_tags()
+	{
+		$site = ORM::factory('site', $this->site_id);
+		
+	}
 
 /*
  * get the reviews data depending on how we are asking for it.
  */
 	
-	private function reviews_list()
+	private function get_reviews()
 	{
-			# get reviews based on parameters:
-			
-			# defaults
-			$format	= (isset($_GET['format'])) ? $_GET['format'] : 'normal';
-			$field	= 'site_id';
-			$value	= $this->site_id;
-			$sort		= array('created' => 'desc');
-			
-			# filter by tag
-			if(isset($_GET['tag']) AND is_numeric($_GET['tag']))
+		# defaults
+		$format	= (isset($_GET['format'])) ? $_GET['format'] : 'normal';
+		$field	= 'site_id';
+		$value	= $this->site_id;
+		$sort		= array('created' => 'desc');
+		
+		# filter by tag
+		if(isset($_GET['tag']) AND is_numeric($_GET['tag']))
+		{
+			$field = 'tag_id';
+			$value = $_GET['tag'];
+		}
+		
+		# sort by ...
+		if(isset($_GET['sort']))
+		{
+			$sort_by = strtolower($_GET['sort']);
+			switch($sort_by)
 			{
-				$field = 'tag_id';
-				$value = $_GET['tag'];
+				case 'oldest':
+					$sort = array('created' => 'asc');
+					break;
+				case 'highest':
+					$sort = array('rating' => 'desc');
+					break;
+				case 'lowest':
+					$sort = array('rating' => 'asc');
+					break;
 			}
-			
-			# sort by ...
-			if(isset($_GET['sort']))
-				switch($_GET['sort'])
-				{
-					case 'oldest':
-						$sort = array('created' => 'asc');
-						break;
-					case 'highest':
-						$sort = array('rating' => 'desc');
-						break;
-					case 'lowest':
-						$sort = array('rating' => 'asc');
-						break;
-				}	
-			
-			# pagination.
-			if(isset($_GET['page']))
-			{
-			
-			}
-	
-			$reviews = ORM::factory('review')
-			->where($field, $value)
-			->orderby($sort)
-			->find_all();
-			
+		}
+		
+		# pagination.
+		if(isset($_GET['page']))
+		{
+		
+		}
 
-			### HOW DO WE RETURN IT ??
-			
-			# return JSON? to widget
-			if('json' == $format)
-			{
-				$review_array = array();
-				foreach($reviews as $review)
-					$review_array[] = $review->as_array();
+		$reviews = ORM::factory('review')
+		->where($field, $value)
+		->orderby($sort)
+		->find_all();
+		
 
-				#echo kohana::debug($review_array);
-				$json = json_encode($review_array);
-				#echo kohana::debug($json);
-				
-				header('Cache-Control: no-cache, must-revalidate');
-				header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-				header('Content-type: text/plain');
-				#header('Content-type: application/json');
-				die("pandaGetRev($json)");
-			}
-			
+		### HOW DO WE RETURN IT ??
+		
+		# return JSON? to widget
+		if('json' == $format)
+		{
+			$review_array = array();
+			foreach($reviews as $review)
+				$review_array[] = $review->as_array();
 
-			# send as view.
-			$view = new View('reviews_list');
-			$view->reviews = $reviews;		
-			return $view;
+			#echo kohana::debug($review_array);
+			$json = json_encode($review_array);
+			#echo kohana::debug($json);
+			
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Content-type: text/plain');
+			#header('Content-type: application/json');
+			die("pandaLoadRev($json)");
+		}
+		
+
+		# send as view.
+		
+		# TEST summary: TODO distribution as function of time??
+		$summary = ORM::factory('review')
+		->select('*, COUNT(reviews.id) AS total')
+		->where($field, $value)
+		->orderby(array('rating' => 'desc'))
+		->groupby('rating')
+		->find_all();
+		
+		$view = new View('get_reviews');
+		$view->reviews = $reviews;		
+		$view->summary = $summary;
+		return $view;
 	}
 	
 /*
@@ -145,18 +170,11 @@ class Home_Controller extends Template_Controller {
 		{
 			# this should rarely happen due to client-side js validation...
 			if('ajaxG' == $type)
-			{
-				$count = count($post->errors());
-				die('pandaSubmitRev({"code":5, "msg":"Review Not Added! ('.$count.') Missing Fields"})');			
-			}	
-			
-			$view = new View('submit_review_form');
+				die('pandaSubmitRev({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
+
+			$view = new View('add_review');
 			$view->errors = $post->errors();
 			$view->values = $data;
-			
-			# try to get rid of this ..
-			$site = ORM::factory('site', $this->site_id);
-			$view->site = $site;
 			return $view;
 		}
 		
@@ -202,7 +220,7 @@ class Home_Controller extends Template_Controller {
 	{
 		# get reviews
 		if(isset($_GET['tag']))
-			die($this->reviews_list());
+			die($this->get_reviews());
 			
 			
 		# submit a review via POST, 

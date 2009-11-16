@@ -2,34 +2,49 @@
 
 <h2 class="aligncenter"><?php echo $site->name;?> Customer Reviews.</h2>
 
-<?php echo $submit_form;?>
-
-<br/><br/>
-
-<form action="" method="GET">
+<form id="panda-toggle-tags" action="" method="GET">
 	Review Categories: <select name="tag">
 		<option value="all">All</option>
-	<?php foreach($site->tags as $tag):?>
-		<option value="<?php echo $tag->id?>"><?php echo $tag->name?></option>
-	<?php endforeach;?>
+	<?php foreach($site->tags as $tag)
+	{
+		if($tag->id == $active_tag)
+			echo "<option value='$tag->id' SELECTED>$tag->name</option>";
+		else
+			echo "<option value='$tag->id'>$tag->name</option>";
+	}
+	?>
 	</select> <button>Show Reviews</button>
-</div>
+</form>
 
-<br/><br/>
+<?php echo $add_review?>
+<?php echo $get_reviews?>
 
-<ul class="panda-sorter-list">
-	<li><a href="/?sort=newest">Newest</a></li>
-	<li><a href="/?sort=oldest">Oldest</a></li>
-	<li><a href="/?sort=highest">Highest</a></li>
-	<li><a href="/?sort=lowest">Lowest</a></li>
-</ul>
-
-<br/><br/>
-
-<div class="reviews">
-	<?php echo $reviews_list?>
-</div>
 
 <script type="text/javascript">
-	 $('abbr.timeago').timeago();
+
+	$("#add_review_toggle").click(function() {
+		$(".add-review").slideToggle("fast");
+	});
+	$(".add-review").hide();
+	
+	$('.review_form').ajaxForm({		 
+		beforeSubmit: function(fields, form){
+		//	if(! $("input, textarea", form[0]).jade_validate()) return false;
+			$(fields).each(function() {
+				$('#supa_injector em#qwz_' + this.name).replaceWith(this.value);
+			});
+			$('.add-review').html('<div class="ajax_loading">Loading...</div>');
+		return false;
+		},
+		success: function(data) {
+			$('.add-review').replaceWith(data);
+			// todo: this must be done only on success.
+			$('#supa_injector').show();
+			$('#add_review_toggle').remove();
+		}
+	});
+		
+		
+	$('abbr.timeago').timeago();
+		 
 </script>

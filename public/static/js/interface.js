@@ -2,13 +2,12 @@
 		
 // attach event triggers.
 	$('body').click($.delegate({
-		'.panda-sorter-list a' : function(e){
-			$('.panda-sorter-list a').removeClass('selected');
+		'.panda-reviews-sorters a' : function(e){
+			$('.panda-reviews-sorters a').removeClass('selected');
 			$(e.target).addClass('selected');
-			$('div.reviews_wrapper').html('Loading...'); 	
-			var sort = $(e.target).html().tolower;
-			pandaGetReviews(sort);
-			//return false;
+			$('.panda-reviews-list').html('Loading...=D'); 	
+			var sort = $(e.target).html();
+			pandaLoadReviews(sort);
 		}
 	}));
 	
@@ -16,7 +15,7 @@
 	$('#plusPandaYes').html('Loading...'); 	
 	function buildIt() { 	
 		var sorters = '';
-		sorters = '<ul class="panda-sorter-list">';
+		sorters = '<ul class="panda-reviews-sorters">';
 		sorters += '<li><a href="#sort=newest">Newest</a></li>';
 		sorters += '<li><a href="#sort=oldest">Oldest</a></li>';
 		sorters += '<li><a href="#sort=highest">Highest</a></li>';
@@ -52,10 +51,10 @@
 
 		// add everything to DOM.
 		$('#plusPandaYes')
-		.html(sorters + add_form + '<div class="reviews_wrapper"></div>')
+		.html(sorters + add_form + '<div class="panda-reviews-list"></div>')
 		.prepend($iframe);
 		$('select[name="tag"]').html(options);
-		$('.panda-sorter-list a:first').click();
+		$('.panda-reviews-sorters a:first').click();
 	}	
 	
 // init the build!
@@ -109,12 +108,12 @@
 // ---------- get updated data ----------
 
  // retrieves the reviews as json.
-	function pandaGetReviews(sort) 
+	function pandaLoadReviews(sort) 
 	{
 			$.ajax({ 
 					type:'GET', 
 					url:"http://test.localhost.net", 
-					data:"tag=all&sort=" + sort + "&format=json&jsoncallback=pandaGetRev", 
+					data:"tag=all&sort=" + sort + "&format=json&jsoncallback=pandaLoadRev", 
 					dataType:'jsonp'
 			}); 
 	}
@@ -124,14 +123,14 @@
 // --------- JSONP callbacks ------------	
 
 // jsonp callback to format and inject reviews data.
-	function pandaGetRev(reviews) {
+	function pandaLoadRev(reviews) {
 		var content = '';
 		$(reviews).each(function(){	
 			// format date
 			var date = new Date(this.created*1000);   
 			content += '<div class="review-rating">Rating: <b>'+ this.rating +'</b></div> <div class="review-body">'+ this.body +'</div> <div class="review-name">' + $.timeago(date) + ' -- ' + this.display_name +'</div>';			
 		});
-		$('#plusPandaYes div.reviews_wrapper').html(content); 	
+		$('#plusPandaYes .panda-reviews-list').html(content); 	
 	}
 
 
@@ -143,7 +142,7 @@
 			// some error
 		}
 		else if(1 == rsp.code){
-			$('.panda-sorter-list a:first').click();
+			$('.panda-reviews-sorters a:first').click();
 		}
 		
 		$('#add-review').html(rsp.msg);
