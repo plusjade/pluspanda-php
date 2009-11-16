@@ -24,7 +24,7 @@ button{border:0; background:#fff; padding:2px;}
 button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 
 /* common tab list for sorting links */
- ul.sort_list{
+ ul.panda-sorter-list{
 	clear:both;
 	list-style:none;
 	padding:10px 0;
@@ -32,17 +32,17 @@ button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 	border-bottom:1px solid green;
 	text-align:right;
 }
- ul.sort_list li{
+ ul.panda-sorter-list li{
 	display:inline;
 }
- ul.sort_list li a{
+ ul.panda-sorter-list li a{
 	padding:10px 15px;
 	font-weight:bold;
 	color:black;
 	background:#eee;
 }
- ul.sort_list li a:hover,
- ul.sort_list li a.selected{
+ ul.panda-sorter-list li a:hover,
+ ul.panda-sorter-list li a.selected{
 	position:relative;
 	background:orange;
 	border:1px solid #999;

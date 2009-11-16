@@ -17,7 +17,7 @@
 
 <br/><br/>
 
-<ul class="sort_list">
+<ul class="panda-sorter-list">
 	<li><a href="/?sort=newest">Newest</a></li>
 	<li><a href="/?sort=oldest">Oldest</a></li>
 	<li><a href="/?sort=highest">Highest</a></li>
@@ -30,4 +30,6 @@
 	<?php echo $reviews_list?>
 </div>
 
-
+<script type="text/javascript">
+	 $('abbr.timeago').timeago();
+</script>

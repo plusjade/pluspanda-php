@@ -2,121 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>embed</title>
 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>embed</title>
-
-	<link type="text/css"  rel="stylesheet" href="http://test.localhost.net/static/css/dev.css" media="screen" />
-	<link type="text/css"  rel="stylesheet" href="http://test.localhost.net/static/css/static_helpers.css" media="screen" />
-	<script type="text/javascript" src="http://test.localhost.net/static/js/live.js" charset="utf-8"></script>
-</head>
-<body>
-
-<iframe src="" name="my_iframe" id="my_iframe" width="400px" height="100px" style="border:1px solid #fff"> </iframe>
-<div id="plusPandaYes"></div>
-
-</body>
-
-
-<script type="text/javascript">
+		<link type="text/css" rel="stylesheet" href="http://test.localhost.net/static/css/dev.css" media="screen" />
+		<link type="text/css" rel="stylesheet" href="http://test.localhost.net/static/css/static_helpers.css" media="screen" />
+		<script type="text/javascript" src="http://test.localhost.net/static/js/live.js" charset="utf-8"></script>
+	</head>
 	
-	// NOTE: LOOK INTO $.getjson
+	<body>
+		<div id="plusPandaYes" rel="apiKey2asfjasfafa"></div>
+	</body>
 	
-	$('#plusPandaYes').html('Loading...'); 	
+	<script type="text/javascript" src="http://test.localhost.net/static/js/interface.js" charset="utf-8"></script>
 
- // attach event triggers.
-	$('body').click($.delegate({
-		'.sort_list a' : function(e){
-			$('.sort_list a').removeClass('selected');
-			$(e.target).addClass('selected');
-			$('div.reviews_wrapper').html('Loading...'); 	
-			var sort = $(e.target).attr('rel');
-			getReviews(sort);
-			//return false;
-		}
-	}));
-	
- // builds the initial interface.
-	function buildIt() { 	
-		var sorters = '';
-		sorters = '<ul class="sort_list">';
-		sorters += '<li><a href="#sort=newest" rel="newest">Newest</a></li>';
-		sorters += '<li><a href="#sort=oldest" rel="oldest">Oldest</a></li>';
-		sorters += '<li><a href="#sort=highest" rel="highest">Highest</a></li>';
-		sorters += '<li><a href="#sort=lowest" rel="lowest">Lowest</a></li>';
-		sorters += '</ul> <br/><br/>';	
-
-		var add_form = "<h3>Add Review</h3><form action='http://test.localhost.net#yahboi' target='my_iframe' method='post' id='add-review' class='ajax_Form'>";
-		add_form += "<fieldset>Regarding:<select name='tag'><option>All</option><option value='1'>Customer Experience</option><option value='2'>Jun</option></select></fieldset>";
-		add_form += "<fieldset><label>Rating <span class='jade_required_star'>*</span></label><select name='rating'><option value='1'>-1-</option><option value='2'>-2-</option><option value='3'>-3-</option><option value='4'>-4-</option><option value='5'>-5-</option></select></fieldset>";
-		add_form += "<fieldset><label>Comments <span class='jade_required_star'>*</span></label><textarea name='body' rel='text_req'></textarea></fieldset>";
-		add_form += "<fieldset><label>Display Name <span class='jade_required_star'>*</span></label><input type='text' name='display_name' value='' rel='text_req'/></fieldset>";
-		add_form += "<fieldset><label>Email <span class='jade_required_star'>*</span></label><input type='text' name='email' value='' rel='email_req'/></fieldset>";
-		add_form += "<fieldset><button type='submit'>Submit Review</button></fieldset>";
-		add_form += "</form>";
-
-		
-		$('#plusPandaYes').html(sorters + add_form + '<div class="reviews_wrapper"></div>');
-		$('.sort_list a:first').click();
-		
-
-		//TODO cross-site hash should work but doesnt =(
-    $('iframe').load(function(){
-        //alert('it works');
-				//console.log(window.frames['my_iframe']);
-				//var hash = window.frames['my_iframe'].location.hash;
-				//alert(hash);
-    });
-		
-		$('.OFF-ajax_Form').ajaxForm({	 
-			beforeSubmit: function(fields, form){
-				//if(! $("input, textarea", form[0]).jade_validate()) return false;
-
-
-
-
-				/*
-				$.post( 'http://test.localhost.net?callback=?',
-								{ param: "data" }, 
-								function(data) {
-										console.log(data);
-								}, 'jsonp'
-				);
-				*/
-				alert('tee he');
-				return false;
-			
-			}
-		});
-			
-	}
-
-	
-// --------- JSONP callbacks ------------	
- // jsonp callback to format and inject reviews data.
-	function pandaGetRev(reviews) {
-		var content = '';
-		$(reviews).each(function(){		
-			content += '<div class="review-rating">Rating: <b>'+ this.rating +'</b></div> <div class="review-body">'+ this.body +'</div> <div class="review-name">' + this.display_name +'</div>';			
-		});
-		$('#plusPandaYes div.reviews_wrapper').html(content); 	
-	}
-
-	
-	
- // retrieves the reviews as json.
-	function getReviews(sort) 
-	{
-			$.ajax({ 
-					type:'GET', 
-					url:"http://test.localhost.net", 
-					data:"get=all&sort=" + sort + "&format=json&jsoncallback=pandaGetRev", 
-					dataType:'jsonp'
-			}); 
-	}
-
- // init the build!
-	buildIt();
-</script>
 </html>

@@ -16,13 +16,16 @@ class Home_Controller extends Template_Controller {
 	// Set the name of the template to use
 	public $template = 'template';
 
+/* 
+ * The index is only a wrapper for standalone mode.
+ * All widget functionality will not use this at all.
+ */
 	public function index()
 	{
-	
 		$site = ORM::factory('site', $this->site_id);
 				
 		if($_POST)
-			$submit_view = self::submit_handler();
+			$submit_view = self::_submit_handler('normal');
 		else
 		{
 			$submit_view = new View('submit_review_form');
@@ -52,17 +55,19 @@ class Home_Controller extends Template_Controller {
 			# get reviews based on parameters:
 			
 			# defaults
-			$format = (isset($_GET['format'])) ? $_GET['format'] : 'normal';
-			$field = 'site_id';
-			$value = $this->site_id;
-			$sort = array('created' => 'desc');
+			$format	= (isset($_GET['format'])) ? $_GET['format'] : 'normal';
+			$field	= 'site_id';
+			$value	= $this->site_id;
+			$sort		= array('created' => 'desc');
 			
+			# filter by tag
 			if(isset($_GET['tag']) AND is_numeric($_GET['tag']))
 			{
 				$field = 'tag_id';
 				$value = $_GET['tag'];
 			}
 			
+			# sort by ...
 			if(isset($_GET['sort']))
 				switch($_GET['sort'])
 				{
@@ -89,14 +94,15 @@ class Home_Controller extends Template_Controller {
 			->find_all();
 			
 
-			# return JSON?
+			### HOW DO WE RETURN IT ??
+			
+			# return JSON? to widget
 			if('json' == $format)
 			{
 				$review_array = array();
 				foreach($reviews as $review)
-				{
 					$review_array[] = $review->as_array();
-				}
+
 				#echo kohana::debug($review_array);
 				$json = json_encode($review_array);
 				#echo kohana::debug($json);
@@ -118,11 +124,17 @@ class Home_Controller extends Template_Controller {
 /*
  * post review handler.
  * validates and adds the new review to the site.
+ * $type specifies the way in which the submission is coming.
+ * normal = non javascript request on standalone site.
+		ajaxP = posted via ajax
+		ajaxG = get via ajax
  */
-	private function submit_handler()
+	public function _submit_handler($type)
 	{
+		$data = ('ajaxG' == $type) ? $_GET	: $_POST;
+			
 		# validate the form values.
-		$post = new Validation($_POST);
+		$post = new Validation($data);
 		$post->pre_filter('trim');
 		$post->add_rules('body', 'required');
 		$post->add_rules('display_name', 'required');
@@ -131,9 +143,16 @@ class Home_Controller extends Template_Controller {
 		# on error
 		if(!$post->validate())
 		{
+			# this should rarely happen due to client-side js validation...
+			if('ajaxG' == $type)
+			{
+				$count = count($post->errors());
+				die('pandaSubmitRev({"code":5, "msg":"Review Not Added! ('.$count.') Missing Fields"})');			
+			}	
+			
 			$view = new View('submit_review_form');
 			$view->errors = $post->errors();
-			$view->values = $_POST;
+			$view->values = $data;
 			
 			# try to get rid of this ..
 			$site = ORM::factory('site', $this->site_id);
@@ -147,22 +166,28 @@ class Home_Controller extends Template_Controller {
 		$user = ORM::factory('user');
 		
 		# if user does not exist, create him.
-		if(!$user->email_exists($_POST['email']))
+		if(!$user->email_exists($data['email']))
 		{
-			$user->email = $_POST['email'];
-			$user->display_name = $_POST['display_name'];
+			$user->email = $data['email'];
+			$user->display_name = $data['display_name'];
 			$user->save();
 		}
 		
 		# add review
 		$new_review = ORM::factory('review');
 		$new_review->site_id	= $this->site_id;
-		$new_review->tag_id		= $_POST['tag'];
+		$new_review->tag_id		= $data['tag'];
 		$new_review->user_id	= $user->id;
-		$new_review->body			= $_POST['body'];
-		$new_review->rating		= $_POST['rating'];
+		$new_review->body			= $data['body'];
+		$new_review->rating		= $data['rating'];
 		$new_review->save();
 
+		
+		# return what kind of data??
+		if('ajaxG' == $type)
+			die('pandaSubmitRev({"code":1, "msg":"Yay!"})');
+
+	
 		# return status
 		$view = new View('submit_status');
 		$view->success = true;
@@ -174,14 +199,19 @@ class Home_Controller extends Template_Controller {
  * ajax handler
  */ 	
 	public function _ajax()
-	{		
-		#$get = $_GET['get'];
-		
-		if($_POST)
-			die(self::submit_handler());
-		else
-			die(self::reviews_list());
+	{
+		# get reviews
+		if(isset($_GET['tag']))
+			die($this->reviews_list());
 			
+			
+		# submit a review via POST, 
+		if($_POST)
+		{
+			die($this->_submit_handler('ajaxP'));
+		}
+
+		
 		die('invalid data');
 	}	
 	

@@ -1,15 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /*
- * This is the Main GateKeeper to Plusjade.
- * It routes all logic to appropriate controllers.
- 
- * 1. Fetches appropriate site from URL.
- * 2. Routes URL to appropriate controller based on config for site name.
- * 	Cases:
-		a. is ajax request:		Fetch raw data.
-		b. is page_name:		grab tools, Build page, render the page.
-		c. is get/controller:	Admin, map to appropriate controller.
+ * This is the Main GateKeeper to PlusPanda.
  */
  
 function get_site()
@@ -50,59 +42,24 @@ function get_site()
 	$_SESSION['site_name']	= $site->subdomain;
 	$_SESSION['site_id']	= $site->id;
 	
-	/*
-	 --- Route the URL ---
-	 ---------------------
-	 * The URL will tell us how to build the page.
-	  		a. is ajax request
-	 		b. is page_name
-				is protected page?
-			c. is file request
-	  		d. is /get/
-	 */
 
-	/*
-	# Get page_name
-	$url_array = Uri::url_array();
-	$page_name = (empty($url_array['0'])) 
-		? $site->homepage
-		: $url_array['0'];
+/* ---- ROUTE THE REQUEST ---- */
+	# submit a review via GET, return jsonp
+	if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
+	{
+		$home = new Home_Controller();
+		die($home->_submit_handler('ajaxG'));
+	}	
 
-	*/
-			if($_POST)
-			{
-				echo 'test			
-				<script type="text/javascript">
-					//alert(parent.location);
-					console.log(window.parent);
-					//window.parent.location.hash = "TEST";
-					window.location.hash = "success";
-					alert(window.location.hash);
-				</script>
-				<div></div>
-				'; 
-				die();
-			}
-			if(isset($_GET['add']) AND 'review' == $_GET['add'])
-			{
-				#test
-				die('pandaApiSubmit([{},{}])');
-			}
-			
-			
-		$debug = false;
-		# Is ajax request?
-		# (isset($_GET['get']) AND 
-		if($debug OR request::is_ajax())
-		{
-			die('test([{},{}])');
-			
-
-			
-			# send to tool _ajax handler. we expect raw data output.
-			$home = new Home_Controller();
-			die($home->_ajax());
-		}	
+	$debug = false;
+	# Route ajax requests
+	if($debug OR request::is_ajax())
+	{	
+		# send to tool _ajax handler. we expect raw data output.
+		$home = new Home_Controller();
+		die($home->_ajax());
+	}	
+	
 	
 }
 Event::add('system.ready', 'get_site');
