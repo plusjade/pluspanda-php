@@ -22,13 +22,13 @@
 		sorters += '<li><a href="#sort=lowest">Lowest</a></li>';
 		sorters += '</ul>';	
 		var add_form = "<h3>Add Review</h3>";
-		add_form += "<form action='http://test.localhost.net#yahboi' target='panda-iframe' method='post' id='add-review' class='ajax_Form'>";
-		add_form += "<fieldset>Regarding:<select name='tag'></select></fieldset>";
+		add_form += "<form action='http://test.localhost.net#yahboi' target='panda-iframe' method='post' id='panda-add-review' class='ajax_Form'>";
+		add_form += "<fieldset><label>Regarding:</label><select name='tag'></select></fieldset>";
 		add_form += "<fieldset><label>Rating <span class='jade_required_star'>*</span></label><select name='rating'><option value='1'>-1-</option><option value='2'>-2-</option><option value='3'>-3-</option><option value='4'>-4-</option><option value='5'>-5-</option></select></fieldset>";
 		add_form += "<fieldset><label>Comments <span class='jade_required_star'>*</span></label><textarea name='body' rel='text_req'></textarea></fieldset>";
-		add_form += "<fieldset><label>Display Name <span class='jade_required_star'>*</span></label><input type='text' name='display_name' value='' rel='text_req'/></fieldset>";
-		add_form += "<fieldset><label>Email <span class='jade_required_star'>*</span></label><input type='text' name='email' value='' rel='email_req'/></fieldset>";
-		add_form += "<fieldset><button type='submit'>Submit Review</button></fieldset>";
+		add_form += "<fieldset class='panda-display_name'><label>Display Name <span class='jade_required_star'>*</span></label><input type='text' name='display_name' value='' rel='text_req'/></fieldset>";
+		add_form += "<fieldset class='panda-email'><label>Email <span class='jade_required_star'>*</span></label><input type='text' name='email' value='' rel='email_req'/></fieldset>";
+		add_form += "<fieldset class='panda-submit'><button type='submit'>Submit Review</button></fieldset>";
 		add_form += "</form>";
 
 		// emulate dynamic objest for category tags.
@@ -71,7 +71,7 @@
 	 * we can get it by sending as jsonp GET.
 	 * SO if the comment is short enough, we GET, else we POST.
 	*/
-	$('#add-review').ajaxForm({	 
+	$('#panda-add-review').ajaxForm({	 
 		target :"#panda-iframe",
 		iframe : true,
 		beforeSubmit: function(fields, form){
@@ -145,7 +145,7 @@
 			$('.panda-reviews-sorters a:first').click();
 		}
 		
-		$('#add-review').html(rsp.msg);
+		$('#panda-add-review').html(rsp.msg);
 	};
 	
 	

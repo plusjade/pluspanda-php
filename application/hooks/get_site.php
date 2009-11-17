@@ -55,6 +55,11 @@ function get_site()
 	# Route ajax requests
 	if($debug OR request::is_ajax())
 	{	
+		if(isset($_GET['output']))
+			$_GET['ajax_output'] = $_GET['output'];
+		else
+			$_GET['ajax_output'] = '';
+			
 		# send to tool _ajax handler. we expect raw data output.
 		$home = new Home_Controller();
 		die($home->_ajax());

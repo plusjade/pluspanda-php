@@ -14,9 +14,40 @@ ul li a:hover { background: #569f09; }
 form fieldset{border:0}
 .aligncenter{text-align:center}
 
+/* main wrappers */
+#plusPandaYes{margin:0 auto; width:550px;}
+.panda-tag-scope{margin:8px;}
 
-#panda-toggle-tags{margin:10px 0;}
-.panda-reviews-list{width:400px; margin:0 auto; text-align:left;}
+/* tags filtering */
+#panda-select-tags{padding:8px; margin-bottom:10px; background:green;}
+
+
+/* reviews summary */
+.panda-reviews-summary{clear:both; padding:10px; background:#ffffcc;}
+.panda-reviews-summary-title{float:left;background:#ffffcc;padding:5px;font-size:1.1em; font-weight:bold;}
+
+
+/* add review form */
+#add_review_toggle{display:block;padding:5px 10px; background:#e4f6fd; float:right; font-size:1.1em; font-weight:bold; text-decoration:none;}
+#add_review_toggle:hover{background:green;}
+
+#panda-add-review{clear:both; background:#e4f6fd; margin:0;padding:10px;}
+#panda-add-review fieldset{margin-bottom:5px;}
+#panda-add-review fieldset label{font-weight:bold;}
+#panda-add-review fieldset input{padding:3px; width:100%;}
+#panda-add-review fieldset textarea{width:500px; height:100px;} /* ie sucks balls */
+
+#panda-add-review fieldset.panda-display_name,
+#panda-add-review fieldset.panda-email{float:left; width:225px;}
+
+#panda-add-review fieldset.panda-submit{clear:both;text-align:right;}
+
+
+
+
+
+/* reviews list */
+.panda-reviews-list{padding:20px; text-align:left;}
 .review-rating{float:left; padding:3px 6px; background:#ffffcc;  text-align:center;}
 .review-tag{float:right; text-align:right;}
 .review-body{clear:both; padding:10px; background:#fff;}
@@ -50,14 +81,6 @@ button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 	border:1px solid #999;
 	border-bottom:1px solid #fff;
 }
-
-#add_review_toggle{display:block;padding:5px 10px; background:lightblue; float:right; font-size:1.1em; font-weight:bold; text-decoration:none;}
-#add_review_toggle:hover{background:green;}
-#add-review{border:1px dashed #fff;margin-top:10px; padding:10px;}
-
-.panda-reviews-summary{clear:both;padding:10px; background:#ffffcc;}
-.panda-reviews-summary-title{float:left;background:#ffffcc;padding:5px;font-size:1.1em; font-weight:bold;}
-
 
 
 

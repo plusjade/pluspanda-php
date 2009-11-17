@@ -15,6 +15,18 @@ class Home_Controller extends Template_Controller {
 
 	// Set the name of the template to use
 	public $template = 'template';
+	
+	public $active_tag;
+	public $active_sort;
+	public function __construct()
+	{
+		parent::__construct();
+
+		# setup active states.
+		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
+		$this->active_sort = (isset($_GET['sort'])) ? $_GET['sort'] : 'newest';
+	}
+
 
 /* 
  * The index is only a wrapper for standalone mode.
@@ -24,10 +36,6 @@ class Home_Controller extends Template_Controller {
 	{
 		$site = ORM::factory('site', $this->site_id);
 
-		# setup active states.
-		$active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
-		$active_sort = (isset($_GET['sort'])) ? $_GET['sort'] : 'newest';
-		
 		if($_POST)
 			$add_review = self::_submit_handler('normal');
 		else
@@ -40,10 +48,11 @@ class Home_Controller extends Template_Controller {
 			);
 		}
 		
+
 		$content = new View('wrapper');
 		$content->site = $site;
-		$content->set_global('active_tag', $active_tag);
-		$content->set_global('active_sort', $active_sort);
+		$content->set_global('active_tag', $this->active_tag);
+		$content->set_global('active_sort', $this->active_sort);
 		$content->get_reviews = $this->get_reviews();
 		$content->add_review = $add_review;
 		
@@ -131,6 +140,12 @@ class Home_Controller extends Template_Controller {
 		
 
 		# send as view.
+		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
+		{
+			$view = new View('reviews_data');
+			$view->reviews = $reviews;
+			die($view);
+		}
 		
 		# TEST summary: TODO distribution as function of time??
 		$summary = ORM::factory('review')
@@ -143,6 +158,8 @@ class Home_Controller extends Template_Controller {
 		$view = new View('get_reviews');
 		$view->reviews = $reviews;		
 		$view->summary = $summary;
+		$view->set_global('active_tag', $this->active_tag);
+		$view->set_global('active_sort', $this->active_sort);
 		return $view;
 	}
 	
