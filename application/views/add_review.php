@@ -7,6 +7,7 @@
 <?php else:?>
 	<form action="#panda-add-review" method="POST" id="panda-add-review">
 <?php endif;?>
+	<h3>Add Review For: <span></span></h3>
 	<input type="hidden" name="tag" value="<?php echo $active_tag?>">
 	<?php
 	$ratings = array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5');

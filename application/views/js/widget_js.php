@@ -1,4 +1,5 @@
 
+
 // attach event triggers.
 $('body').click($.delegate({
  // sorting links.
@@ -20,7 +21,6 @@ $('body').click($.delegate({
 	
 // build the initial interface.
 $('#plusPandaYes').html('<div class="ajax_loading">Loading...</div>'); 	
-	
 function buildIt() { 
 	var html = <?php echo $json_html?>;
 	//add to DOM
@@ -49,6 +49,7 @@ function buildIt() {
 		$('.panda-reviews-sorters a').removeClass('selected');
 		$('.panda-reviews-sorters a:first').addClass('selected'); 
 		
+		// load the reviews based on selection.
 		pandaGetRevs(tag,'newest');
 		window.location.hash = 'tag='+tag+'&sort=newest';
 		return false;
@@ -69,24 +70,18 @@ $('#panda-add-review').ajaxForm({
 	iframe : true,
 	beforeSubmit: function(fields, form){
 		if(! $("input, textarea", form[0]).jade_validate()) return false;
-		$('button', form)
-		.attr('disabled', 'disabled')
-		.html('Submitting...');
-		
+		$('button', form).attr('disabled', 'disabled').html('Submitting...');
 		var qstr = form.formSerialize();
 		console.log(qstr);
-		
 		if(7900 > qstr.length){
 			$.ajax({ 
 					type:'GET', 
-					url:"http://test.localhost.net", 
+					url:"<?php echo $url?>", 
 					data: qstr + "&submit=review&jsoncallback=pandaSubmit", 
 					dataType:'JSONP'
 			});
-			// DON'T post the form!!
-			return false;
-		}
-		else{
+			return false; // DON'T post the form!!
+		}else{
 			alert('comment was too long to submit via GET. (post is off for now)');
 			return false;
 		}
@@ -95,20 +90,16 @@ $('#panda-add-review').ajaxForm({
 });
 
 
-// ---------- get updated data ----------
-
 // get the reviews as JSONP.
 function pandaGetRevs(tag, sort){
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>');
 		$.ajax({ 
 				type:'GET', 
-				url:"http://test.localhost.net", 
+				url:"<?php echo $url?>", 
 				data:"tag="+tag+"&sort="+sort+"&format=json&jsoncallback=pandaLoadRev", 
 				dataType:'jsonp'
 		}); 
 }
-
-
 
 // --------- JSONP callbacks ------------	
 
@@ -118,7 +109,7 @@ function pandaDisplayRevs(reviews){
 	$(reviews).each(function(){	
 		// format date
 		var date = new Date(this.created*1000);   
-		content += '<div class="review-rating">Rating: <b>'+ this.rating +'</b></div> <div class="review-body">'+ this.body +'</div> <div class="review-name">' + $.timeago(date) + ' -- ' + this.display_name +'</div>';			
+		content += '<div class="review-rating">Rating: <b>'+ this.rating +'</b></div> <div class="review-tag">re: <span>'+ this.tag_name +'</span></div> <div class="review-body">'+ this.body +'</div> <div class="review-name"><abbr class="timeago">' + $.timeago(date) +'</abbr> by <span>'+ this.display_name +'</span></div>';			
 	});
 	$('#plusPandaYes .panda-reviews-list').html(content); 
 	pandaClean();
@@ -153,14 +144,13 @@ function pandaSubmitRev(rsp){
 	else if(1 == rsp.code){
 		$('.panda-reviews-sorters a:first').click();
 	}
-	
 	$('#panda-add-review').html(rsp.msg);
 };
 
 
 // cleanup our jsonp scripts after execution.
 function pandaClean(){
-	//$('head script[src^="http://test.localhost.net"]').remove();
+	//$('head script[src^="<?php echo $url?>"]').remove();
 }
 
 

@@ -58,15 +58,6 @@ class Home_Controller extends Controller {
 /* ------------- modular methods (ajaxable) -------------  */
 	
 /*
- * get the tags data depending on how we are asking for it.
- */
-	private function get_tags()
-	{
-		$site = ORM::factory('site', $this->site_id);
-		
-	}
-
-/*
  * get the reviews data depending on how we are asking for it.
  */
 	private function get_reviews()
@@ -84,7 +75,7 @@ class Home_Controller extends Controller {
 			$value = $_GET['tag'];
 		}
 		
-		# sort by ...
+		# sort by
 		if(isset($_GET['sort']))
 		{
 			$sort_by = strtolower($_GET['sort']);
@@ -143,8 +134,14 @@ class Home_Controller extends Controller {
 		{
 			$review_array = array();
 			foreach($reviews as $review)
-				$review_array[] = $review->as_array();
-			#echo kohana::debug($review_array);
+			{
+				$data = $review->as_array();
+				$data['display_name'] = $review->user->display_name;
+				$data['tag_name'] = $review->tag->name;
+				$review_array[] = $data;
+			}
+			# debug: http://test.localhost.net/?tag=1&sort=highest&format=json&jsoncallback=pandaLoadRev
+			# echo kohana::debug($review_array);die();
 			
 			$json_reviews = json_encode($review_array);
 			$json_summary = json_encode($ratings_dist);

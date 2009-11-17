@@ -66,7 +66,9 @@ class build_Core {
 		?>
 		<div class="panda-reviews-summary-title">Rating Summary</div>
 		<div class="panda-reviews-summary">
-			<b><?php echo $average_score?></b> average based on <span><?php echo $total_reviews?></span> reviews.
+			<div>
+				<b><?php echo $average_score?></b> stars based on <span><?php echo $total_reviews?></span> reviews.
+			</div>
 			<p>
 			<?php foreach($ratings_dist as $rating => $total):?>
 				<?php echo $rating?> stars : (<?php echo $total?>)<br/>

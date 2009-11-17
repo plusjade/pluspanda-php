@@ -1,19 +1,13 @@
 ﻿
-html { background: #83c018; }
-body { width: 52em; margin: 50px auto 2em; font-size: 76%; font-family: Arial, sans-serif; color: #273907; line-height: 1.5;}
+/* html { background: #83c018; }*/
+html{background:url('../images/background.png') repeat 0 0}
+body { width: 52em; margin: 50px auto 2em; font-size: 76%; font-family: Arial, sans-serif; color: #333; line-height: 1.5;}
 h1 { font-size: 3em; font-weight: normal; text-transform: uppercase; color: #fff; }
+h2{color:#fff;}
 a { color: inherit; }
-code { font-size: 1.3em; }
-ul { list-style: none; padding: 2em 0; }
-ul li { display: inline; padding-right: 1em; text-transform: uppercase; }
-ul li a { padding: 0.5em 1em; background: #69ad0f; border: 1px solid #569f09; color: #fff; text-decoration: none; }
-ul li a:hover { background: #569f09; }
-.box { padding: 2em; background: #98cc2b; border: 1px solid #569f09; }
+abbr{border:0}
 .copyright { font-size: 0.9em; text-transform: uppercase; color: #557d10; }
-
 div.ajax_loading{text-align:center !important; background:transparent url('../images/ajax-load.gif') no-repeat 50% 50% !important; width:100% !important; height:90px !important; }
-
-
 form fieldset{border:0}
 .aligncenter{text-align:center}
 
@@ -22,17 +16,18 @@ form fieldset{border:0}
 .panda-tag-scope, .panda-add-wrapper{margin:8px;}
 
 /* tags filtering */
-#panda-select-tags{padding:8px; margin-bottom:10px; background:green;}
+#panda-select-tags{padding:10px; margin-bottom:10px; background:#111; color:white;}
 
 
 /* reviews summary */
-.panda-reviews-summary{clear:both; padding:10px; background:#ffffcc;}
-.panda-reviews-summary-title{float:left;background:#ffffcc;padding:5px;font-size:1.1em; font-weight:bold;}
-
+.panda-reviews-summary{clear:both; padding:10px; background:#ffffaa;}
+.panda-reviews-summary-title{float:left;background:#ffffaa;padding:5px;font-size:1.1em; font-weight:bold;}
+.panda-reviews-summary div{text-align:center; font-size:1.2em; background:#ffff55; padding:3px;}
+.panda-reviews-summary p{margin:0;}
 
 /* add review form */
 #add_review_toggle{display:block;padding:5px 10px; background:#e4f6fd; float:right; font-size:1.1em; font-weight:bold; text-decoration:none;}
-#add_review_toggle:hover{background:green;}
+#add_review_toggle:hover{background:#ffcc33;}
 
 #panda-add-review{clear:both; background:#e4f6fd; margin:0;padding:10px;}
 #panda-add-review fieldset{margin-bottom:5px;}
@@ -51,11 +46,13 @@ form fieldset{border:0}
 
 /* reviews list */
 .panda-reviews-list{padding:20px; text-align:left;}
-.review-rating{float:left; padding:3px 6px; background:#ffffcc;  text-align:center;}
+.review-rating{float:left; padding:3px 6px; background:#ffff88;  text-align:center;}
 .review-tag{float:right; text-align:right;}
-.review-body{clear:both; padding:10px; background:#fff;}
+.review-tag span{font-weight:bold;}
+.review-body{clear:both; padding:10px; background:#ffffcc;}
 .review-name{text-align:right; margin-bottom:10px;}
-
+.review-name abbr{font-family:verdana; color:#fff;} /* time */
+.review-name span{font-weight:bold;} /* name */
 button{border:0; background:#fff; padding:2px;}
 button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
 
@@ -63,26 +60,26 @@ button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
  ul.panda-reviews-sorters{
 	clear:both;
 	list-style:none;
-	padding:10px 0;
+	padding:8px 0;
 	margin:10px 0;
-	border-bottom:1px solid green;
+	border-bottom:1px solid #333;
 	text-align:right;
 }
  ul.panda-reviews-sorters li{
 	display:inline;
+	margin-left:10px;
 }
  ul.panda-reviews-sorters li a{
 	padding:10px 15px;
 	font-weight:bold;
 	color:black;
-	background:#eee;
+	background:#fff;
 }
  ul.panda-reviews-sorters li a:hover,
  ul.panda-reviews-sorters li a.selected{
-	position:relative;
-	background:orange;
-	border:1px solid #999;
-	border-bottom:1px solid #fff;
+	outline:none;
+	background:#ffcc33;
+	border-bottom:1px solid #333;
 }
 
 
