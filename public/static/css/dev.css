@@ -11,12 +11,15 @@ ul li a:hover { background: #569f09; }
 .box { padding: 2em; background: #98cc2b; border: 1px solid #569f09; }
 .copyright { font-size: 0.9em; text-transform: uppercase; color: #557d10; }
 
+div.ajax_loading{text-align:center !important; background:transparent url('../images/ajax-load.gif') no-repeat 50% 50% !important; width:100% !important; height:90px !important; }
+
+
 form fieldset{border:0}
 .aligncenter{text-align:center}
 
 /* main wrappers */
 #plusPandaYes{margin:0 auto; width:550px;}
-.panda-tag-scope{margin:8px;}
+.panda-tag-scope, .panda-add-wrapper{margin:8px;}
 
 /* tags filtering */
 #panda-select-tags{padding:8px; margin-bottom:10px; background:green;}
@@ -34,11 +37,11 @@ form fieldset{border:0}
 #panda-add-review{clear:both; background:#e4f6fd; margin:0;padding:10px;}
 #panda-add-review fieldset{margin-bottom:5px;}
 #panda-add-review fieldset label{font-weight:bold;}
-#panda-add-review fieldset input{padding:3px; width:100%;}
+#panda-add-review fieldset input{padding:3px; width:215px;}
 #panda-add-review fieldset textarea{width:500px; height:100px;} /* ie sucks balls */
 
-#panda-add-review fieldset.panda-display_name,
-#panda-add-review fieldset.panda-email{float:left; width:225px;}
+#panda-add-review fieldset.panda-display_name{float:right; width:235px;}
+#panda-add-review fieldset.panda-email{float:left; width:235px;}
 
 #panda-add-review fieldset.panda-submit{clear:both;text-align:right;}
 

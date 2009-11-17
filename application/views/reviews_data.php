@@ -10,5 +10,5 @@
 	</div>
 <?php endforeach;?>
 
-
+<script type="text/javascript">$('abbr.timeago').timeago();</script>
 

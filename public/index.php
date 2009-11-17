@@ -12,7 +12,7 @@
  */
 define('ROOTNAME', 'localhost');
 define('ROOTACCOUNT', 'test');
-define('ROOTDOMAIN', 'localhost.com');
+define('ROOTDOMAIN', 'localhost.net');
 define('ROOTSITEID', 1);
 
 /**
@@ -61,8 +61,8 @@ version_compare(PHP_VERSION, '5.2', '<') and exit('Kohana requires PHP 5.2 or ne
  * Set the error reporting level. Unless you have a special need, E_ALL is a
  * good level for error reporting.
  */
-error_reporting(E_ALL & ~E_STRICT);
-
+#error_reporting(E_ALL & ~E_STRICT);
+error_reporting(E_ALL | E_STRICT);
 /**
  * Turning off display_errors will effectively disable Kohana error display
  * and logging. You can turn off Kohana errors in application/config/config.php

@@ -7,23 +7,56 @@
 			$(e.target).addClass('selected');
 			$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>'); 	
 			var sort = $(e.target).html();
-			pandaGetRevs(sort);
+			pandaLoadReviews(sort);
 		}
 	}));
 	
 // build the initial interface.
 	$('#plusPandaYes').html('<div class="ajax_loading">Loading...</div>'); 	
 	
-	function buildIt() { 
-		var html = <?php echo $blah?>
+	function buildIt() { 	
+	
+		var sorters = '';
+		sorters = '<ul class="panda-reviews-sorters">';
+		sorters += '<li><a href="#sort=newest">Newest</a></li>';
+		sorters += '<li><a href="#sort=oldest">Oldest</a></li>';
+		sorters += '<li><a href="#sort=highest">Highest</a></li>';
+		sorters += '<li><a href="#sort=lowest">Lowest</a></li>';
+		sorters += '</ul>';	
+		
+		var add_form = "<h3>Add Review</h3>";
+		add_form += "<form action='http://test.localhost.net#yahboi' target='panda-iframe' method='post' id='panda-add-review'>";
+		add_form += "<fieldset><label>Rating <span class='jade_required_star'>*</span></label><select name='rating'><option value='1'>-1-</option><option value='2'>-2-</option><option value='3'>-3-</option><option value='4'>-4-</option><option value='5'>-5-</option></select></fieldset>";
+		add_form += "<fieldset><label>Comments <span class='jade_required_star'>*</span></label><textarea name='body' rel='text_req'></textarea></fieldset>";
+		add_form += "<fieldset class='panda-display_name'><label>Display Name <span class='jade_required_star'>*</span></label><input type='text' name='display_name' value='' rel='text_req'/></fieldset>";
+		add_form += "<fieldset class='panda-email'><label>Email <span class='jade_required_star'>*</span></label><input type='text' name='email' value='' rel='email_req'/></fieldset>";
+		add_form += "<fieldset class='panda-submit'><button type='submit'>Submit Review</button></fieldset>";
+		add_form += "</form>";
+
+		
+		// emulate dynamic objest for category tags.
+		var tags = new Array();
+		var tag0 = {"val":"all", "name":"All"};
+		var tag1 = {"val":1, "name":"Customer Experience"};
+		var tag2 = {"val":2, "name":"Jun"};	
+		tags.push(tag0);
+		tags.push(tag1);
+		tags.push(tag2);
+
+		// setup dynamic tag cats from object.
+		var options = '';
+		$(tags).each(function(){
+			options += '<option value="' + this.val + '">' + this.name + '</option>';
+		});
+	
+		// setup the iframe.
 		var $iframe = ('<iframe name="panda-iframe" id="panda-iframe" style="display:none"> </iframe>');
 
 		// add everything to DOM.
 		$('#plusPandaYes')
-		.html(html.tag_filer + html.sorters + html.add_form + '<div class="panda-reviews-list"></div>')
+		.html(sorters + add_form + '<div class="panda-reviews-list"></div>')
 		.prepend($iframe);
-		
-		// init getting the data.
+		$('select[name="tag"]').html(options);
 		$('.panda-reviews-sorters a:first').click();
 	}	
 	
@@ -78,12 +111,12 @@
 // ---------- get updated data ----------
 
  // retrieves the reviews as json.
-	function pandaGetRevs(sort) 
+	function pandaLoadReviews(sort) 
 	{
 			$.ajax({ 
 					type:'GET', 
 					url:"http://test.localhost.net", 
-					data:"tag=all&sort=" + sort + "&format=json&jsoncallback=pandaDisplayRevs", 
+					data:"tag=all&sort=" + sort + "&format=json&jsoncallback=pandaLoadRev", 
 					dataType:'jsonp'
 			}); 
 	}
@@ -93,7 +126,7 @@
 // --------- JSONP callbacks ------------	
 
 // jsonp callback to format and inject reviews data.
-	function pandaDisplayRevs(reviews) {
+	function pandaLoadRev(reviews) {
 		var content = '';
 		$(reviews).each(function(){	
 			// format date

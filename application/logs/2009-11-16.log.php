@@ -58,3 +58,6 @@ ORDER BY `newest` ASC in file C:/dev/pluspanda/system/libraries/drivers/Database
 2009-11-16 17:06:36 -08:00 --- error: Uncaught Kohana_404_Exception: The page you requested, favicon.ico, could not be found. in file C:/dev/pluspanda/system/core/Kohana.php on line 841
 2009-11-16 17:06:39 -08:00 --- error: Uncaught Kohana_404_Exception: The page you requested, favicon.ico, could not be found. in file C:/dev/pluspanda/system/core/Kohana.php on line 841
 2009-11-16 17:11:56 -08:00 --- error: Uncaught Kohana_404_Exception: The page you requested, tag=1, could not be found. in file C:/dev/pluspanda/system/core/Kohana.php on line 841
+2009-11-16 20:45:05 -08:00 --- error: Uncaught Kohana_404_Exception: The page you requested, favicon.ico, could not be found. in file C:/dev/pluspanda/system/core/Kohana.php on line 841
+2009-11-16 20:45:08 -08:00 --- error: Uncaught Kohana_404_Exception: The page you requested, favicon.ico, could not be found. in file C:/dev/pluspanda/system/core/Kohana.php on line 841
+2009-11-16 21:11:52 -08:00 --- error: Uncaught Kohana_Exception: The requested view, submit_status, could not be found in file C:/dev/pluspanda/system/core/Kohana.php on line 1162

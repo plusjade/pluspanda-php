@@ -2,22 +2,18 @@
 /**
 	
  * 3 types of data output formats:
-		1. normal standalone output. if no javascript, functions as normal,
-				outputs complete views.
-		
-		2. ajax standalone. updates via ajax, only outputs data view.
-		
-		3. ajax json. called externally outputs raw json to be formatted
-				at other end.
+		1. Standalone js-disabled Mode.
+				if no javascript, functions as normal, outputs complete views.
+		2. Standalone Ajax Mode.
+				updates via ajax, only outputs data view.
+		3. Widget Ajax via JSONP.
+				called externally outputs raw json to be formatted other end.
  */
-class Home_Controller extends Template_Controller {
+class Home_Controller extends Controller {
 
-
-	// Set the name of the template to use
-	public $template = 'template';
-	
 	public $active_tag;
 	public $active_sort;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -29,8 +25,8 @@ class Home_Controller extends Template_Controller {
 
 
 /* 
- * The index is only a wrapper for standalone mode.
- * All widget functionality will not use this at all.
+ * The index is only a wrapper for Standalone js-disabled mode mode.
+ * any ajax or widget functionality will not use this at all.
  */
 	public function index()
 	{
@@ -47,7 +43,6 @@ class Home_Controller extends Template_Controller {
 				'email'					=> ''
 			);
 		}
-		
 
 		$content = new View('wrapper');
 		$content->site = $site;
@@ -55,10 +50,12 @@ class Home_Controller extends Template_Controller {
 		$content->set_global('active_sort', $this->active_sort);
 		$content->get_reviews = $this->get_reviews();
 		$content->add_review = $add_review;
-		
 		$this->template->content = $content;
+		echo $this->template->render();
 	}
 
+	
+/* ------------- modular methods (ajaxable) -------------  */
 	
 /*
  * get the tags data depending on how we are asking for it.
@@ -72,7 +69,6 @@ class Home_Controller extends Template_Controller {
 /*
  * get the reviews data depending on how we are asking for it.
  */
-	
 	private function get_reviews()
 	{
 		# defaults
@@ -112,12 +108,34 @@ class Home_Controller extends Template_Controller {
 		
 		}
 
+		# get reviews data.
 		$reviews = ORM::factory('review')
 		->where($field, $value)
 		->orderby($sort)
 		->find_all();
-		
 
+		# send as view (for standalone ajax updating).
+		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
+		{
+			$view = new View('reviews_data');
+			$view->reviews = $reviews;
+			die($view);
+		}
+
+		
+		# get summary data: TODO distribution as function of time??
+		$summary = ORM::factory('review')
+		->select('*, COUNT(reviews.id) AS total')
+		->where($field, $value)
+		->orderby(array('rating' => 'desc'))
+		->groupby('rating')
+		->find_all();
+		# build a ratings distribution array.
+		$ratings_dist = array();
+		foreach($summary as $rating)
+			$ratings_dist[$rating->rating] = $rating->total;
+			
+			
 		### HOW DO WE RETURN IT ??
 		
 		# return JSON? to widget
@@ -126,42 +144,27 @@ class Home_Controller extends Template_Controller {
 			$review_array = array();
 			foreach($reviews as $review)
 				$review_array[] = $review->as_array();
-
 			#echo kohana::debug($review_array);
-			$json = json_encode($review_array);
-			#echo kohana::debug($json);
+			
+			$json_reviews = json_encode($review_array);
+			$json_summary = json_encode($ratings_dist);
 			
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 			header('Content-type: text/plain');
 			#header('Content-type: application/json');
-			die("pandaLoadRev($json)");
+			die("pandaDisplayRevs($json_reviews);pandaDisplaySum($json_summary)");
 		}
-		
 
-		# send as view.
-		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
-		{
-			$view = new View('reviews_data');
-			$view->reviews = $reviews;
-			die($view);
-		}
-		
-		# TEST summary: TODO distribution as function of time??
-		$summary = ORM::factory('review')
-		->select('*, COUNT(reviews.id) AS total')
-		->where($field, $value)
-		->orderby(array('rating' => 'desc'))
-		->groupby('rating')
-		->find_all();
 		
 		$view = new View('get_reviews');
 		$view->reviews = $reviews;		
-		$view->summary = $summary;
+		$view->ratings_dist = $ratings_dist;
 		$view->set_global('active_tag', $this->active_tag);
 		$view->set_global('active_sort', $this->active_sort);
 		return $view;
 	}
+	
 	
 /*
  * post review handler.
@@ -224,45 +227,26 @@ class Home_Controller extends Template_Controller {
 
 	
 		# return status
-		$view = new View('submit_status');
+		$view = new View('status');
 		$view->success = true;
 		return $view;
 	}
 
 
 /*
- * ajax handler
+ * ajax handler. routes ajax calls to appropriate private method.
  */ 	
 	public function _ajax()
 	{
 		# get reviews
 		if(isset($_GET['tag']))
 			die($this->get_reviews());
-			
-			
+
 		# submit a review via POST, 
 		if($_POST)
-		{
 			die($this->_submit_handler('ajaxP'));
-		}
 
-		
 		die('invalid data');
 	}	
 	
-	
-	
-	
-	
-	public function __call($method, $arguments)
-	{
-		// Disable auto-rendering
-		$this->auto_render = FALSE;
-
-		// By defining a __call method, all pages routed to this controller
-		// that result in 404 errors will be handled by this method, instead of
-		// being displayed as "Page Not Found" errors.
-		echo 'This text is generated by __call. If you expected the index page, you need to use: welcome/index/'.substr(Router::$current_uri, 8);
-	}
-
 } // End home Controller

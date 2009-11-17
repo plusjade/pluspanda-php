@@ -2,8 +2,8 @@
 
 /*
  * This is the Main GateKeeper to PlusPanda.
+ * fetches and scopes to appropriate site account.
  */
- 
 function get_site()
 {
 	$session = Session::instance();
@@ -44,7 +44,8 @@ function get_site()
 	
 
 /* ---- ROUTE THE REQUEST ---- */
-	# submit a review via GET, return jsonp
+
+	# submit a review via GET, return JSONP
 	if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
 	{
 		$home = new Home_Controller();
@@ -55,6 +56,7 @@ function get_site()
 	# Route ajax requests
 	if($debug OR request::is_ajax())
 	{	
+		# hack to make sure ajax_output is only sent to an ajax call.
 		if(isset($_GET['output']))
 			$_GET['ajax_output'] = $_GET['output'];
 		else

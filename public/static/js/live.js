@@ -21,22 +21,6 @@
 /* Event delegation*/
 jQuery.delegate = function(rules) {return function(e) { var target = $(e.target); for (var selector in rules) if (target.is(selector)) return rules[selector].apply(this, $.makeArray(arguments));}}
 
-// Adapted from getPageSize() by quirksmode.com
-jQuery.getPageHeight = function() {
-	var windowHeight;
-	if (self.innerHeight) { windowHeight = self.innerHeight; }
-	else if (document.documentElement && document.documentElement.clientHeight) {windowHeight = document.documentElement.clientHeight;}
-	else if (document.body) { windowHeight = document.body.clientHeight;}	
-	return windowHeight
-}
-// getPageScroll() by quirksmode.com
-jQuery.getPageScroll = function() {
-	var xScroll, yScroll;
-	if (self.pageYOffset) { yScroll = self.pageYOffset; xScroll = self.pageXOffset; }
-	else if (document.documentElement && document.documentElement.scrollTop) { yScroll = document.documentElement.scrollTop; xScroll = document.documentElement.scrollLeft;} 
-	else if (document.body) { yScroll = document.body.scrollTop; xScroll = document.body.scrollLeft;}
-	return new Array(xScroll,yScroll) 
-}
 
 /*
  * http://kevin.vanzonneveld.net
