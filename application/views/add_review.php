@@ -6,7 +6,7 @@
 <?php if(isset($js) AND 'yes' == $js):?>
 	<form action="http://<?php echo "$this->site_name." . ROOTDOMAIN?>" target="panda-iframe"  method="POST" id="panda-add-review">
 <?php else:?>
-	<form action="/#panda-add-review" method="POST" id="panda-add-review">
+	<form action="/<?php if(isset($_GET['tag'])) echo '?tag='.$_GET['tag']?>#panda-add-review" method="POST" id="panda-add-review">
 <?php endif;?>
 		<h3>Add Review</h3>
 	<?php

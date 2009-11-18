@@ -20,7 +20,9 @@ class Home_Controller extends Controller {
 
 		# setup active states.
 		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
-		$this->active_sort = (isset($_GET['sort'])) ? $_GET['sort'] : 'newest';
+		$this->active_sort = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
+		$this->active_page = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;
+	
 	}
 
 
@@ -29,7 +31,7 @@ class Home_Controller extends Controller {
  * any ajax or widget functionality will not use this at all.
  */
 	public function index()
-	{
+	{	
 		$site = ORM::factory('site', $this->site_id);
 
 		if($_POST)
@@ -68,52 +70,64 @@ class Home_Controller extends Controller {
 		$field	= 'site_id';
 		$value	= $this->site_id;
 		$sort		= array('created' => 'desc');
-		
+
 		# filter by tag
-		if(isset($_GET['tag']) AND is_numeric($_GET['tag']))
+		if(is_numeric($this->active_tag))
 		{
 			$field = 'tag_id';
-			$value = $_GET['tag'];
+			$value = $this->active_tag;
 		}
 		
 		# sort by
-		if(isset($_GET['sort']))
+		switch($this->active_sort)
 		{
-			$sort_by = strtolower($_GET['sort']);
-			switch($sort_by)
-			{
-				case 'oldest':
-					$sort = array('created' => 'asc');
-					break;
-				case 'highest':
-					$sort = array('rating' => 'desc');
-					break;
-				case 'lowest':
-					$sort = array('rating' => 'asc');
-					break;
-			}
-		}
-		
-		# pagination.
-		if(isset($_GET['page']))
-		{
-		
+			case 'oldest':
+				$sort = array('created' => 'asc');
+				break;
+			case 'highest':
+				$sort = array('rating' => 'desc');
+				break;
+			case 'lowest':
+				$sort = array('rating' => 'asc');
+				break;
 		}
 
-		# get reviews data.
+		# get full count of reviews for this tag.
+		$total_reviews = ORM::factory('review')
+		->where($field, $value)
+		->orderby($sort)
+		->count_all();
+		
+		# if pagination
+		$offset = ($this->active_page*10) - 10;
+
+		# get the appropriate reviews based on page.
 		$reviews = ORM::factory('review')
 		->where($field, $value)
 		->orderby($sort)
+		->limit(10, $offset)
 		->find_all();
 
-		# send as view (for standalone ajax updating).
+		# build the pagination html
+		$pagination = new Pagination(array(
+			'base_url'			 => "/?tag=$this->active_tag&sort=$this->active_sort&page=",
+			'current_page'	 => $this->active_page, 
+			'total_items'    => $total_reviews,
+			'style'          => 'digg' ,
+			'items_per_page' => 10
+			
+		));
+		
+		# Return Standalone Ajax - reviews_data (sorters & pagination).
 		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
 		{
 			$view = new View('reviews_data');
 			$view->reviews = $reviews;
+			$view->pagination = $pagination;
 			die($view);
 		}
 
+		# else we are returning an entirely new tag view.
 		
 		# get summary data: TODO distribution as function of time??
 		$summary = ORM::factory('review')
@@ -127,10 +141,8 @@ class Home_Controller extends Controller {
 		foreach($summary as $rating)
 			$ratings_dist[$rating->rating] = $rating->total;
 			
-			
-		### HOW DO WE RETURN IT ??
-		
-		# return JSON? to widget
+
+		# Return JSON to widget
 		if('json' == $format)
 		{
 			$review_array = array();
@@ -145,19 +157,25 @@ class Home_Controller extends Controller {
 			# echo kohana::debug($review_array);die();
 			
 			$json_reviews = json_encode($review_array);
-			$json_summary = json_encode($ratings_dist);
+			$json_summary = json_encode($ratings_dist); 
+
+			#pagination html.
+			$pagination = ereg_replace("[\n\r\t]", '', $pagination);
+			
 			
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 			header('Content-type: text/plain');
 			#header('Content-type: application/json');
-			die("pandaDisplayRevs($json_reviews);pandaDisplaySum($json_summary)");
+			die("pandaDisplayRevs($json_reviews);pandaDisplaySum($json_summary);pandaPages('$pagination')");
 		}
 
-		
+		# Return standalone non-ajax.
+				
 		$view = new View('get_reviews');
 		$view->reviews = $reviews;		
 		$view->ratings_dist = $ratings_dist;
+		$view->pagination = $pagination;
 		$view->set_global('active_tag', $this->active_tag);
 		$view->set_global('active_sort', $this->active_sort);
 		return $view;

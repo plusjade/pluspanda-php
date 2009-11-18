@@ -28,9 +28,20 @@ $('#panda-select-tags').submit(function(){
 
 // attach event triggers.
 $('body').click($.delegate({
+//TODO: combine these two.
  //ajaxify the sorters 
 	'.panda-reviews-sorters a' : function(e){
 		$('.panda-reviews-sorters a').removeClass('selected');
+		$(e.target).addClass('selected');
+		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>'); 	
+		$.get(e.target.href, {output:'reviews'}, function(data){
+			$('.panda-reviews-list').html(data); 	
+		});
+		return false;
+	},
+ //ajaxify the pagination links.
+	'.panda-pagination a' : function(e){
+		$('.panda-pagination a').removeClass('selected');
 		$(e.target).addClass('selected');
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>'); 	
 		$.get(e.target.href, {output:'reviews'}, function(data){

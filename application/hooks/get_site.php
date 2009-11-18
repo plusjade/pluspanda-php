@@ -42,7 +42,6 @@ function get_site()
 	$_SESSION['site_name']	= $site->subdomain;
 	$_SESSION['site_id']	= $site->id;
 	
-
 /* ---- ROUTE THE REQUEST ---- */
 
 	# submit a review via GET, return JSONP

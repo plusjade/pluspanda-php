@@ -41,7 +41,11 @@ form fieldset{border:0}
 #panda-add-review fieldset.panda-submit{clear:both;text-align:right;}
 
 
-
+/* pagination */
+.panda-pagination{font-size:1.6em; color:#fff; text-align:right;}
+.panda-pagination .panda-showing{float:left;}
+.panda-pagination a{color:#fff;}
+.panda-pagination a:hover {color:orange}
 
 
 /* reviews list */

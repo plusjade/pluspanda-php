@@ -2,6 +2,7 @@
 
 // attach event triggers.
 $('body').click($.delegate({
+//TODO: combine these two.
  // sorting links.
 	'.panda-reviews-sorters a' : function(e){
 		$('.panda-reviews-sorters a').removeClass('selected');
@@ -9,12 +10,27 @@ $('body').click($.delegate({
 		
 		// get GET params from links TOD0: optimize this?
 		var hash = e.target.href.split('#')[1].split('&');
-		var params = {"tag":"all","sort":"newest"};
+		var params = {"tag":"all","sort":"newest","page":1};
 		for(x in hash){
 				var arr = hash[x].split('=');
 				params[arr[0]] = arr[1]; 
 		}
-		pandaGetRevs(params.tag, params.sort);
+		pandaGetRevs(params.tag, params.sort, params.page);
+	},
+ //ajaxify the pagination links.
+	'.panda-pagination a' : function(e){
+		$('.panda-pagination a').removeClass('selected');
+		$(e.target).addClass('selected');
+
+		// get GET params from links TOD0: optimize this?
+		var hash = e.target.href.split('?')[1].split('&');
+		var params = {"tag":"all","sort":"newest", "page":1};
+		for(x in hash){
+				var arr = hash[x].split('=');
+				params[arr[0]] = arr[1]; 
+		}
+		pandaGetRevs(params.tag, params.sort, params.page);
+		return false;
 	}
 }));
 	
@@ -49,7 +65,7 @@ function buildIt() {
 		$('.panda-reviews-sorters a:first').addClass('selected'); 
 		
 		// load the reviews based on selection.
-		pandaGetRevs(tag,'newest');
+		pandaGetRevs(tag,'newest',1);
 		window.location.hash = 'tag='+tag+'&sort=newest';
 		
 		// update add-review-form to tag-scope
@@ -93,12 +109,12 @@ $('#panda-add-review').ajaxForm({
 
 
 // get the reviews as JSONP.
-function pandaGetRevs(tag, sort){
+function pandaGetRevs(tag, sort, page){
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>');
 		$.ajax({ 
 				type:'GET', 
 				url:"<?php echo $url?>", 
-				data:"tag="+tag+"&sort="+sort+"&format=json&jsoncallback=pandaLoadRev", 
+				data:"tag="+tag+"&sort="+sort+"&page="+page+"&format=json&jsoncallback=pandaLoadRev", 
 				dataType:'jsonp'
 		}); 
 }
@@ -134,6 +150,10 @@ function pandaDisplaySum(ratingsDist){
 	$('.panda-reviews-summary p').html(dist);
 }
 
+// display the pagination html.
+function pandaPages(html){
+	$('.panda-reviews-list').prepend(html).append(html);
+}
 /*
  * callback for submitting a review.
  * response is an object with code and msg

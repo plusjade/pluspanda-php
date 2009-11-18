@@ -1,5 +1,5 @@
 
-
+<?php echo $pagination?>
 <?php foreach($reviews as $review):?>
 	<div class="review-rating">Rating: <b><?php echo $review->rating?></b></div>
 	<div class="review-tag">re: <span><?php echo $review->tag->name?></span></div>
@@ -9,6 +9,7 @@
 		 by <span><?php echo $review->user->display_name?></span>
 	</div>
 <?php endforeach;?>
+<?php echo $pagination?>
 
 <script type="text/javascript">$('abbr.timeago').timeago();</script>
 
