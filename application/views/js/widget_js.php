@@ -1,4 +1,4 @@
-
+/* For widget mode =P */
 
 // attach event triggers.
 $('body').click($.delegate({
@@ -27,9 +27,9 @@ function buildIt() {
 	$('#plusPandaYes').html(html.iframe + html.tag_list + html.add_wrapper + '<div class="panda-tag-scope">' + html.summary + html.form + html.sorters + '<div class="panda-reviews-list"></div></div>');
 	// init getting the data.
 	$('.panda-reviews-sorters a:first').click();
+	
 	// hack to put the add-form in the add-wrapper.
 	$("#add_review_toggle").after($("#panda-add-review"));
-
 	//hide and slide the add-form.
 	$("#add_review_toggle").click(function() {
 		$("#panda-add-review").slideToggle("fast");
@@ -37,14 +37,13 @@ function buildIt() {
 	});
 	$("#panda-add-review").hide();
 	
-	//ajaxify the tag select form.	
+	//ajaxify tag select form.	
 	$('#panda-select-tags').submit(function(){
 		var tag = $('#panda-select-tags select option:selected').val();			
-		// update sorters to tag scope.
+		// update sorter links to tag scope.
 		$('.panda-reviews-sorters a').each(function(){
 			this.href = '#tag='+tag+'&sort=' + $(this).html().toLowerCase();
 		});
-		
 		//quickhack to highlight correct sorter.
 		$('.panda-reviews-sorters a').removeClass('selected');
 		$('.panda-reviews-sorters a:first').addClass('selected'); 
@@ -52,6 +51,10 @@ function buildIt() {
 		// load the reviews based on selection.
 		pandaGetRevs(tag,'newest');
 		window.location.hash = 'tag='+tag+'&sort=newest';
+		
+		// update add-review-form to tag-scope
+		$('#panda-add-review select[name="tag"] option').removeAttr('selected');
+		$('#panda-add-review select[name="tag"] option[value="'+tag+'"]').attr('selected','selected');
 		return false;
 	});
 }
@@ -72,13 +75,12 @@ $('#panda-add-review').ajaxForm({
 		if(! $("input, textarea", form[0]).jade_validate()) return false;
 		$('button', form).attr('disabled', 'disabled').html('Submitting...');
 		var qstr = form.formSerialize();
-		console.log(qstr);
 		if(7900 > qstr.length){
 			$.ajax({ 
 					type:'GET', 
 					url:"<?php echo $url?>", 
-					data: qstr + "&submit=review&jsoncallback=pandaSubmit", 
-					dataType:'JSONP'
+					data: qstr + "&submit=review&jsoncallback=pandaSubmitRsp", 
+					dataType:'jsonp'
 			});
 			return false; // DON'T post the form!!
 		}else{
@@ -136,17 +138,26 @@ function pandaDisplaySum(ratingsDist){
  * callback for submitting a review.
  * response is an object with code and msg
  */
-function pandaSubmitRev(rsp){
-	console.log(rsp);
+function pandaSubmitRsp(rsp){
+	var status = <?php echo $json_status?>;
 	if(5 == rsp.code){
-		// some error
+		$('#panda-select-tags').after(status.error);
 	}
 	else if(1 == rsp.code){
-		$('.panda-reviews-sorters a:first').click();
+		$('.panda-status-msg').remove();
+		$('#panda-select-tags').after(status.success);
+		$('#panda-add-review textarea').clearFields();
+		$("#panda-add-review").hide();
+		
+		// load the updated results.
+		var tag = $('#panda-add-review select[name="tag"] option:selected').val();
+		$('#panda-select-tags select[name="tag"] option').removeAttr('selected');
+		$('#panda-select-tags select[name="tag"] option[value="'+tag+'"]').attr('selected','selected');
+		$('#panda-select-tags').submit();
+		
+		$("#panda-add-review button").removeAttr("disabled").html('Submit Review');
 	}
-	$('#panda-add-review').html(rsp.msg);
 };
-
 
 // cleanup our jsonp scripts after execution.
 function pandaClean(){

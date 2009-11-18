@@ -7,6 +7,32 @@
  
 class build_Core {
 
+
+
+/*
+ * build the top tag select filter.
+ */
+	public static function tag_select_list($tags, $active_tag, $extra=NULL)
+	{
+		ob_start();
+		?>
+			<select name="tag">
+			<?php
+			if(!empty($extra))
+				foreach($extra as $val => $text)
+					echo "<option value=\"$val\">$text</option>";
+			foreach($tags as $tag)
+				if($tag->id == $active_tag)
+					echo "<option value='$tag->id' SELECTED>$tag->name</option>";
+				else
+					echo "<option value='$tag->id'>$tag->name</option>";
+			?>
+			</select>
+		<?php
+		return ob_get_clean();
+	}
+	
+
 /*
  * build the top tag select filter.
  */
@@ -15,20 +41,9 @@ class build_Core {
 		ob_start();
 		?>
 		<form id="panda-select-tags" action="" method="GET">
-			Review Categories: <select name="tag">
-				<option value="all">All</option>
-			<?php foreach($tags as $tag)
-				if($tag->id == $active_tag)
-				{
-					$active_tag_name = $tag->name;
-					echo "<option value='$tag->id' SELECTED>$tag->name</option>";
-				}
-				else
-					echo "<option value='$tag->id'>$tag->name</option>";
-			?>
-			</select> <button type="submit">Show Reviews</button>
-		</form>		
-		
+			Review Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
+			<button type="submit">Show Reviews</button>
+		</form>
 		<?php
 		return ob_get_clean();
 	}
@@ -60,8 +75,9 @@ class build_Core {
 			$total_reviews += $tally;
 			$score_sum += $tally*$rating;
 		}
-		$average_score = number_format($score_sum/$total_reviews, 2);
-		
+		$average_score = (0 < $total_reviews)
+			? number_format($score_sum/$total_reviews, 2)
+			: 0;
 		ob_start();
 		?>
 		<div class="panda-reviews-summary-title">Rating Summary</div>

@@ -1,5 +1,5 @@
 
-<span id="blah">
+<div class="panda-status-msg">
 	<?php if(isset($output)) echo $output?>
 
 	<?php if($success):?>
@@ -13,4 +13,4 @@
 			<br/>Please try again later. Sorry!
 		</div>
 	<?php endif;?>
-</span>
+</div>

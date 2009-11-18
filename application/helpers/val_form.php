@@ -14,7 +14,7 @@ class val_form_Core {
 		ob_start();
 		foreach($fields as $name => $data)
 		{
-			list($label, $type, $rel, $options) = $data;
+			list($label, $type, $rel, $options, $selected) = $data;
 			
 			# was there an error with this field?
 			$jade_error = (empty($errors[$name]))
@@ -49,7 +49,7 @@ class val_form_Core {
 					case 'select':
 						echo "<select name='$name'>";
 						foreach($options as $value => $text)
-							if($value == $values[$name])
+							if($value == $values[$name] OR $value == $selected)
 								echo "<option value='$value' selected='selected'>$text</option>";
 							else
 								echo "<option value='$value'>$text</option>";

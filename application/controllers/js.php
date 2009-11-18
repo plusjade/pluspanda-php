@@ -30,6 +30,7 @@
 		# add review form
 		$form = new View('add_review');
 		$form->active_tag = $active_tag;
+		$form->tags = $site->tags->select_list('id','name');
 		$form->js = 'yes';
 		
 		# build an object to hold the html.
@@ -41,11 +42,19 @@
 		$html->sorters			= ereg_replace("[\n\r\t]", '', $sorters);
 		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
 
+		# build object to hold status msg views.
+		$success	= View::factory('status', array('success'=>true))->render();
+		$error		= View::factory('status', array('success'=>false))->render();
+		$status = new StdClass();
+		$status->success = ereg_replace("[\n\r\t]", '', $success);
+		$status->error	 = ereg_replace("[\n\r\t]", '', $error);
+		
 		# load the widget_js view and place the html as json.
 		$widget_js = new View('js/widget_js');
 		$widget_js->url = 'http://' . $this->site_name . '.' . ROOTDOMAIN;
 		$widget_js->json_html = json_encode($html);
-
+		$widget_js->json_status = json_encode($status);
+		
 		# output as javascript.
 		header('Cache-Control: no-cache, must-revalidate');
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

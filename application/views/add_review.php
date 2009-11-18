@@ -2,21 +2,21 @@
 
 
 <?php if(isset($errors)) echo val_form::show_error_box($errors);?>
+
 <?php if(isset($js) AND 'yes' == $js):?>
 	<form action="http://<?php echo "$this->site_name." . ROOTDOMAIN?>" target="panda-iframe"  method="POST" id="panda-add-review">
 <?php else:?>
-	<form action="#panda-add-review" method="POST" id="panda-add-review">
+	<form action="/#panda-add-review" method="POST" id="panda-add-review">
 <?php endif;?>
-	<h3>Add Review For: <span></span></h3>
-	<input type="hidden" name="tag" value="<?php echo $active_tag?>">
+		<h3>Add Review</h3>
 	<?php
 	$ratings = array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5');
-	
-	$fields = array(
-		'rating'			=> array('Rating','select','text_req', $ratings),
-		'body'				=> array('Review','textarea','text_req', ''),
-		'display_name'=> array('Name','input','text_req', ''),
-		'email'				=> array('Email','input','email_req', ''),
+	$fields	 = array(
+		'tag'					=> array('Review For','select','text_req', $tags, $active_tag),
+		'rating'			=> array('Rating','select','text_req', $ratings,''),
+		'body'				=> array('Review','textarea','text_req', '',''),
+		'display_name'=> array('Name','input','text_req', '',''),
+		'email'				=> array('Email','input','email_req', '',''),
 	);
 	if(!isset($values)) $values = array();
 	if(!isset($errors)) $errors = array();

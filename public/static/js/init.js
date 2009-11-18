@@ -1,5 +1,5 @@
 
-/* this is for standalone ajax mode.*/
+/* Standalone ajax mode. =] */
 
 //hack to place add-review form in the add-wrapper.
 $("#add_review_toggle").after($("#panda-add-review"));
@@ -11,23 +11,18 @@ $("#add_review_toggle").click(function() {
 $("#panda-add-review").hide();
 
 
-//ajaxify the tag selector.
+//ajaxify tag select form.
 $('#panda-select-tags').submit(function(){
 	var tag = $('#panda-select-tags select option:selected').val();
-	var tag_name = $('#panda-select-tags select option:selected').html();
 	$('.panda-tag-scope').html('<div class="ajax_loading">Loading...</div>');
 	$.get('/',{tag:tag},function(data){
 		$('.panda-tag-scope').html(data);
-		// update hidden tag input.
-		$('#panda-add-review input:first').val(tag);
 		
-		if('all' == tag){
-			tag_name = '<br/><b style="color:red">Oops! "All" is not a category you can review =x</b>';
-		}
-		$('#panda-add-review h3 span').html(tag_name);
+		// update add-review-form to tag-scope
+		$('#panda-add-review select[name="tag"] option').removeAttr('selected');
+		$('#panda-add-review select[name="tag"] option[value="'+tag+'"]').attr('selected','selected');
 	});
 	return false;
-	
 });
 
 
@@ -46,23 +41,24 @@ $('body').click($.delegate({
 }));
 
 
-
+// ajaxify the add-review form.
 $('form#panda-add-review').ajaxForm({		 
 	beforeSubmit: function(fields, form){
 		if(! $("input, textarea", form[0]).jade_validate()) return false;
-		/*
-		$(fields).each(function() {
-			$('#supa_injector em#qwz_' + this.name).replaceWith(this.value);
-		});
-		$('#panda-add-review').html('<div class="ajax_loading">Loading...</div>');
-		*/
-		//return false;
+		$('button', form).attr('disabled', 'disabled').html('Submitting...');
 	},
 	success: function(data) {
-		console.log(data);
-		$('#panda-add-review').replaceWith(data);
-		// todo: this must be done only on success.
-		$('#supa_injector').show();
-		$('#add_review_toggle').remove();
+		var tag = $('#panda-add-review select[name="tag"] option:selected').val();
+		$('.panda-status-msg').remove();
+		$('#panda-select-tags').after(data);
+		$('#panda-add-review textarea').clearFields();
+		$("#panda-add-review").hide();
+		
+		// load the updated results.
+		$('#panda-select-tags select[name="tag"] option').removeAttr('selected');
+		$('#panda-select-tags select[name="tag"] option[value="'+tag+'"]').attr('selected','selected');
+		$('#panda-select-tags').submit();
+		
+		$("#panda-add-review button").removeAttr("disabled").html('Submit Review');
 	}
 }); 

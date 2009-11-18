@@ -37,6 +37,7 @@ class Home_Controller extends Controller {
 		else
 		{
 			$add_review = new View('add_review');
+			$add_review->tags = $site->tags->select_list('id','name');
 			$add_review->values = array(
 				'body'					=>'',
 				'display_name'	=> '',
@@ -173,8 +174,8 @@ class Home_Controller extends Controller {
  */
 	public function _submit_handler($type)
 	{
-		$data = ('ajaxG' == $type) ? $_GET	: $_POST;
-			
+		$data = ('ajaxG' == $type) ? $_GET : $_POST;
+
 		# validate the form values.
 		$post = new Validation($data);
 		$post->pre_filter('trim');
@@ -187,11 +188,15 @@ class Home_Controller extends Controller {
 		{
 			# this should rarely happen due to client-side js validation...
 			if('ajaxG' == $type)
-				die('pandaSubmitRev({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
+				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
 
+			# get tags.
+			$site = ORM::factory('site', $this->site_id);
+			
 			$view = new View('add_review');
 			$view->errors = $post->errors();
 			$view->values = $data;
+			$view->tags		= $site->tags->select_list('id','name');
 			return $view;
 		}
 		
@@ -217,13 +222,14 @@ class Home_Controller extends Controller {
 		$new_review->rating		= $data['rating'];
 		$new_review->save();
 
-		
 		# return what kind of data??
+		
+		# widget GET 
 		if('ajaxG' == $type)
-			die('pandaSubmitRev({"code":1, "msg":"Yay!"})');
+			die('pandaSubmitRsp({"code":1, "msg":"Yay!"})');
 
 	
-		# return status
+		# stadalone return status
 		$view = new View('status');
 		$view->success = true;
 		return $view;
