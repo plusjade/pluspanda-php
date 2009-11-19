@@ -44,10 +44,18 @@ function get_site()
 	
 /* ---- ROUTE THE REQUEST ---- */
 
+	# if a controller is being called, we are done here.
+	$url_array = Uri::url_array();
+	$page_name = (empty($url_array['0'])) 
+		? null
+		: $url_array['0'];
+	if(!empty($page_name) OR 'admin' == $page_name)
+		return true;
+		
 	# submit a review via GET, return JSONP
 	if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
 	{
-		$home = new Home_Controller();
+		$home = new Live_Controller();
 		die($home->_submit_handler('ajaxG'));
 	}	
 
@@ -62,7 +70,7 @@ function get_site()
 			$_GET['ajax_output'] = '';
 			
 		# send to tool _ajax handler. we expect raw data output.
-		$home = new Home_Controller();
+		$home = new Live_Controller();
 		die($home->_ajax());
 	}	
 	

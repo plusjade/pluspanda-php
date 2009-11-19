@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /*
- * Build a dynamic route for our 'get' requests
+ * Build a dynamic route for our 'admin' requests
  */
-$config['_default'] = 'home';
+$config['_default'] = 'live';
 
 $parts = explode("/", $_SERVER['REQUEST_URI']);
-if(! empty($parts['1']) AND ($parts['1'] == 'get'))
+if(! empty($parts['1']) AND ($parts['1'] == 'admin'))
 {
 	# Delete any empty segments (allows for inclusion/exlusion of trailing slash)
     foreach($parts as $key => $value) 

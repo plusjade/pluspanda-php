@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
-class User_Model extends ORM {
+class Customer_Model extends ORM {
 	
 	// Relationships
 	#protected $has_and_belongs_to_many = array('account_users');
 	#protected $has_many = array('tags');
-
+	protected $sorting = array('id' => 'desc');
 
 	public function __set($key, $value)
 	{

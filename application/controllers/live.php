@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
-	
+ * Renders the Live Customer Reviews Engine.
  * 3 types of data output formats:
 		1. Standalone js-disabled Mode.
 				if no javascript, functions as normal, outputs complete views.
@@ -9,15 +9,18 @@
 		3. Widget Ajax via JSONP.
 				called externally outputs raw json to be formatted other end.
  */
-class Home_Controller extends Controller {
+class Live_Controller extends Controller {
 
 	public $active_tag;
 	public $active_sort;
+	public $shell;
 	
 	public function __construct()
 	{
 		parent::__construct();
 
+		# setup the shell
+		$this->shell = new View('live/shell');
 		# setup active states.
 		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
 		$this->active_sort = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
@@ -38,7 +41,7 @@ class Home_Controller extends Controller {
 			$add_review = self::_submit_handler('normal');
 		else
 		{
-			$add_review = new View('add_review');
+			$add_review = new View('live/add_review');
 			$add_review->tags = $site->tags->select_list('id','name');
 			$add_review->values = array(
 				'body'					=>'',
@@ -47,14 +50,14 @@ class Home_Controller extends Controller {
 			);
 		}
 
-		$content = new View('wrapper');
+		$content = new View('live/wrapper');
 		$content->site = $site;
 		$content->set_global('active_tag', $this->active_tag);
 		$content->set_global('active_sort', $this->active_sort);
 		$content->get_reviews = $this->get_reviews();
 		$content->add_review = $add_review;
-		$this->template->content = $content;
-		echo $this->template->render();
+		$this->shell->content = $content;
+		echo $this->shell->render();
 	}
 
 	
@@ -121,7 +124,7 @@ class Home_Controller extends Controller {
 		# Return Standalone Ajax - reviews_data (sorters & pagination).
 		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
 		{
-			$view = new View('reviews_data');
+			$view = new View('live/reviews_data');
 			$view->reviews = $reviews;
 			$view->pagination = $pagination;
 			die($view);
@@ -149,7 +152,7 @@ class Home_Controller extends Controller {
 			foreach($reviews as $review)
 			{
 				$data = $review->as_array();
-				$data['display_name'] = $review->user->display_name;
+				$data['display_name'] = $review->customer->display_name;
 				$data['tag_name'] = $review->tag->name;
 				$review_array[] = $data;
 			}
@@ -172,7 +175,7 @@ class Home_Controller extends Controller {
 
 		# Return standalone non-ajax.
 				
-		$view = new View('get_reviews');
+		$view = new View('live/get_reviews');
 		$view->reviews = $reviews;		
 		$view->ratings_dist = $ratings_dist;
 		$view->pagination = $pagination;
@@ -211,7 +214,7 @@ class Home_Controller extends Controller {
 			# get tags.
 			$site = ORM::factory('site', $this->site_id);
 			
-			$view = new View('add_review');
+			$view = new View('live/add_review');
 			$view->errors = $post->errors();
 			$view->values = $data;
 			$view->tags		= $site->tags->select_list('id','name');
@@ -220,22 +223,23 @@ class Home_Controller extends Controller {
 		
 		# on valid submission:
 		
-		# load user
-		$user = ORM::factory('user');
+		# load customer
+		$customer = ORM::factory('customer');
 		
-		# if user does not exist, create him.
-		if(!$user->email_exists($data['email']))
+		# if customer does not exist, create him.
+		if(!$customer->email_exists($data['email']))
 		{
-			$user->email = $data['email'];
-			$user->display_name = $data['display_name'];
-			$user->save();
+			$customer->site_id = $this->site_id;
+			$customer->email = $data['email'];
+			$customer->display_name = $data['display_name'];
+			$customer->save();
 		}
 		
 		# add review
 		$new_review = ORM::factory('review');
 		$new_review->site_id	= $this->site_id;
 		$new_review->tag_id		= $data['tag'];
-		$new_review->user_id	= $user->id;
+		$new_review->customer_id	= $customer->id;
 		$new_review->body			= $data['body'];
 		$new_review->rating		= $data['rating'];
 		$new_review->save();
@@ -248,7 +252,7 @@ class Home_Controller extends Controller {
 
 	
 		# stadalone return status
-		$view = new View('status');
+		$view = new View('live/status');
 		$view->success = true;
 		return $view;
 	}

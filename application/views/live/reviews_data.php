@@ -6,7 +6,7 @@
 	<div class="review-body"><?php echo $review->body?></div>
 	<div class="review-name">
 		<abbr class="timeago" title="<?php echo date("c", $review->created)?>"><?php echo date("M d y @ g:i a", $review->created)?></abbr>
-		 by <span><?php echo $review->user->display_name?></span>
+		 by <span><?php echo $review->customer->display_name?></span>
 	</div>
 <?php endforeach;?>
 <?php echo $pagination?>

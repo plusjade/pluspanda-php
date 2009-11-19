@@ -57,8 +57,12 @@ form fieldset{border:0}
 .review-name{text-align:right; margin-bottom:10px;}
 .review-name abbr{font-family:verdana; color:#fff;} /* time */
 .review-name span{font-weight:bold;} /* name */
+
+
 button{border:0; background:#fff; padding:2px;}
 button:hover{background:#ffffcc; cursor:cursor; cursor:pointer;}
+
+
 
 /* common tab list for sorting links */
  ul.panda-reviews-sorters{

@@ -15,8 +15,6 @@ abstract class Controller_Core {
 	// Allow all controllers to run in production by default
 	const ALLOW_PRODUCTION = TRUE;
 	
-	public $template;
-	
 	/**
 	 * Loads URI, and Input into this controller.
 	 *
@@ -33,10 +31,6 @@ abstract class Controller_Core {
 		$session	 = Session::instance();
 		$this->site_id = $_SESSION['site_id'];
 		$this->site_name = $_SESSION['site_name'];
-		
-		# setup the template
-		$this->template = new View('template');
-
 		
 		// URI should always be available
 		$this->uri = URI::instance();
