@@ -73,24 +73,17 @@ class Auth_ORM_Driver extends Auth_Driver {
 	/**
 	 * Logs a owner in.
 	 *
-	 * @param   string   ownername
+	 * @param   object   owner
 	 * @param   string   password
 	 * @param   boolean  enable auto-login
 	 * @return  boolean
 	 */
-	public function login($owner, $password, $remember)
+	public function login($owner, $password, $site_id, $remember)
 	{
-		if ( ! is_object($owner))
-		{
-			// Load the owner
-			$owner = ORM::factory('owner', $owner);
-			if(!$owner->loaded)
-				return FALSE;
-		}
-
-		// If the passwords match, perform a login
+		// If the passwords match, and owner hass access to this site
+		// perform a login
 		#if ($owner->has(ORM::factory('role', 'login')) AND $owner->password === $password)
-		if ($owner->password === $password)
+		if ($owner->has(ORM::factory('site', $site_id)) AND $owner->password === $password)
 		{
 			if ($remember === TRUE)
 			{

@@ -1,5 +1,7 @@
 /* For widget mode =P */
 
+// TODO: ADD THE TEXT/CSS FILE TO THE HEAD.
+
 // attach event triggers.
 $('body').click($.delegate({
 //TODO: combine these two.
@@ -114,7 +116,7 @@ function pandaGetRevs(tag, sort, page){
 		$.ajax({ 
 				type:'GET', 
 				url:"<?php echo $url?>", 
-				data:"tag="+tag+"&sort="+sort+"&page="+page+"&format=json&jsoncallback=pandaLoadRev", 
+				data:"tag="+tag+"&sort="+sort+"&page="+page+"&jsoncallback=pandaLoadRev", 
 				dataType:'jsonp'
 		}); 
 }

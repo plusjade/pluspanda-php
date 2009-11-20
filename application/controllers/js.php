@@ -26,12 +26,12 @@
 		$tag_list = build::tag_filter($site->tags, $active_tag);
 		$add_wrapper = build::add_wrapper();
 		$summary = build::summary(array(1));
-		$sorters = build::sorters($active_tag, $active_sort, 'yes');
+		$sorters = build::sorters($active_tag, $active_sort,'', 'widget');
 		# add review form
-		$form = new View('add_review');
+		$form = new View('live/add_review');
 		$form->active_tag = $active_tag;
 		$form->tags = $site->tags->select_list('id','name');
-		$form->js = 'yes';
+		$form->widget = 'yes';
 		
 		# build an object to hold the html.
 		$html = new StdClass();
@@ -43,15 +43,15 @@
 		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
 
 		# build object to hold status msg views.
-		$success	= View::factory('status', array('success'=>true))->render();
-		$error		= View::factory('status', array('success'=>false))->render();
+		$success	= View::factory('live/status', array('success'=>true))->render();
+		$error		= View::factory('live/status', array('success'=>false))->render();
 		$status = new StdClass();
 		$status->success = ereg_replace("[\n\r\t]", '', $success);
 		$status->error	 = ereg_replace("[\n\r\t]", '', $error);
 		
 		# load the widget_js view and place the html as json.
 		$widget_js = new View('js/widget_js');
-		$widget_js->url = 'http://' . $this->site_name . '.' . ROOTDOMAIN;
+		$widget_js->url = 'http://' . $this->site_name . '.' . ROOTDOMAIN .'/api';
 		$widget_js->json_html = json_encode($html);
 		$widget_js->json_status = json_encode($status);
 		

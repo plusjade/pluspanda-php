@@ -36,11 +36,11 @@ class build_Core {
 /*
  * build the top tag select filter.
  */
-	public static function tag_filter($tags, $active_tag)
+	public static function tag_filter($tags, $active_tag, $page_name='')
 	{
 		ob_start();
 		?>
-		<form id="panda-select-tags" action="" method="GET">
+		<form id="panda-select-tags" action="/<?php echo $page_name?>" method="GET">
 			Review Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
 			<button type="submit">Show Reviews</button>
 		</form>
@@ -99,10 +99,12 @@ class build_Core {
 /*
  * build the reviews sorting display.
  */
-	public static function sorters($active_tag='all', $active_sort=null, $js=null)
+	public static function sorters($active_tag='all', $active_sort=NULL, $page_name='', $widget=NULL)
 	{
 		$sort_types = array('newest', 'oldest', 'highest', 'lowest');
-		$url = (isset($js)) ? "#sort=" : "/?tag=$active_tag&sort=";
+		$url = (isset($widget))
+			? "#sort="
+			: "/$page_name?tag=$active_tag&sort=";
 		ob_start();
 		?>
 		<ul class="panda-reviews-sorters">

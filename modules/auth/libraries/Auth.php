@@ -105,7 +105,7 @@ class Auth_Core {
 	 * @param   boolean  enable auto-login
 	 * @return  boolean
 	 */
-	public function login($username, $password, $remember = FALSE)
+	public function login($username, $password, $site_id, $remember = FALSE)
 	{
 		if (empty($password))
 			return FALSE;
@@ -113,8 +113,8 @@ class Auth_Core {
 		if ( ! is_object($username))
 		{
 			// Load the owner
-			$owner = ORM::factory('owner', $username);
-			if(!$owner->loaded)
+			$username = ORM::factory('owner', $username);
+			if(!$username->loaded)
 				return FALSE;
 		}
 		
@@ -127,7 +127,7 @@ class Auth_Core {
 			$password = $this->hash_password($password, $salt);
 		}
 
-		return $this->driver->login($username, $password, $remember);
+		return $this->driver->login($username, $password, $site_id, $remember);
 	}
 
 	/**

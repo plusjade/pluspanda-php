@@ -20,3 +20,15 @@ CREATE TABLE IF NOT EXISTS `owners` (
 
 RENAME TABLE users TO customers;
 ALTER TABLE `reviews` CHANGE `user_id` `customer_id` INT( 9 ) NOT NULL ;
+
+
+CREATE TABLE `pluspanda`.`owners_sites` (
+`owner_id` INT( 9 ) NOT NULL ,
+`site_id` INT( 9 ) NOT NULL
+) ENGINE = MYISAM ;
+
+
+ALTER TABLE `owners` ADD `created` INT( 10 ) NOT NULL ;
+
+
+

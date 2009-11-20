@@ -1,0 +1,432 @@
+
+
+!img_path = /_data/happy/themes/minimal/images
+
+
+html, body, form, h1, h2, h3, h4, h5, h6, p, img, a
+  margin: 0
+  padding: 0
+  outline: 0
+  border: 0
+h3, a, .tagline p a
+  color: #b86443
+UL
+  &.clean LI a:hover, &.large LI a:hover span
+    color: #b86443
+body
+  font-family: Arial, Helvetica, sans-serif
+  font-size: 0.9em
+  color: #333
+  background: url(#{!img_path}/bg_top_outer.jpg) repeat-x top
+h1, h2, h3, h4, h5, h6
+  padding: 8px 0
+h1
+  font-size: 2.4em
+  color: #333
+h2
+  font-size: 2.2em
+  color: #333
+h3
+  font-size: 1.6em
+h4
+  font-size: 1.5em
+  color: #777
+h5
+  font-size: 1.4em
+  color: #333
+h6
+  font-size: 1.2em
+  color: #333
+  letter-spacing: -0.02em
+hr
+  color: #fff
+  background-color: #fff
+  border: 1px dotted #ccc
+  border-style: none none dotted
+p
+  padding: 8px 0
+  line-height: 140%
+LI
+  padding: 3px 0
+a
+  text-decoration: none
+  &:hover
+    color: #333
+.line
+  border-bottom: 1px dotted #ccc
+.pod
+  padding: 0 0 20px 0
+  UL
+    margin: 0
+    padding: 0
+    LI
+      list-style-type: none
+      margin: 0
+      padding: 3px 0
+      > UL
+        margin: 0
+        padding: 3px 0 3px 20px
+.alternate, .hidden
+  display: none
+.contentwidth
+  width: 940px
+  margin: 0 auto
+.left
+  float: left
+.right
+  float: right
+img
+  &.border-thin
+    padding: 1px
+    border: 1px solid #ededee
+  &.border-thick
+    padding: 1px
+    border: 4px solid #ededed
+  &.left
+    float: left
+    margin: 0 10px 10px 0
+  &.right
+    float: right
+    margin: 0 0 10px 10px
+  &.center
+    display: block
+    margin: 0 auto
+.main
+  background: url(#{!img_path}/bg_top_inner.jpg) repeat-x top
+  padding-bottom: 20px
+.logo
+  padding: 40px 0 20px 0
+  h1
+    margin: 0
+    padding: 0
+    text-align: center
+    font-weight: normal
+    font-size: 3em
+    a
+      color: #fff
+      padding: 18px 30px 15px 30px
+      line-height: 80px
+      background: #333333 url(#{!img_path}/logo_cutout.gif) no-repeat bottom right
+      &:hover
+        color: #ccc
+#MAIN_MENU
+  padding: 20px 0
+  text-align: center
+  UL
+    margin: 0 auto
+    padding: 2px 0 0 0
+    border-top: 1px dotted #afafaf
+    border-bottom: 1px dotted #afafaf
+    text-align: center
+    width: 60%
+    LI
+      list-style-type: none
+      display: inline
+      a
+        padding: 0 20px
+        line-height: 40px
+        color: #afafaf
+        text-transform: uppercase
+        font-weight: bold
+        &:hover, &.active
+          color: #333
+UL
+  &.sub-menu
+    margin: 0
+    padding: 0
+    LI
+      margin: 0
+      padding: 0
+      list-style-type: none
+      display: inline
+      a
+        padding: 5px 10px 0 0
+        font-size: 75%
+        &.active
+          color: #333
+  &.footer-menu
+    margin: 0
+    padding: 0
+    LI
+      display: inline
+      text-align: center
+      a
+        padding: 0 5px
+        font-size: 95%
+.tagline
+  padding: 20px 0
+  p
+    text-align: center
+    font-size: 3em
+    color: #afafaf
+    line-height: 1.1em
+    letter-spacing: -0.04em
+    background: #fff
+    a:hover
+      color: #333
+p.tags a
+  background: #eee
+  padding: 1px 6px
+  border-left: 2px solid #ddd
+UL.clean
+  margin: 0
+  padding: 0
+  border-top: 1px solid #ccc
+  LI
+    margin: 0
+    padding: 0
+    list-style-type: none
+    display: inline
+    a
+      color: #333
+      display: block
+      border-bottom: 1px solid #ccc
+      padding: 6px 10px
+      font-size: 90%
+      &.highlight
+        background: #f0f0f0
+      span
+        margin-right: 10px
+.column
+  float: left
+  margin-right: 40px
+  padding: 20px 0
+.last
+  margin: 0
+.column300
+  width: 300px
+.column600
+  width: 600px
+.column450
+  width: 450px
+.column205
+  width: 205px
+.column280
+  width: 280px
+.post
+  .commentslink
+    padding-top: 20px
+  .meta
+    padding: 3px 10px
+    font-size: 75%
+    background: #efefef
+  .date
+    padding-right: 10px
+    font-weight: bold
+a.rss
+  background: url(#{!img_path}/icon_rss.gif) no-repeat bottom right
+  height: 24px
+  width: 15px
+UL
+  &.social
+    margin: 0
+    padding: 0
+    LI
+      margin: 0
+      padding: 0
+      list-style-type: none
+      display: inline
+      a
+        display: block
+        float: left
+        width: 32px
+        height: 32px
+        padding: 0 15px 20px 0
+        &.twitter
+          background: url(#{!img_path}/icon_sm_twitter_off.jpg) no-repeat
+        &.linkedin
+          background: url(#{!img_path}/icon_sm_linkedin_off.jpg) no-repeat
+        &.flickr
+          background: url(#{!img_path}/icon_sm_flickr_off.jpg) no-repeat
+        &.facebook
+          background: url(#{!img_path}/icon_sm_facebook_off.jpg) no-repeat
+        &.digg
+          background: url(#{!img_path}/icon_sm_digg_off.jpg) no-repeat
+        &.delicious
+          background: url(#{!img_path}/icon_sm_delicious_off.jpg) no-repeat
+        &.twitter:hover
+          background: url(#{!img_path}/icon_sm_twitter_on.jpg) no-repeat
+        &.linkedin:hover
+          background: url(#{!img_path}/icon_sm_linkedin_on.jpg) no-repeat
+        &.flickr:hover
+          background: url(#{!img_path}/icon_sm_flickr_on.jpg) no-repeat
+        &.facebook:hover
+          background: url(#{!img_path}/icon_sm_facebook_on.jpg) no-repeat
+        &.digg:hover
+          background: url(#{!img_path}/icon_sm_digg_on.jpg) no-repeat
+        &.delicious:hover
+          background: url(#{!img_path}/icon_sm_delicious_on.jpg) no-repeat
+  &.large
+    margin: 0
+    padding: 0
+    LI
+      list-style-type: none
+      margin: 0
+      padding: 0
+      a
+        padding: 20px 0 20px 80px
+        display: block
+        color: #afafaf
+        font-size: 110%
+        &.information
+          background: url(#{!img_path}/icon_bullet_information.jpg) no-repeat left center
+        &.check
+          background: url(#{!img_path}/icon_bullet_check.jpg) no-repeat left center
+        &.person
+          background: url(#{!img_path}/icon_bullet_person.jpg) no-repeat left center
+        &:hover
+          color: #333
+          span.heading
+            color: #333
+    span
+      display: block
+      &.heading
+        font-size: 1.4em
+        font-weight: bold
+        color: #333
+.footer-outer
+  background: #f0f0f0
+  border-top: 1px solid #f0f0f0
+.footer
+  background: #f0f0f0 url(#{!img_path}/bg_bottom_outer.gif) repeat-x top
+  text-align: center
+  color: #afafaf
+  font-size: 80%
+  .contentwidth
+    padding: 20px 0 80px 0
+#message
+  color: #990000
+  font-weight: bold
+.standardForm
+  margin-bottom: 15px
+  .textbox, .textarea
+    width: 500px
+    padding: 7px
+    font-size: 110%
+    font-weight: bold
+  .textbox, .textarea, .submit
+    border: 3px solid #eee
+    background: #fefefe
+  .field
+    padding: 5px 0
+  label
+    font-weight: bold
+    display: block
+  .textbox
+    display: block
+  .textarea
+    height: 90px
+  .submit
+    font-weight: bold
+    background: #ccc
+    padding: 5px
+    color: #fff
+.clearfix
+  display: inline-block
+  &:after
+    content: "."
+    display: block
+    clear: both
+    visibility: hidden
+    line-height: 0
+    height: 0
+html[xmlns] .clearfix
+  display: block
+* html .clearfix
+  height: 1%
+#jquery-overlay
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 90
+  width: 100%
+  height: 500px
+#jquery-lightbox
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  z-index: 100
+  text-align: center
+  line-height: 0
+  a img
+    border: none
+#lightbox-container-image-box
+  position: relative
+  background-color: #fff
+  width: 250px
+  height: 250px
+  margin: 0 auto
+#lightbox-container-image
+  padding: 10px
+#lightbox-loading
+  position: absolute
+  top: 40%
+  left: 0%
+  height: 25%
+  width: 100%
+  text-align: center
+  line-height: 0
+#lightbox-nav
+  position: absolute
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  z-index: 10
+#lightbox-container-image-box > #lightbox-nav
+  left: 0
+#lightbox-nav a
+  outline: none
+#lightbox-nav-btnPrev, #lightbox-nav-btnNext
+  width: 49%
+  height: 100%
+  display: block
+#lightbox-nav-btnPrev
+  left: 0
+  float: left
+#lightbox-nav-btnNext
+  right: 0
+  float: right
+#lightbox-container-image-data-box
+  font: 10px Verdana, Helvetica, sans-serif
+  background-color: #fff
+  margin: 0 auto
+  line-height: 1.4em
+  overflow: auto
+  width: 100%
+  padding: 0 10px 0
+#lightbox-container-image-data
+  padding: 0 10px
+  color: #666
+  #lightbox-image-details
+    width: 70%
+    float: left
+    text-align: left
+#lightbox-image-details-caption
+  font-weight: bold
+#lightbox-image-details-currentNumber
+  display: block
+  clear: left
+  padding-bottom: 1.0em
+#lightbox-secNav-btnClose
+  width: 66px
+  float: right
+  padding-bottom: 0.7em
+#gallery
+  background-color: #444
+  padding: 10px
+  width: 520px
+  ul
+    list-style: none
+    li
+      display: inline
+    img
+      border: 5px solid #3e3e3e
+      border-width: 5px 5px 20px
+    a:hover
+      color: #fff
+      img
+        border: 5px solid #fff
+        border-width: 5px 5px 20px
+        color: #fff

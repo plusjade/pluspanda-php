@@ -1,6 +1,6 @@
 
 <div id="admin_wrapper">
-	<h1>[= PlusPanda Create</h1>
+	<h1>[= Create Account</h1>
 	
 	<?php 
 	echo (isset($alert))
@@ -8,13 +8,21 @@
 		: '<div class="attention">Create a New Account!</div>';
 	?>
 	
-	<form action="/admin?create=yes" method="POST">
+	<form action="/admin?action=create" method="POST">
 		<p><label>Username</label>
 	  	<input name="username" type="text" class="input large" value="username" />
 	  </p>
 		
+		<p><label>Email</label>
+	  	<input name="email" type="text" class="input large" value="email" />
+	  </p>
+		
 		<p><label>Password</label>
 		<input name="password" type="password" class="input large" value="password" />
+	  </p>
+
+		<p><label>Confirm Password</label>
+		<input name="password2" type="password" class="input large" value="password2" />
 	  </p>
 	  
 	  <p class="buttons" style="margin-top:15px;">

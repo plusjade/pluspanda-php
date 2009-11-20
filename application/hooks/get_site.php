@@ -44,37 +44,53 @@ function get_site()
 	
 /* ---- ROUTE THE REQUEST ---- */
 
-	# if a controller is being called, we are done here.
+	# get the page name if set.
 	$url_array = Uri::url_array();
 	$page_name = (empty($url_array['0'])) 
 		? null
 		: $url_array['0'];
-	if(!empty($page_name) OR 'admin' == $page_name)
-		return true;
-		
-	# submit a review via GET, return JSONP
-	if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
+
+	# hack to make the homepage for the rootaccount available.
+	# fix this, this is always true =_0
+	if($site_name == ROOTACCOUNT)
 	{
-		$home = new Live_Controller();
-		die($home->_submit_handler('ajaxG'));
+		if(empty($page_name))
+		{
+			$home = new Home_Controller();
+			die($home->index());
+		}
+		$pages = array('start','demo','reviews','contact');
+		if(in_array($page_name, $pages))
+		{
+			$home = new Home_Controller();
+			die($home->$page_name());		
+		}
+		
+		/*
+		# make reviews available at a page-name.
+		if('all_reviews' == $page_name)
+		{
+			$live = new Live_Controller($page_name);
+			die($live->index());
+		}
+		*/
+	}
+
+		
+	# is this an API call?
+	if('api' == $page_name)
+	{
+		$live = new Live_Controller(NULL, 'api');
+		
+		# submit a review via GET, return JSONP
+		if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
+			die($live->_submit_handler());
+
+		# send to _ajax handler for raw data reponse.
+		die($live->_ajax());
 	}	
 
-	$debug = false;
-	# Route ajax requests
-	if($debug OR request::is_ajax())
-	{	
-		# hack to make sure ajax_output is only sent to an ajax call.
-		if(isset($_GET['output']))
-			$_GET['ajax_output'] = $_GET['output'];
-		else
-			$_GET['ajax_output'] = '';
-			
-		# send to tool _ajax handler. we expect raw data output.
-		$home = new Live_Controller();
-		die($home->_ajax());
-	}	
-	
-	
+	/** default controller is "live" **/
 }
 Event::add('system.ready', 'get_site');
 /* end */

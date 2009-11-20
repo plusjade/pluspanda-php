@@ -21,14 +21,6 @@
 		
 		# Auth Instance for editing site capability
 		$this->owner = new Auth();	
-		
-		/*
-		if(!$this->owner->logged_in())
-		{
-			$this->shell->login = new View('admin/login');
-			die($this->shell);
-		}
-		*/
 	}
 
 	

@@ -62,12 +62,12 @@ abstract class Auth_Driver {
 	/**
 	 * Logs a user in.
 	 *
-	 * @param   string   username
+	 * @param   mixed   username
 	 * @param   string   password
 	 * @param   boolean  enable auto-login
 	 * @return  boolean
 	 */
-	abstract public function login($username, $password, $remember);
+	abstract public function login($owner, $password, $site_id, $remember);
 
 	/**
 	 * Forces a user to be logged in, without specifying a password.

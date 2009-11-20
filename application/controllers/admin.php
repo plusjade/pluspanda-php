@@ -67,35 +67,13 @@
 			'password'	=> ''
 		);
 		$values	= arr::overwrite($values, $post->as_array()); 			
-		if(!$post->validate())
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
-			$this->shell->login->values = $_POST;
-			die($this->shell);
-		}
 
-		# atttempt to log owner in.
-		if($this->owner->login($_POST['username'], $_POST['password']))
-		{
+		# if Post is good, atttempt to log owner in.		
+		if($post->validate())
+			if($this->owner->login($_POST['username'], $_POST['password'], $this->site_id))
+				url::redirect('/admin');
 		
-			#success!
-			url::redirect('/admin');
-			
-			/*		
-			$owner = $this->owner->get_user();
-			# can this user edit the site?
-			if($owner->has(ORM::factory('site', $this->site_id)))
-			{
-				# setup credentials via the auth library
-				$this->client->force_login($owner);
-				url::redirect();
-			}
-			*/
-			$this->shell->login->alert = alerts::display(array('error'=>'Cannot edit this site.'));
-			$this->shell->login->values = $_POST;
-			die($this->shell);
-		}
-		
+		# error
 		$this->shell->login->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
 		$this->shell->login->values = $_POST;
 		die($this->shell);	
@@ -104,18 +82,50 @@
 	
 /*
  * create account
-	TODO FINISH THIS!!!
  */
  private function create()
  {
 		$this->shell->login = new View('admin/create');
-		
 		if(empty($_POST))
 			die($this->shell);
+
+		# handle the POST.
+		$post = new Validation($_POST);
+		$post->pre_filter('trim');
+		$post->add_rules('email', 'required', 'valid::email'); 
+		$post->add_rules('username', 'required', 'valid::alpha_numeric');
+		$post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');
+		$values = array(
+			'email'		=> '',
+			'username'	=> '',
+			'password'	=> '',
+			'password2'	=> '',
+		);		
+		if(!$post->validate())
+		{
+			$this->shell->login->alert = alerts::display(array('error'=>'Invalid Fields'));
+			die($this->shell);		
+		}
 		
 		$new_owner = ORM::factory('owner');
-		$new_owner->username = $_POST['username'];
-		$new_owner->password = $_POST['password'];
+
+		# unique username.
+		if(!$new_owner->username_available($_POST['username']))
+		{
+			$this->shell->login->alert = alerts::display(array('error'=>'Username Already Exists!'));
+			die($this->shell);			
+		}
+		
+		# unique email.
+		if(!$new_owner->email_available($_POST['email']))
+		{
+			$this->shell->login->alert = alerts::display(array('error'=>'Email Already Exists!'));
+			die($this->shell);			
+		}
+		
+		$new_owner->username	= $_POST['username'];
+		$new_owner->email			= $_POST['email'];
+		$new_owner->password	= $_POST['password'];
 		$new_owner->save();
 		
 		$this->shell->login->alert = alerts::display(array('success'=>'Account Created!!'));
@@ -129,27 +139,5 @@
 		url::redirect('/admin');
 	}
 	
-/* 
- * centralize this controllers interface
- * Non-ajax calls get wrapped via the index.
- * ajax calls get fast tracked to their method calls.
- */
-	public function __call($method, $args)
-	{
-		# white-list methods.
-		# note there are methods we don't want in here.
-		# echo kohana::debug(get_class_methods($this));
-		if(!in_array($method, get_class_methods($this)))
-			die('404');
-		
-		if(request::is_ajax())
-			echo alerts::display($this->$method());
-		else
-			$this->index($method);
-		
-		die();
-	}
-
- 
  
 } // End admin Controller

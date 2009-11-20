@@ -14,8 +14,10 @@ class Live_Controller extends Controller {
 	public $active_tag;
 	public $active_sort;
 	public $shell;
+	public $is_api = FALSE;
+	public $page_name;
 	
-	public function __construct()
+	public function __construct($page_name='', $type=FALSE)
 	{
 		parent::__construct();
 
@@ -25,7 +27,14 @@ class Live_Controller extends Controller {
 		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
 		$this->active_sort = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
 		$this->active_page = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;
-	
+		
+		$this->page_name = $page_name;
+		if('api' == $type)
+			$this->is_api = TRUE;
+		
+		# fast-track ajax
+		if(request::is_ajax())
+			$this->_ajax();
 	}
 
 
@@ -42,6 +51,7 @@ class Live_Controller extends Controller {
 		else
 		{
 			$add_review = new View('live/add_review');
+			$add_review->page_name = $this->page_name;
 			$add_review->tags = $site->tags->select_list('id','name');
 			$add_review->values = array(
 				'body'					=>'',
@@ -66,10 +76,9 @@ class Live_Controller extends Controller {
 /*
  * get the reviews data depending on how we are asking for it.
  */
-	private function get_reviews()
+	private function get_reviews($format=NULL)
 	{
 		# defaults
-		$format	= (isset($_GET['format'])) ? $_GET['format'] : 'normal';
 		$field	= 'site_id';
 		$value	= $this->site_id;
 		$sort		= array('created' => 'desc');
@@ -113,7 +122,7 @@ class Live_Controller extends Controller {
 
 		# build the pagination html
 		$pagination = new Pagination(array(
-			'base_url'			 => "/?tag=$this->active_tag&sort=$this->active_sort&page=",
+			'base_url'			 => "/$this->page_name?tag=$this->active_tag&sort=$this->active_sort&page=",
 			'current_page'	 => $this->active_page, 
 			'total_items'    => $total_reviews,
 			'style'          => 'digg' ,
@@ -121,8 +130,9 @@ class Live_Controller extends Controller {
 			
 		));
 		
-		# Return Standalone Ajax - reviews_data (sorters & pagination).
-		if(isset($_GET['ajax_output']) AND 'reviews' == $_GET['ajax_output'])
+		# Return Standalone Ajax - 
+		# reviews_data (sorters & pagination).
+		if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
 		{
 			$view = new View('live/reviews_data');
 			$view->reviews = $reviews;
@@ -146,7 +156,7 @@ class Live_Controller extends Controller {
 			
 
 		# Return JSON to widget
-		if('json' == $format)
+		if($this->is_api)
 		{
 			$review_array = array();
 			foreach($reviews as $review)
@@ -156,7 +166,7 @@ class Live_Controller extends Controller {
 				$data['tag_name'] = $review->tag->name;
 				$review_array[] = $data;
 			}
-			# debug: http://test.localhost.net/?tag=1&sort=highest&format=json&jsoncallback=pandaLoadRev
+			# debug: http://test.localhost.net/?tag=1&sort=highest&jsoncallback=pandaLoadRev
 			# echo kohana::debug($review_array);die();
 			
 			$json_reviews = json_encode($review_array);
@@ -172,8 +182,9 @@ class Live_Controller extends Controller {
 			#header('Content-type: application/json');
 			die("pandaDisplayRevs($json_reviews);pandaDisplaySum($json_summary);pandaPages('$pagination')");
 		}
-
-		# Return standalone non-ajax.
+		
+		# Return New Tag ajax view.
+		# or standalone non-ajax.
 				
 		$view = new View('live/get_reviews');
 		$view->reviews = $reviews;		
@@ -191,11 +202,11 @@ class Live_Controller extends Controller {
  * $type specifies the way in which the submission is coming.
  * normal = non javascript request on standalone site.
 		ajaxP = posted via ajax
-		ajaxG = get via ajax
+		ajaxG = GET via widget
  */
-	public function _submit_handler($type)
+	public function _submit_handler()
 	{
-		$data = ('ajaxG' == $type) ? $_GET : $_POST;
+		$data = ($this->is_api) ? $_GET : $_POST;
 
 		# validate the form values.
 		$post = new Validation($data);
@@ -208,7 +219,8 @@ class Live_Controller extends Controller {
 		if(!$post->validate())
 		{
 			# this should rarely happen due to client-side js validation...
-			if('ajaxG' == $type)
+			# widget GET error.
+			if($this->is_api)
 				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
 
 			# get tags.
@@ -218,6 +230,7 @@ class Live_Controller extends Controller {
 			$view->errors = $post->errors();
 			$view->values = $data;
 			$view->tags		= $site->tags->select_list('id','name');
+			$view->page_name = $this->page_name;
 			return $view;
 		}
 		
@@ -227,7 +240,7 @@ class Live_Controller extends Controller {
 		$customer = ORM::factory('customer');
 		
 		# if customer does not exist, create him.
-		if(!$customer->email_exists($data['email']))
+		if(!$customer->email_exists($this->site_id, $data['email']))
 		{
 			$customer->site_id = $this->site_id;
 			$customer->email = $data['email'];
@@ -247,7 +260,7 @@ class Live_Controller extends Controller {
 		# return what kind of data??
 		
 		# widget GET 
-		if('ajaxG' == $type)
+		if($this->is_api)
 			die('pandaSubmitRsp({"code":1, "msg":"Yay!"})');
 
 	
@@ -263,15 +276,15 @@ class Live_Controller extends Controller {
  */ 	
 	public function _ajax()
 	{
-		# get reviews
-		if(isset($_GET['tag']))
-			die($this->get_reviews());
-
 		# submit a review via POST, 
 		if($_POST)
 			die($this->_submit_handler('ajaxP'));
 
+		# get reviews
+		if(isset($_GET['tag']))
+			die($this->get_reviews('ajax'));
+			
 		die('invalid data');
 	}	
 	
-} // End home Controller
+} // End live Controller

@@ -13,9 +13,10 @@ $("#panda-add-review").hide();
 
 //ajaxify tag select form.
 $('#panda-select-tags').submit(function(){
+	var url = $('#panda-select-tags').attr('action');
 	var tag = $('#panda-select-tags select option:selected').val();
 	$('.panda-tag-scope').html('<div class="ajax_loading">Loading...</div>');
-	$.get('/',{tag:tag},function(data){
+	$.get(url,{tag:tag},function(data){
 		$('.panda-tag-scope').html(data);
 		
 		// update add-review-form to tag-scope
@@ -34,7 +35,7 @@ $('body').click($.delegate({
 		$('.panda-reviews-sorters a').removeClass('selected');
 		$(e.target).addClass('selected');
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>'); 	
-		$.get(e.target.href, {output:'reviews'}, function(data){
+		$.get(e.target.href, function(data){
 			$('.panda-reviews-list').html(data); 	
 		});
 		return false;
@@ -44,7 +45,7 @@ $('body').click($.delegate({
 		$('.panda-pagination a').removeClass('selected');
 		$(e.target).addClass('selected');
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>'); 	
-		$.get(e.target.href, {output:'reviews'}, function(data){
+		$.get(e.target.href, function(data){
 			$('.panda-reviews-list').html(data); 	
 		});
 		return false;

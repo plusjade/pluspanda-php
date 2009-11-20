@@ -34,10 +34,13 @@ class Customer_Model extends ORM {
 	 * @param   mixed    id to check
 	 * @return  boolean
 	 */
-	public function email_exists($id)
+	public function email_exists($site_id, $id)
 	{
 		return (bool) $this->db
-			->where($this->unique_key($id), $id)
+			->where(array(
+				'site_id' => $site_id,
+				$this->unique_key($id) => $id
+			))
 			->count_records($this->table_name);
 	}
 

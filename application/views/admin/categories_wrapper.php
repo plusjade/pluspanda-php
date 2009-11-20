@@ -1,6 +1,6 @@
 
 
-<h2>Reviewable Categories</h2>
+<h2>My Categories</h2>
 
 <?php if(isset($response))echo $response?>
 

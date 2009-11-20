@@ -42,7 +42,9 @@ else:
 				<li><a href="/admin/categories" <?php echo $active['categories']?>><img src="/static/images/admin/001_43.png" width="24" height="24" alt="Folders" />Categories</a></li>
 				<li><a href="/admin/reviews" <?php echo $active['reviews']?>><img src="/static/images/admin/information.png" width="24" height="24" alt="Comments" />Reviews</a></li>
 				<li><a href="/admin/customers" <?php echo $active['customers']?>><img src="/static/images/admin/001_14.png" width="24" height="24" alt="Favourites" />Customers</a></li>
-				<li><a href="/admin/account" <?php echo $active['account']?>><img src="/static/images/admin/001_42.png" width="24" height="24" alt="Security" />Account</a></li>
+				<li><a href="/admin/embed" <?php echo $active['account']?>><img src="/static/images/admin/accept.png" width="24" height="24" alt="Embed Code" />Embed Codes</a></li>
+				<li><a href="/admin/account" <?php echo $active['account']?>><img src="/static/images/admin/001_42.png" width="24" height="24" alt="Account" />Account</a></li>
+				<li><a href="/admin?action=logout" <?php echo $active['account']?>><img src="/static/images/admin/delete.png" width="24" height="24" alt="Logout" />Logout</a></li>
 		 </ul>
     </div>
     
