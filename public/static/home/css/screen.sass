@@ -1,23 +1,18 @@
-
-
-!img_path = /_data/happy/themes/minimal/images
-
-
 html, body, form, h1, h2, h3, h4, h5, h6, p, img, a
   margin: 0
   padding: 0
   outline: 0
   border: 0
 h3, a, .tagline p a
-  color: #b86443
-UL
-  &.clean LI a:hover, &.large LI a:hover span
-    color: #b86443
+  color: #396033
+ul
+  &.clean li a:hover, &.large li a:hover span
+    color: #396033
 body
   font-family: Arial, Helvetica, sans-serif
   font-size: 0.9em
   color: #333
-  background: url(#{!img_path}/bg_top_outer.jpg) repeat-x top
+  background: url(../images/bg_top_outer.jpg) repeat-x top
 h1, h2, h3, h4, h5, h6
   padding: 8px 0
 h1
@@ -46,7 +41,9 @@ hr
 p
   padding: 8px 0
   line-height: 140%
-LI
+  &.indent
+    argin-left: 20px
+li
   padding: 3px 0
 a
   text-decoration: none
@@ -56,14 +53,14 @@ a
   border-bottom: 1px dotted #ccc
 .pod
   padding: 0 0 20px 0
-  UL
+  ul
     margin: 0
     padding: 0
-    LI
+    li
       list-style-type: none
       margin: 0
       padding: 3px 0
-      > UL
+      > ul
         margin: 0
         padding: 3px 0 3px 20px
 .alternate, .hidden
@@ -92,34 +89,42 @@ img
     display: block
     margin: 0 auto
 .main
-  background: url(#{!img_path}/bg_top_inner.jpg) repeat-x top
+  background: url(../images/bg_top_inner.jpg) repeat-x top
   padding-bottom: 20px
 .logo
-  padding: 40px 0 20px 0
+  padding: 0px 0 20px 0
   h1
     margin: 0
     padding: 0
     text-align: center
-    font-weight: normal
-    font-size: 3em
+    font-weight: bold
+    font-size: 1.4em
+    background: transparent url(../images/panda.png) no-repeat 43% 100%
+    height: 90px
+    order: 1px solid red
     a
-      color: #fff
-      padding: 18px 30px 15px 30px
-      line-height: 80px
-      background: #333333 url(#{!img_path}/logo_cutout.gif) no-repeat bottom right
+      color: #396033
+      padding: 10px 30px 15px 30px
+      line-height: 100px
+      ackground: #396033
+      ackground: #333 url(../images/logo_cutout.gif) no-repeat bottom right
+      isplay: none
+      position: relative
+      left: 45px
+      order: 1px solid red
       &:hover
         color: #ccc
-#MAIN_MENU
+.menu
   padding: 20px 0
   text-align: center
-  UL
+  ul
     margin: 0 auto
     padding: 2px 0 0 0
     border-top: 1px dotted #afafaf
     border-bottom: 1px dotted #afafaf
     text-align: center
-    width: 60%
-    LI
+    width: 80%
+    li
       list-style-type: none
       display: inline
       a
@@ -130,11 +135,11 @@ img
         font-weight: bold
         &:hover, &.active
           color: #333
-UL
+ul
   &.sub-menu
     margin: 0
     padding: 0
-    LI
+    li
       margin: 0
       padding: 0
       list-style-type: none
@@ -147,7 +152,7 @@ UL
   &.footer-menu
     margin: 0
     padding: 0
-    LI
+    li
       display: inline
       text-align: center
       a
@@ -157,10 +162,10 @@ UL
   padding: 20px 0
   p
     text-align: center
+    ont-weight: bold
     font-size: 3em
     color: #afafaf
     line-height: 1.1em
-    letter-spacing: -0.04em
     background: #fff
     a:hover
       color: #333
@@ -168,11 +173,11 @@ p.tags a
   background: #eee
   padding: 1px 6px
   border-left: 2px solid #ddd
-UL.clean
+ul.clean
   margin: 0
   padding: 0
   border-top: 1px solid #ccc
-  LI
+  li
     margin: 0
     padding: 0
     list-style-type: none
@@ -214,14 +219,14 @@ UL.clean
     padding-right: 10px
     font-weight: bold
 a.rss
-  background: url(#{!img_path}/icon_rss.gif) no-repeat bottom right
+  background: url(../images/icon_rss.gif) no-repeat bottom right
   height: 24px
   width: 15px
-UL
+ul
   &.social
     margin: 0
     padding: 0
-    LI
+    li
       margin: 0
       padding: 0
       list-style-type: none
@@ -233,33 +238,33 @@ UL
         height: 32px
         padding: 0 15px 20px 0
         &.twitter
-          background: url(#{!img_path}/icon_sm_twitter_off.jpg) no-repeat
+          background: url(../images/icon_sm_twitter_off.jpg) no-repeat
         &.linkedin
-          background: url(#{!img_path}/icon_sm_linkedin_off.jpg) no-repeat
+          background: url(../images/icon_sm_linkedin_off.jpg) no-repeat
         &.flickr
-          background: url(#{!img_path}/icon_sm_flickr_off.jpg) no-repeat
+          background: url(../images/icon_sm_flickr_off.jpg) no-repeat
         &.facebook
-          background: url(#{!img_path}/icon_sm_facebook_off.jpg) no-repeat
+          background: url(../images/icon_sm_facebook_off.jpg) no-repeat
         &.digg
-          background: url(#{!img_path}/icon_sm_digg_off.jpg) no-repeat
+          background: url(../images/icon_sm_digg_off.jpg) no-repeat
         &.delicious
-          background: url(#{!img_path}/icon_sm_delicious_off.jpg) no-repeat
+          background: url(../images/icon_sm_delicious_off.jpg) no-repeat
         &.twitter:hover
-          background: url(#{!img_path}/icon_sm_twitter_on.jpg) no-repeat
+          background: url(../images/icon_sm_twitter_on.jpg) no-repeat
         &.linkedin:hover
-          background: url(#{!img_path}/icon_sm_linkedin_on.jpg) no-repeat
+          background: url(../images/icon_sm_linkedin_on.jpg) no-repeat
         &.flickr:hover
-          background: url(#{!img_path}/icon_sm_flickr_on.jpg) no-repeat
+          background: url(../images/icon_sm_flickr_on.jpg) no-repeat
         &.facebook:hover
-          background: url(#{!img_path}/icon_sm_facebook_on.jpg) no-repeat
+          background: url(../images/icon_sm_facebook_on.jpg) no-repeat
         &.digg:hover
-          background: url(#{!img_path}/icon_sm_digg_on.jpg) no-repeat
+          background: url(../images/icon_sm_digg_on.jpg) no-repeat
         &.delicious:hover
-          background: url(#{!img_path}/icon_sm_delicious_on.jpg) no-repeat
+          background: url(../images/icon_sm_delicious_on.jpg) no-repeat
   &.large
     margin: 0
     padding: 0
-    LI
+    li
       list-style-type: none
       margin: 0
       padding: 0
@@ -269,11 +274,11 @@ UL
         color: #afafaf
         font-size: 110%
         &.information
-          background: url(#{!img_path}/icon_bullet_information.jpg) no-repeat left center
+          background: url(../images/icon_bullet_information.jpg) no-repeat left center
         &.check
-          background: url(#{!img_path}/icon_bullet_check.jpg) no-repeat left center
+          background: url(../images/icon_bullet_check.jpg) no-repeat left center
         &.person
-          background: url(#{!img_path}/icon_bullet_person.jpg) no-repeat left center
+          background: url(../images/icon_bullet_person.jpg) no-repeat left center
         &:hover
           color: #333
           span.heading
@@ -288,7 +293,7 @@ UL
   background: #f0f0f0
   border-top: 1px solid #f0f0f0
 .footer
-  background: #f0f0f0 url(#{!img_path}/bg_bottom_outer.gif) repeat-x top
+  background: #f0f0f0 url(../images/bg_bottom_outer.gif) repeat-x top
   text-align: center
   color: #afafaf
   font-size: 80%

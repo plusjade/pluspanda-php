@@ -70,16 +70,16 @@ dd 		{
 	line-height: 30px;
 }
 
-.success 				{ background-color: #D5FFCF; border: 1px solid #97FF88; color: #009900; background-image: url(/static/images/admin/accept.png);}
-.error 					{ background-color: #FFCFCF;border: 1px solid #FF9595;color: #CC3300; background-image: url(/static/images/admin/delete.png);}
-.information 			{ background-color: #DCE3FF;border: 1px solid #93A8FF;color: #0033FF; background-image: url(/static/images/admin/information.png);}
-.attention 				{ background-color: #FFFBCC;border: 1px solid #FFF35E;color: #C69E00; background-image: url(/static/images/admin/warning.png);}
+.success 				{ background-color: #D5FFCF; border: 1px solid #97FF88; color: #009900; background-image: url(../images/accept.png);}
+.error 					{ background-color: #FFCFCF;border: 1px solid #FF9595;color: #CC3300; background-image: url(../images/delete.png);}
+.information 			{ background-color: #DCE3FF;border: 1px solid #93A8FF;color: #0033FF; background-image: url(../images/information.png);}
+.attention 				{ background-color: #FFFBCC;border: 1px solid #FFF35E;color: #C69E00; background-image: url(../images/warning.png);}
 
 .close-notification					{
 	width: 16px;
 	height: 16px;
 	position: absolute;
-	background: url(/static/images/admin/close.png) no-repeat;
+	background: url(../images/close.png) no-repeat;
 	top: 5px;
 	right: 5px;
 	cursor: pointer;
@@ -97,7 +97,7 @@ dd 		{
 #header	{
 min-width:900px;
 height: 80px;
-background:transparent url(/static/images/admin/panda.png) no-repeat 80px 0; 
+background:transparent url(../images/panda.png) no-repeat 80px 0; 
 }
 	
 	#header h1 {
@@ -444,25 +444,25 @@ color:#fff;
 
 /* POSITIVE */
 button.positive, .buttons a.positive{
-color:#fff; background:lightgreen url(/static/images/admin/gradients.jpg) repeat-x 0px -205px; border:1px solid #7ebd40;}
+color:#fff; background:lightgreen url(../images/gradients.jpg) repeat-x 0px -205px; border:1px solid #7ebd40;}
 .buttons a.positive:hover,
 button.positive:hover,
 .buttons a.positive:active{
-background:orange url(/static/images/admin/gradients.jpg) repeat-x 0px -250px; border:1px solid orange; }
+background:orange url(../images/gradients.jpg) repeat-x 0px -250px; border:1px solid orange; }
 
 
 /* NEGATIVE */
-.buttons a.negative, button.negative{background:#333 url(/static/images/admin/gradients.jpg) repeat-x 0px -15px; border:1px solid #000; color:#fff;		}
-.buttons a.negative:hover, button.negative:hover{background-attachment:fixed; background:#d52020 url(/static/images/admin/gradients.jpg) repeat-x 0px -465px; border:1px solid #cc0000; color:#fff;}
+.buttons a.negative, button.negative{background:#333 url(../images/gradients.jpg) repeat-x 0px -15px; border:1px solid #000; color:#fff;		}
+.buttons a.negative:hover, button.negative:hover{background-attachment:fixed; background:#d52020 url(../images/gradients.jpg) repeat-x 0px -465px; border:1px solid #cc0000; color:#fff;}
 .buttons a.negative:active{background-color:#d12f19; border:1px solid #d12f19; color:#fff;}
 
 
 button.save-cat{
-	background:transparent url(/static/images/admin/accept.png) no-repeat 50% 50%;
+	background:transparent url(../images/accept.png) no-repeat 50% 50%;
 	width:30px;
 }
 a.del-cat{
-	background:transparent url(/static/images/admin/delete.png) no-repeat 50% 50%;
+	background:transparent url(../images/delete.png) no-repeat 50% 50%;
 	width:30px;
 }
 
@@ -586,7 +586,7 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	padding: 4px;
 }
 table.tablesorter thead tr .header {
-	background-image: url(/static/images/admin/bg.gif);
+	background-image: url(../images/bg.gif);
 	background-repeat: no-repeat;
 	background-position: center right;
 	cursor: pointer;
@@ -601,10 +601,10 @@ table.tablesorter tbody tr.odd td {
 	background-color:#F0F0F6;
 }
 table.tablesorter thead tr .headerSortUp {
-	background-image: url(/static/images/admin/asc.gif);
+	background-image: url(../images/asc.gif);
 }
 table.tablesorter thead tr .headerSortDown {
-	background-image: url(/static/images/admin/desc.gif);
+	background-image: url(../images/desc.gif);
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 	background-color: #B7B7B7;
@@ -625,14 +625,14 @@ ul.cat-list{list-style:none !important; margin:0 !important;padding:0 !important
 	line-height: 24px;
 }
 .cat-sort{
-background:#FFFBCC url(/static/images/admin/001_43.png) no-repeat 10px center;
+background:#FFFBCC url(../images/001_43.png) no-repeat 10px center;
 border: 1px solid #FFF35E;
 color: #C69E00; 
 }
 .cat-add{
  border: 1px solid #97FF88;
  color: #009900; 
- background:#D5FFCF url(/static/images/admin/accept.png) no-repeat 10px center;
+ background:#D5FFCF url(../images/accept.png) no-repeat 10px center;
 
 }
 
@@ -663,7 +663,7 @@ float:right;
 #server_response div.load{
 width:180px;
 padding:3px 20px;
-background:#09A0FB url('/static/images/admin/circle.gif') no-repeat 80% 50%;
+background:#09A0FB url('../images/circle.gif') no-repeat 80% 50%;
 color:#fff;
 height:55px;
 text-align:left;

@@ -41,6 +41,7 @@ function get_site()
 	# IMPORTANT: sets the site name & non-sensitive site_data.
 	$_SESSION['site_name']	= $site->subdomain;
 	$_SESSION['site_id']	= $site->id;
+	$_SESSION['theme']	= $site->theme;
 	
 /* ---- ROUTE THE REQUEST ---- */
 

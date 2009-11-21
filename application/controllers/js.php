@@ -52,6 +52,8 @@
 		# load the widget_js view and place the html as json.
 		$widget_js = new View('js/widget_js');
 		$widget_js->url = 'http://' . $this->site_name . '.' . ROOTDOMAIN .'/api';
+		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
+		
 		$widget_js->json_html = json_encode($html);
 		$widget_js->json_status = json_encode($status);
 		
@@ -60,9 +62,14 @@
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Content-type: text/javascript');	
 		
-		die($widget_js);
-		#echo kohana::debug($json_html);
-		#echo kohana::debug($html);
+		ob_start();
+	
+		if(empty($_GET['jquery']))
+			readfile(DOCROOT . 'static/js/jquery.js');
+			
+		readfile(DOCROOT . 'static/js/addon.js');
+		echo $widget_js;
+		die();
 	}
 	
 } // End js Controller

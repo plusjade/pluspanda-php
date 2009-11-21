@@ -13,6 +13,10 @@
 		parent::__construct();
 
 		$this->shell = new View('home/shell');
+		$url_array = Uri::url_array();
+		$this->shell->active  = (empty($url_array['0'])) 
+			? null
+			: $url_array['0'];
 	}
 
 
@@ -77,10 +81,8 @@
  */
  public function start()
  {
-		$this->shell->content = new View('admin/create');
-		die($this->shell);
-		
-		
+		$this->shell->content = new View('home/create');
+			
 		if(empty($_POST))
 			die($this->shell);
 
@@ -98,7 +100,7 @@
 		);		
 		if(!$post->validate())
 		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Invalid Fields'));
+			$this->shell->content->alert = alerts::display(array('error'=>'Invalid Fields'));
 			die($this->shell);		
 		}
 		
@@ -107,14 +109,14 @@
 		# unique username.
 		if(!$new_owner->username_available($_POST['username']))
 		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Username Already Exists!'));
+			$this->shell->content->alert = alerts::display(array('error'=>'Username Already Exists!'));
 			die($this->shell);			
 		}
 		
 		# unique email.
 		if(!$new_owner->email_available($_POST['email']))
 		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Email Already Exists!'));
+			$this->shell->content->alert = alerts::display(array('error'=>'Email Already Exists!'));
 			die($this->shell);			
 		}
 		
@@ -122,16 +124,38 @@
 		$new_owner->email			= $_POST['email'];
 		$new_owner->password	= $_POST['password'];
 		$new_owner->save();
+	
+		# create the new site.
+		$new_site = ORM::factory('site');
+		$new_site->subdomain = $new_owner->username;
+		$new_site->add($new_owner);
+		$new_site->save();
 		
-		$this->shell->login->alert = alerts::display(array('success'=>'Account Created!!'));
+		$url = 'http://'.$new_owner->username .'.'. ROOTDOMAIN . "/admin?action=force&name=$new_owner->username&tkn=$new_owner->token";
+		
+		url::redirect($url);
+		
+		
+		$this->shell->content->alert = alerts::display(array('success'=>'Account Created!!'));
 		die($this->shell);
  }
  
- public function reviews()
- {
-		$this->shell->content = new View('home/reviews');
+/*
+ * display demo page.
+ */
+	public function demo()
+	{
+		$this->shell->content = new View('home/demo');
 		die($this->shell);
-		
 	}
- 
+
+/*
+ * display demo page.
+ */
+	public function contact()
+	{
+		$this->shell->content = new View('home/contact');
+		die($this->shell);
+	}
+	
 } // End admin Controller

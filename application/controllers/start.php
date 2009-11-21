@@ -50,6 +50,12 @@
  */
  public function index()
  {
+		include Kohana::find_file('vendor','jsmin/jsmin');
+
+		// Output a minified version of example.js.
+		echo JSMin::minify(file_get_contents(DOCROOT . 'static/js/test.js'));
+
+		die();
 		$this->shell->login = new View('admin/create');
 		if(empty($_POST))
 			die($this->shell);

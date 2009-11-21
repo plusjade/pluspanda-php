@@ -1,6 +1,5 @@
 /* For widget mode =P */
-
-// TODO: ADD THE TEXT/CSS FILE TO THE HEAD.
+$('head').append('<?php echo $stylesheet?>');
 
 // attach event triggers.
 $('body').click($.delegate({
@@ -78,14 +77,15 @@ function buildIt() {
 }
 buildIt(); // init the build!
 
-
+<?php
 /*
- ******** ajaxify the review submission ********
  * working as a semi-hack. 
  * we CANT seem to get a response message by posting. 
  * we can get it by sending as JSONP GET.
  * SO if the comment is short enough, we GET, else we POST.
 */
+?>
+// ajaxify the review submission
 $('#panda-add-review').ajaxForm({	 
 	target :"#panda-iframe",
 	iframe : true,
@@ -110,7 +110,7 @@ $('#panda-add-review').ajaxForm({
 });
 
 
-// get the reviews as JSONP.
+// get the reviews as json.
 function pandaGetRevs(tag, sort, page){
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>');
 		$.ajax({ 
@@ -121,9 +121,9 @@ function pandaGetRevs(tag, sort, page){
 		}); 
 }
 
-// --------- JSONP callbacks ------------	
+// --------- jsonp callbacks ------------	
 
-// JSONP callback to format and inject reviews data.
+// callback to format and inject reviews data.
 function pandaDisplayRevs(reviews){
 	var content = '';
 	$(reviews).each(function(){	
@@ -135,7 +135,7 @@ function pandaDisplayRevs(reviews){
 	pandaClean();
 }
 
-// JSONP callback to update summary data.
+// callback to update summary data.
 function pandaDisplaySum(ratingsDist){
 	var total = 0;
 	var score_sum = 0;
@@ -156,10 +156,8 @@ function pandaDisplaySum(ratingsDist){
 function pandaPages(html){
 	$('.panda-reviews-list').prepend(html).append(html);
 }
-/*
- * callback for submitting a review.
- * response is an object with code and msg
- */
+
+// callback for submitting a review. response is an object with code and msg
 function pandaSubmitRsp(rsp){
 	var status = <?php echo $json_status?>;
 	if(5 == rsp.code){
@@ -186,7 +184,7 @@ function pandaClean(){
 	//$('head script[src^="<?php echo $url?>"]').remove();
 }
 
-
+<?php
 /*
  -----------------
 //TODO cross-site hash should work but doesnt =(
@@ -197,3 +195,4 @@ $('iframe').load(function(){
 		//alert(hash);
 });
 */
+?>

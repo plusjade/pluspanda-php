@@ -18,13 +18,10 @@
 	public function index()
 	{
 		$action = (isset($_GET['action'])) ? $_GET['action'] :''; 
+		if('force' == $action)
+			$this->force();
 		if(!$this->owner->logged_in())
-		{
-			if('create' == $action)
-				$this->create();
-	
 			$this->login();
-		}
 		if('logout' == $action)
 			$this->logout();
 		
@@ -81,58 +78,28 @@
 	
 	
 /*
- * create account
+ * force an external login from created account screen.
  */
- private function create()
- {
-		$this->shell->login = new View('admin/create');
-		if(empty($_POST))
-			die($this->shell);
-
-		# handle the POST.
-		$post = new Validation($_POST);
-		$post->pre_filter('trim');
-		$post->add_rules('email', 'required', 'valid::email'); 
-		$post->add_rules('username', 'required', 'valid::alpha_numeric');
-		$post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');
-		$values = array(
-			'email'		=> '',
-			'username'	=> '',
-			'password'	=> '',
-			'password2'	=> '',
-		);		
-		if(!$post->validate())
+	private function force()
+	{
+		if(isset($_GET['name']) AND isset($_GET['tkn']))
 		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Invalid Fields'));
-			die($this->shell);		
+			$owner = ORM::factory('owner')
+				->where(array(
+					'username' => $_GET['name'],
+					'token' => $_GET['tkn']
+				))
+				->find();
+			if(!$owner->loaded)
+				url::redirect('/admin');
+				
+			if($owner->has(ORM::factory('site', $this->site_id)))
+				$this->owner->force_login($_GET['name']);
 		}
 		
-		$new_owner = ORM::factory('owner');
-
-		# unique username.
-		if(!$new_owner->username_available($_POST['username']))
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Username Already Exists!'));
-			die($this->shell);			
-		}
-		
-		# unique email.
-		if(!$new_owner->email_available($_POST['email']))
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Email Already Exists!'));
-			die($this->shell);			
-		}
-		
-		$new_owner->username	= $_POST['username'];
-		$new_owner->email			= $_POST['email'];
-		$new_owner->password	= $_POST['password'];
-		$new_owner->save();
-		
-		$this->shell->login->alert = alerts::display(array('success'=>'Account Created!!'));
-		die($this->shell);
- }
+		url::redirect('/admin');
+	}
  
-
 	private function logout()
 	{
 		$this->owner->logout(TRUE);

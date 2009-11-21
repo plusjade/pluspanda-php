@@ -18,11 +18,7 @@
 	  </p>
 	  
 	  <p class="buttons" style="margin-top:15px;">
-		
-			<button type="submit" name="Submit" id="button" class="positive" style="float:left;">Login</button>
-		
-			<button type="reset" name="reset" id="reset" class="positive" style="float:left; margin-left:10px;">Reset</button>
+			<button type="submit" name="Submit" id="button" class="positive">Login</button>
 		</p>
-		<a href="/admin?action=create">create account</a>
 	</form>
 </div>

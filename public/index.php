@@ -10,9 +10,9 @@
 /*
  * define website defaults and dev/production toggling.
  */
-define('ROOTNAME', 'localhost');
+define('ROOTNAME', 'panda');
 define('ROOTACCOUNT', 'test');
-define('ROOTDOMAIN', 'localhost.net');
+define('ROOTDOMAIN', 'panda.com');
 define('ROOTSITEID', 1);
 
 /**

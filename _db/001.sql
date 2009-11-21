@@ -30,5 +30,11 @@ CREATE TABLE `pluspanda`.`owners_sites` (
 
 ALTER TABLE `owners` ADD `created` INT( 10 ) NOT NULL ;
 
+ALTER TABLE `owners` DROP `site_id` ;
+
+ALTER TABLE `sites` ADD `theme` VARCHAR( 30 ) NOT NULL AFTER `homepage` ;
+
+
+
 
 

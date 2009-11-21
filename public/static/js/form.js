@@ -1,13 +1,3 @@
-/*
- * jQuery Form Plugin
- * version: 2.21 (08-FEB-2009)
- * @requires jQuery v1.2.2 or later
- *
- * Examples and documentation at: http://malsup.com/jquery/form/
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- */
 ;(function($) {
 $.fn.ajaxSubmit = function(options) {
     if (!this.length) {
@@ -16,7 +6,6 @@ $.fn.ajaxSubmit = function(options) {
     }
     if (typeof options == 'function')
         options = { success: options };
-
     options = $.extend({
         url:  this.attr('action') || window.location.toString(),
         type: this.attr('method') || 'GET'
@@ -52,16 +41,13 @@ $.fn.ajaxSubmit = function(options) {
         log('ajaxSubmit: submit vetoed via form-submit-validate trigger');
         return this;
     }    
-
     var q = $.param(a);
-
     if (options.type.toUpperCase() == 'GET') {
         options.url += (options.url.indexOf('?') >= 0 ? '&' : '?') + q;
         options.data = null;  
     }
     else
         options.data = q; 
-
     var $form = this, callbacks = [];
     if (options.resetForm) callbacks.push(function() { $form.resetForm(); });
     if (options.clearForm) callbacks.push(function() { $form.clearForm(); });
@@ -73,7 +59,6 @@ $.fn.ajaxSubmit = function(options) {
     }
     else if (options.success)
         callbacks.push(options.success);
-
     options.success = function(data, status) {
         for (var i=0, max=callbacks.length; i < max; i++)
             callbacks[i].apply(options, [data, status, $form]);
@@ -103,13 +88,10 @@ $.fn.ajaxSubmit = function(options) {
         
         var opts = $.extend({}, $.ajaxSettings, options);
 		var s = jQuery.extend(true, {}, $.extend(true, {}, $.ajaxSettings), opts);
-
         var id = 'jqFormIO' + (new Date().getTime());
         var $io = $('<iframe id="' + id + '" name="' + id + '" src="about:blank" />');
         var io = $io[0];
-
         $io.css({ position: 'absolute', top: '-1000px', left: '-1000px' });
-
         var xhr = { // mock object
             aborted: 0,
             responseText: null,
@@ -124,12 +106,10 @@ $.fn.ajaxSubmit = function(options) {
                 $io.attr('src','about:blank'); // abort op in progress
             }
         };
-
         var g = opts.global;
         // trigger ajax global events so that activity/block indicators work like normal
         if (g && ! $.active++) $.event.trigger("ajaxStart");
         if (g) $.event.trigger("ajaxSend", [xhr, opts]);
-
 		if (s.beforeSend && s.beforeSend(xhr, s) === false) {
 			s.global && jQuery.active--;
 			return;
@@ -151,7 +131,6 @@ $.fn.ajaxSubmit = function(options) {
                 }
             }
         }
-
         setTimeout(function() {
             var t = $form.attr('target'), a = $form.attr('action');
 			form.setAttribute('target',id);
@@ -184,19 +163,16 @@ $.fn.ajaxSubmit = function(options) {
                 $(extraInputs).remove();
             }
         }, 10);
-
         var nullCheckFlag = 0;
 		
         function cb() {
             if (cbInvoked++) return;
             
             io.detachEvent ? io.detachEvent('onload', cb) : io.removeEventListener('load', cb, false);
-
             var ok = true;
             try {
                 if (timedOut) throw 'timeout';
                 var data, doc;
-
                 doc = io.contentWindow ? io.contentWindow.document : io.contentDocument ? io.contentDocument : io.document;
                 
                 if ((doc.body == null || doc.body.innerHTML == '') && !nullCheckFlag) {
@@ -212,7 +188,6 @@ $.fn.ajaxSubmit = function(options) {
                     var headers = {'content-type': opts.dataType};
                     return headers[header];
                 };
-
                 if (opts.dataType == 'json' || opts.dataType == 'script') {
                     var ta = doc.getElementsByTagName('textarea')[0];
                     xhr.responseText = ta ? ta.value : xhr.responseText;
@@ -238,7 +213,6 @@ $.fn.ajaxSubmit = function(options) {
                 xhr.responseXML = null;
             }, 100);
         };
-
         function toXml(s, doc) {
             if (window.ActiveXObject) {
                 doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -282,12 +256,10 @@ $.fn.ajaxFormUnbind = function() {
     return this.each(function() {
         $(":submit,input:image", this).unbind('click.form-plugin');
     });
-
 };
 $.fn.formToArray = function(semantic) {
     var a = [];
     if (this.length == 0) return a;
-
     var form = this[0];
     var els = semantic ? form.getElementsByTagName('*') : form.elements;
     if (!els) return a;
@@ -295,13 +267,11 @@ $.fn.formToArray = function(semantic) {
         var el = els[i];
         var n = el.name;
         if (!n) continue;
-
         if (semantic && form.clk && el.type == "image") {
             if(!el.disabled && form.clk == el)
                 a.push({name: n+'.x', value: form.clk_x}, {name: n+'.y', value: form.clk_y});
             continue;
         }
-
         var v = $.fieldValue(el, true);
         if (v && v.constructor == Array) {
             for(var j=0, jmax=v.length; j < jmax; j++)
@@ -310,7 +280,6 @@ $.fn.formToArray = function(semantic) {
         else if (v !== null && typeof v != 'undefined')
             a.push({name: n, value: v});
     }
-
     if (!semantic && form.clk) {
         var inputs = form.getElementsByTagName("input");
         for(var i=0, max=inputs.length; i < max; i++) {
@@ -353,13 +322,11 @@ $.fn.fieldValue = function(successful) {
 $.fieldValue = function(el, successful) {
     var n = el.name, t = el.type, tag = el.tagName.toLowerCase();
     if (typeof successful == 'undefined') successful = true;
-
     if (successful && (!n || el.disabled || t == 'reset' || t == 'button' ||
         (t == 'checkbox' || t == 'radio') && !el.checked ||
         (t == 'submit' || t == 'image') && el.form && el.form.clk != el ||
         tag == 'select' && el.selectedIndex == -1))
             return null;
-
     if (tag == 'select') {
         var index = el.selectedIndex;
         if (index < 0) return null;
@@ -402,7 +369,6 @@ $.fn.resetForm = function() {
             this.reset();
     });
 };
-
 $.fn.enable = function(b) { 
     if (b == undefined) b = true;
     return this.each(function() { 
@@ -428,5 +394,4 @@ function log() {
     if ($.fn.ajaxSubmit.debug && window.console && window.console.log)
         window.console.log('[jquery.form] ' + Array.prototype.join.call(arguments,''));
 };
-
 })(jQuery);

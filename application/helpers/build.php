@@ -41,7 +41,7 @@ class build_Core {
 		ob_start();
 		?>
 		<form id="panda-select-tags" action="/<?php echo $page_name?>" method="GET">
-			Review Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
+			Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
 			<button type="submit">Show Reviews</button>
 		</form>
 		<?php
