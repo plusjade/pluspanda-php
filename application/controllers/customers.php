@@ -37,7 +37,8 @@
 			die($content);
 		
 		$this->shell->content = $content;
-		$this->shell->active = array('dashboard'=>'','categories'=>'','reviews'=>'','customers'=>'class="active"','account'=>'');
+		$this->active['customers'] = 'class="active"';
+		$this->shell->active = $this->active;
 		die($this->shell);
 	}
 

@@ -30,7 +30,6 @@ else:
 	</div>
 		 
 	<div id="header">
-		<!--<a href=""><img src="/static/admin/images/panda.png"></a>-->
 		<h1>PlusPanda</h1>
 	</div>
 
@@ -44,9 +43,9 @@ else:
 				<li><a href="/admin/categories" <?php echo $active['categories']?>><img src="/static/admin/images/001_43.png" width="24" height="24" alt="Folders" />Categories</a></li>
 				<li><a href="/admin/reviews" <?php echo $active['reviews']?>><img src="/static/admin/images/information.png" width="24" height="24" alt="Comments" />Reviews</a></li>
 				<li><a href="/admin/customers" <?php echo $active['customers']?>><img src="/static/admin/images/001_14.png" width="24" height="24" alt="Favourites" />Customers</a></li>
-				<li><a href="/admin/embed" <?php echo $active['account']?>><img src="/static/admin/images/accept.png" width="24" height="24" alt="Embed Code" />Embed Codes</a></li>
+				<li><a href="/admin/install" <?php echo $active['install']?>><img src="/static/admin/images/accept.png" width="24" height="24" alt="Installation" />Installation</a></li>
 				<li><a href="/admin/account" <?php echo $active['account']?>><img src="/static/admin/images/001_42.png" width="24" height="24" alt="Account" />Account</a></li>
-				<li><a href="/admin?action=logout" <?php echo $active['account']?>><img src="/static/admin/images/delete.png" width="24" height="24" alt="Logout" />Logout</a></li>
+				<li><a href="/admin?action=logout" <?php echo $active['logout']?>><img src="/static/admin/images/delete.png" width="24" height="24" alt="Logout" />Logout</a></li>
 		 </ul>
     </div>
     

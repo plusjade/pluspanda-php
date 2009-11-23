@@ -52,10 +52,11 @@
 			$('button', form).attr('disabled', 'disabled').html('Submitting...');
 			$(document).trigger('submit.server');
 		},
-		success: function(data) {
-			$(document).trigger('rsp.server', data);
+		success: function(rsp) {
+			$(document).trigger('rsp.server', rsp);
 			$('form#add-cat button').removeAttr('disabled').html('Add Category');
 			$('form#add-cat').clearFields();
+			$('#primary_content').load('/admin/categories');
 		}
 	});
 	

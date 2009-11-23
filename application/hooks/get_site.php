@@ -67,14 +67,12 @@ function get_site()
 			die($home->$page_name());		
 		}
 		
-		/*
 		# make reviews available at a page-name.
 		if('all_reviews' == $page_name)
 		{
 			$live = new Live_Controller($page_name);
 			die($live->index());
 		}
-		*/
 	}
 
 		

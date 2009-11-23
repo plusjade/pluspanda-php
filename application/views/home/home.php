@@ -1,16 +1,33 @@
 
-        <div class="tagline fade-in fade-in-med">
-            <p>
-							Add and Manage Customer Reviews
-							<br/><em>Instantly</em> On <u>Your</u> Website.
-						</p>
-        
-				</div><!-- end tagline -->
- 
+<div class="tagline fade-in fade-in-med">
+		<h2>Add Customer Reviews to Your Website.</h2>
+</div>
 
-        <!-- column container -->
-    	<div class="clearfix">
-        	<div class="column column600">
+<div class="home-intro">
+	<div class="pane-left">
+		<p>
+			Now you can manage reviews on your website
+			just like <a href="http://yelp.com">http://yelp.com</a> but completely branded by you,
+			all with just two lines of code.
+		</p>
+		<a href="/start" class="button">Get Yours For Free</a>
+	</div>
+	<div class="pane-right">
+		<a href="/demo" class="button">Try Demo</a>
+	</div>
+</div>
+<!--
+<div class="tagline fade-in fade-in-med">
+		<p>
+			Add and Manage Customer Reviews
+			<br/><em>Instantly</em> On <u>Your</u> Website.
+		</p>
+
+</div>
+-->
+       
+<div class="clearfix">
+	<div class="column column600">
  
 <h4 style="color:black">A Powerful, Easy Customer Communicaton System.</h4>
 <p>
@@ -112,6 +129,5 @@ almost instantly for a ridiculously low cost.
                 
                 
                 
-            </div><!-- end column 300 -->
+            </div>
         </div>
-        <!-- end column container -->

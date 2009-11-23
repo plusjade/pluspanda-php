@@ -31,17 +31,26 @@
 		$site = ORM::factory('site', $this->site_id);
 		$reviews = ORM::factory('review')
 			->where('site_id',$this->site_id)
+			->limit(10)
 			->find_all();
-		
+
+		$customers = ORM::factory('customer')
+			->where('site_id',$this->site_id)
+			->limit(10)
+			->find_all();
+			
 		$content->tags = $site->tags;
 		$content->reviews = $reviews;
+		$content->customers = $customers;
 		$content->owner = $this->owner->get_user();
 		
 		if(request::is_ajax())
 			die($content);
 		
 		$this->shell->content = $content;
-		$this->shell->active = array('dashboard'=>'class="active"','categories'=>'','reviews'=>'','customers'=>'','account'=>'');
+		$this->active['dashboard'] = 'class="active"';
+		$this->shell->active = $this->active;
+		
 		die($this->shell);
 	}
 

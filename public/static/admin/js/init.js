@@ -59,7 +59,7 @@ $('body').click($.delegate({
 			$(document).trigger('submit.server');
 			$.get(e.target.href, function(rsp){
 				$(e.target).parent('div').parent('form').parent('li').remove();
-				$(document).trigger('rsp.server', data);
+				$(document).trigger('rsp.server', rsp);
 			});
 		}
 		return false;

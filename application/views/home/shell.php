@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title>Add and Manage Customer Reviews Instantly On Your Website | PlusPanda</title>
+	<title><?php if(isset($title)) echo $title?> | PlusPanda</title>
 	<meta name="description" content="Embedable customer reviews." />
 	<link type="text/css" href="/static/home/css/global.css" media="screen" rel="stylesheet" />
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
@@ -12,7 +12,7 @@
 <div id="outer">
 	<div class="contentwidth main">
 		<div class="logo">
-				<h1><a href="index.html">PlusPanda</a></h1>
+				<h1><a href="/">PlusPanda</a></h1>
 		</div>
 		<div class="menu">
 				<ul class="clearfix">

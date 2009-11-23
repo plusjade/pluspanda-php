@@ -25,7 +25,8 @@
  */
  public function index()
  {
-		$this->shell->content = new View('home/home');
+		$this->shell->content = new View('home/home');		
+		$this->shell->title = 'Add and Manage Customer Reviews Instantly On Your Website';
 		die($this->shell);
 		
 		
@@ -82,11 +83,19 @@
  public function start()
  {
 		$this->shell->content = new View('home/create');
-			
+		$this->shell->title = 'Get your free customer reviews system now';
+		$this->shell->content->values = array(
+			'username'	=> '',
+			'email'			=> '',
+			'password'	=> '',
+		);
+		
 		if(empty($_POST))
 			die($this->shell);
-
+			
 		# handle the POST.
+		$this->shell->content->values = $_POST;
+
 		$post = new Validation($_POST);
 		$post->pre_filter('trim');
 		$post->add_rules('email', 'required', 'valid::email'); 
@@ -97,7 +106,7 @@
 			'username'	=> '',
 			'password'	=> '',
 			'password2'	=> '',
-		);		
+		);	
 		if(!$post->validate())
 		{
 			$this->shell->content->alert = alerts::display(array('error'=>'Invalid Fields'));
@@ -134,10 +143,6 @@
 		$url = 'http://'.$new_owner->username .'.'. ROOTDOMAIN . "/admin?action=force&name=$new_owner->username&tkn=$new_owner->token";
 		
 		url::redirect($url);
-		
-		
-		$this->shell->content->alert = alerts::display(array('success'=>'Account Created!!'));
-		die($this->shell);
  }
  
 /*
@@ -146,6 +151,7 @@
 	public function demo()
 	{
 		$this->shell->content = new View('home/demo');
+		$this->shell->title = 'Customer reviews demo';
 		die($this->shell);
 	}
 
@@ -155,7 +161,19 @@
 	public function contact()
 	{
 		$this->shell->content = new View('home/contact');
+		$this->shell->title = 'Contact me';
 		die($this->shell);
 	}
 	
+/*
+ * 404 page
+ */
+	public function _custom_404()
+	{
+		header("HTTP/1.0 404 Not Found");
+		$this->shell->title = '404 not found';
+		$this->shell->content = new View('home/404');		
+		die($this->shell);
+	}
+		
 } // End admin Controller
