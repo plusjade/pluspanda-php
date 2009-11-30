@@ -6,11 +6,23 @@
 	
  class Reviews_Controller extends Admin_Interface_Controller {
 
+ 
+	public $active_tag;
+	public $active_rating;
+	public $active_range;
+	public $active_page;
+	
 	public function __construct()
 	{			
 		parent::__construct();
 		if(!$this->owner->logged_in())
 			url::redirect('/admin');
+
+		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
+		$this->active_rating = (isset($_GET['rating'])) ? $_GET['rating'] : 'all';
+		$this->active_range = (isset($_GET['range'])) ? $_GET['range'] : 'all';
+		$this->active_page = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;
+		
 	}
 	
 /*
@@ -27,13 +39,12 @@
 			$content->response = alerts::display($this->$action());
 	
 		$site = ORM::factory('site', $this->site_id);
-		$reviews = ORM::factory('review')
-			->where('site_id',$this->site_id)
-			->find_all();
 		
-		$content->tags = $site->tags;
-		$content->reviews = $reviews;
-		$content->pagination = 'blah';
+		$content->categories = build::tag_select_list($site->tags, $this->active_tag, array('all'=>'All'));
+		$content->ratings = build::rating_select_list($this->active_rating);
+		$content->range = build::range_select_list($this->active_range);
+		$content->reviews = $this->get_reviews();
+
 		
 		if(request::is_ajax())
 			die($content);
@@ -44,6 +55,90 @@
 		die($this->shell);
 	}
 
+
+	
+/*
+ * get the reviews data
+ */
+	private function get_reviews()
+	{
+		# defaults
+		$field	= 'site_id';
+		$value	= $this->site_id;
+		$sort		= array('created' => 'desc');
+		$where = array();
+		
+		# filter by tag
+		if(is_numeric($this->active_tag))
+		{
+			$field = 'tag_id';
+			$value = $this->active_tag;
+		}
+		$where[$field] = $value;
+		
+		# filter by rating
+		if(is_numeric($this->active_rating))
+		{
+			$where['rating'] = $this->active_rating;
+		}
+	
+		$now = time();
+		#number of seconds in ..
+		$day = 86400;		
+
+		# filter by date
+		switch($this->active_range)
+		{
+			case 'today':
+			
+				break;
+			case 'last7':
+				$where['created >='] = time() - $day*7;
+				break;
+			case 'last14':
+				$where['created >='] = time() - $day*14;
+				break;
+			case 'last30':
+				$where['created >='] = time() - $day*30;
+				break;
+			case 'ytd':
+				$where['created >='] = mktime(0, 0, 0, 1, 1, date("m Y"));
+				break;
+		}
+		
+		# get full count of reviews for this tag.
+		$total_reviews = ORM::factory('review')
+		->where($where)
+		->orderby($sort)
+		->count_all();
+		
+		# if pagination
+		$offset = ($this->active_page*10) - 10;
+
+		# get the appropriate reviews based on page.
+		$reviews = ORM::factory('review')
+		->where($where)
+		->orderby($sort)
+		->limit(10, $offset)
+		->find_all();
+
+		# build the pagination html
+		$pagination = new Pagination(array(
+			'base_url'			 => "/admin/reviews?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
+			'current_page'	 => $this->active_page, 
+			'total_items'    => $total_reviews,
+			'style'          => 'digg' ,
+			'items_per_page' => 10
+		));
+		
+
+		$view = new View('admin/reviews_data');
+		$view->reviews = $reviews;
+		$view->pagination = $pagination;
+		return $view;
+	}		
+	
+	
 /*
  * add a new category
  */

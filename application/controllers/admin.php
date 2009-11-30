@@ -31,16 +31,21 @@
 		$site = ORM::factory('site', $this->site_id);
 		$reviews = ORM::factory('review')
 			->where('site_id',$this->site_id)
+			->orderby('created','desc')
 			->limit(10)
 			->find_all();
 
 		$customers = ORM::factory('customer')
 			->where('site_id',$this->site_id)
+			->orderby('created','desc')
 			->limit(10)
 			->find_all();
 			
 		$content->tags = $site->tags;
-		$content->reviews = $reviews;
+		$reviews_data = View::factory('admin/reviews_data');
+		$reviews_data->reviews = $reviews;
+		$reviews_data->pagination='';
+		$content->reviews = $reviews_data;
 		$content->customers = $customers;
 		$content->owner = $this->owner->get_user();
 		

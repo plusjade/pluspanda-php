@@ -1,23 +1,27 @@
 
 
-<h2>Manage Customers</h2>
+<h2>
+	<span style="float:right">Total: <strong><?php echo $customers->count()?></strong></span>
+	Manage Customers
+</h2>
 
 <?php if(isset($response))echo $response?>
 
-<div class="buttons">
-<button id="update" class="positive" style="float:right">Update</button>
-</div>
 
-Total Customers: <strong><?php echo $customers->count()?></strong>
-<ul class="customer-list">	
+<table class="customer-list">	
+	<tr>
+		<th>Name</th>
+		<th>Email</th>
+		<th>Created</th>
+	</tr>
 <?php foreach($customers as $customer):?>
-	<li>
-		<?php echo $customer->display_name?>
-		- <?php echo $customer->email?>
-		- <abbr class="timeago" title="<?php echo date("c", $customer->created)?>"><?php echo date("M d y @ g:i a", $customer->created)?></abbr>
-	</li>
+	<tr>
+		<td><?php echo $customer->display_name?></td>
+		<td><?php echo $customer->email?></td>
+		<td><?php echo build::timeago($customer->created)?></td>
+	</tr>
 <?php endforeach;?>
-</ul>
+</table>
 
 
 <script type="text/javascript">

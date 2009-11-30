@@ -33,7 +33,6 @@ class val_form_Core {
 			
 			<fieldset class="<?php echo "panda-$name $jade_error"?>">
 				<label><?php echo $label?> <?php echo $required_star?></label>
-				<br/>
 				<?php
 				switch($type)
 				{

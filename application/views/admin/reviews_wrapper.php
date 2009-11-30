@@ -4,13 +4,18 @@
 
 <?php if(isset($response))echo $response?>
 
-<div class="buttons">
-<button id="update" class="positive" style="float:right">Update</button>
-</div>
+<form action="" method="GET" style="text-align:center">
+	Categories: <?php echo $categories?>
+	<br/>
+	Show <?php echo $ratings?> ratings.
+	
+	Timespan: <?php echo $range?>
+	<br/><button type="submit">Submit</button>
+</form>
 
 
-<div class="panda-reviews-list">	
-	<?php echo View::factory('live/reviews_data', array('reviews' => $reviews, 'pagination'=>$pagination))?>
+<div class="admin-reviews-list">	
+	<?php echo $reviews?>
 </div>
 
 

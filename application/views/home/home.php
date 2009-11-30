@@ -1,35 +1,34 @@
 
-<div class="tagline fade-in fade-in-med">
-		<h2>Add Customer Reviews to Your Website.</h2>
-</div>
-
 <div class="home-intro">
-	<div class="pane-left">
-		<p>
-			Now you can manage reviews on your website
-			just like <a href="http://yelp.com">http://yelp.com</a> but completely branded by you,
-			all with just two lines of code.
-		</p>
-		<a href="/start" class="button">Get Yours For Free</a>
-	</div>
-	<div class="pane-right">
-		<a href="/demo" class="button">Try Demo</a>
-	</div>
-</div>
-<!--
-<div class="tagline fade-in fade-in-med">
-		<p>
-			Add and Manage Customer Reviews
-			<br/><em>Instantly</em> On <u>Your</u> Website.
-		</p>
 
+	<div class="pane-text">
+		<h4>Customer Reviews For Your Website.</h4>
+		<br/>
+		<div>
+			PlusPanda is an embedable widget that allows
+			your customers to add and browse reviews entirely on your own website.
+			<br/><br/>
+			Major sites like Amazon.com, Borders, and Walmart
+			utilize a customer review system to build trust,
+			manage customer happiness, and boost sales. Now you can too!			
+		</div>
+		<br/>
+		<a href="/start" id="signup"></a>
+		
+		<br/><br/>
+		<a href="/demo" id="demo"></a>
+	</div>
+
+	<div class="pane-screenshot">
+		<img src="/static/home/images/screenshot.png" />
+	</div>
+	
 </div>
--->
        
 <div class="clearfix">
 	<div class="column column600">
  
-<h4 style="color:black">A Powerful, Easy Customer Communicaton System.</h4>
+<h4 style="color:black">A Powerful, Easy Customer Communication System.</h4>
 <p>
 Adding customer reviews is a great way to establish an honest, direct, and ongoing
 line of communication between your customers and your business so you can:

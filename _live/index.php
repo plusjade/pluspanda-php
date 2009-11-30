@@ -10,7 +10,7 @@
 /*
  * define website defaults and dev/production toggling.
  */
-define('ROOTNAME', 'panda');
+define('ROOTNAME', 'pluspanda');
 define('ROOTDOMAIN', 'pluspanda.com');
 define('ROOTACCOUNT', 'panda');
 define('ROOTSITEID', 1);

@@ -14,7 +14,7 @@ function get_site()
 	{
 		$field_name	= 'subdomain';
 		$site_name	= $domain_array['0'];
-		
+
 		# if no subdomain, default to marketing website.
 		if('2' == count($domain_array))
 			$site_name = ROOTACCOUNT;
@@ -28,7 +28,7 @@ function get_site()
 		$field_name	= 'custom_domain';
 		$site_name	= $_SERVER['HTTP_HOST'];
 	}
-	
+
 	$site = ORM::factory('site')
 		->where(array($field_name => $site_name))
 		->find();
@@ -60,7 +60,7 @@ function get_site()
 			$home = new Home_Controller();
 			die($home->index());
 		}
-		$pages = array('start','demo','reviews','contact');
+		$pages = array('start','demo','reviews','faq', 'contact');
 		if(in_array($page_name, $pages))
 		{
 			$home = new Home_Controller();

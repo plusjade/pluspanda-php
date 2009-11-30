@@ -18,16 +18,17 @@
 				<ul class="clearfix">
 <?php
 	$links = array(
-		'home' => 'Home',
-		'start' => 'Get Started',
-		'demo' => 'Demo',
-		'contact' => 'Contact'
+		'home'		=> 'Home',
+		'start'		=> 'Get Started',
+		'demo'		=> 'Demo',
+		'faq'			=> 'FAQ',
+		'contact'	=> 'Contact'
 	);
 	foreach($links as $url => $text)
 		if($active == $url)
-			echo "<li><a href=\"/$url\" class=\"active\">$text</a></li>";
+			echo "<li><a href=\"/$url\" class=\"active\">$text</a></li>\n";
 		else
-			echo "<li><a href=\"/$url\">$text</a></li>";
+			echo "<li><a href=\"/$url\">$text</a></li>\n";
 ?>
 				</ul>
 		</div>    
@@ -36,27 +37,20 @@
     
 	<div class="footer">
 		<div class="contentwidth">
-					<p><strong>&copy; 2009 PlusPanda =]</strong></p>
+					<p><strong>&copy; 2009 PlusPanda =)</strong></p>
 					<ul class="footer-menu">
-							<li><a href="/">Home</a></li>
-							<li><a href="/start">Get Started</a></li>
-							<li><a href="/demo">Demo</a></li>
-							<li><a href="/contact">Contact</a></li>
+<?php
+	foreach($links as $url => $text)
+		echo "<li><a href=\"/$url\">$text</a></li>\n";
+?>
 					</ul>
 			</div>
 	</div>
 </div>
 
-<script type="text/javascript"> 
-	//<![CDATA[
-	$(document).ready(function(){
-		$(".fade-in").hide();
-		$(".fade-in-slow").fadeIn(2000);
-		$(".fade-in-med").fadeIn(1500);
-		$(".fade-in-fast").fadeIn(1000);
-	});
-	//]]>
-</script>
-
+<?php
+if(file_exists(DOCROOT . 'tracker.html'))
+	include_once(DOCROOT . 'tracker.html');
+?>
 </body>
 </html>

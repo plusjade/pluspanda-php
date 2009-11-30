@@ -674,13 +674,33 @@ text-align:left;
 	font-size:1.2em;
 }
 
-
+.panda-pagination{
+padding:5px;
+margin:5px 0;
+background:#333;
+color:#fff;
+text-align:right;
+}
+.panda-pagination .panda-showing{float:left;}
+.panda-pagination a{
+	color:#fff;
+}
+.panda-pagination a:hover{
+	color:orange;
+}
 /* ADMIN reviews list */
-.panda-reviews-list{padding:20px; text-align:left;}
-.review-rating{float:left; padding:3px 6px; background:#ffff88;  text-align:center;}
-.review-tag{float:right; text-align:right;}
-.review-tag span{font-weight:bold;}
-.review-body{clear:both; padding:10px; background:#ffffcc;}
-.review-name{text-align:right; margin-bottom:10px;}
-.review-name abbr{font-family:verdana; color:#fff;} /* time */
-.review-name span{font-weight:bold;} /* name */
+.admin-reviews-list .review-wrapper{overflow:auto;
+margin-bottom:10px;
+}
+.admin-reviews-list{padding:20px; font-size:0.9em; text-align:left;}
+.admin-reviews-list .review-rating{width:4%; float:right; padding:3px 6px; background:#ffff88;  text-align:center;}
+.admin-reviews-list .review-body{float:right; width:86%;padding:10px; background:#ffffcc;}
+.admin-reviews-list img{float:right; cursor:pointer; cursor:cursor;}
+
+.admin-reviews-list .review-tag{clear:both; float:left; text-align:right;}
+.admin-reviews-list .review-tag span{font-style:italic;}
+
+
+.admin-reviews-list .review-name{text-align:right;}
+.admin-reviews-list .review-name abbr{font-family:verdana; color:#333;} /* time */
+.admin-reviews-list .review-name span{font-style:italic;} /* name */

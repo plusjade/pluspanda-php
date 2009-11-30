@@ -12,7 +12,7 @@ class build_Core {
 /*
  * build the top tag select filter.
  */
-	public static function tag_select_list($tags, $active_tag, $extra=NULL)
+	public static function tag_select_list($tags, $active_tag=NULL, $extra=NULL)
 	{
 		ob_start();
 		?>
@@ -42,13 +42,73 @@ class build_Core {
 		?>
 		<form id="panda-select-tags" action="/<?php echo $page_name?>" method="GET">
 			Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
-			<button type="submit">Show Reviews</button>
+
+			<input type="image" src="http://<?php echo ROOTDOMAIN?>/static/admin/images/magnify.png" alt="Submit button" style="position:relative;top:7px">
+
+			<!--<button type="submit"></button>-->
 		</form>
 		<?php
 		return ob_get_clean();
 	}
 	
+	
+/*
+ * build the rating select filter
+ */
+	public static function rating_select_list($active=NULL)
+	{
+		ob_start();
+		?>
+			<select name="rating">
+			<?php
+			$ratings = array(
+				'all' => 'All Star',
+				'1' => 'One Star',
+				'2' => 'Two Star',
+				'3' => 'Three Star',
+				'4' => 'Four Star',
+				'5' => 'Five Star',
+			);
+			foreach($ratings as $val => $text)
+				if($val == $active)
+					echo "<option value='$val' SELECTED>$text</option>";
+				else
+					echo "<option value='$val'>$text</option>";
+			?>
+			</select>
+		<?php
+		return ob_get_clean();
+	}
 
+	
+/*
+ * build the rating select filter
+ */
+	public static function range_select_list($active=NULL)
+	{
+		ob_start();
+		?>
+			<select name="range">
+			<?php
+			$ratings = array(
+				'all' => 'All Time',
+				'last7' => 'Last 7 days',
+				'last14' => 'Last 14 days',
+				'last30' => 'Last 30 days',
+				'ytd' => 'YTD',
+			);
+			foreach($ratings as $val => $text)
+				if($val == $active)
+					echo "<option value='$val' SELECTED>$text</option>";
+				else
+					echo "<option value='$val'>$text</option>";
+			?>
+			</select>
+		<?php
+		return ob_get_clean();
+	}
+	
+	
 /*
  * build the add review wrapper.
  */	
@@ -80,16 +140,19 @@ class build_Core {
 			: 0;
 		ob_start();
 		?>
-		<div class="panda-reviews-summary-title">Rating Summary</div>
 		<div class="panda-reviews-summary">
-			<div>
-				<b><?php echo $average_score?></b> stars based on <span><?php echo $total_reviews?></span> reviews.
-			</div>
-			<p>
-			<?php foreach($ratings_dist as $rating => $total):?>
-				<?php echo $rating?> stars : (<?php echo $total?>)<br/>
-			<?php endforeach;?>
-			</p>
+			<table class="panda-graph">
+				<tr><th colspan="2"><b><?php echo $average_score?></b> stars based on <span><?php echo $total_reviews?></span> reviews.</th></tr>
+				<?php foreach($ratings_dist as $rating => $total):?>
+					<tr>
+						<td><?php echo $rating?> stars</td>
+						<td>
+							<div rel="<?php echo $total?>">&#160;</div>
+							 <span><?php echo $total?></span>
+						</td>
+					</tr>
+				<?php endforeach;?>
+			</table>
 		</div>	
 		<?php
 		return ob_get_clean();
@@ -108,6 +171,7 @@ class build_Core {
 		ob_start();
 		?>
 		<ul class="panda-reviews-sorters">
+			<li>Sort by:</li>
 		<?php 
 			foreach($sort_types as $type)
 				if($active_sort == $type)
@@ -120,5 +184,14 @@ class build_Core {
 		return ob_get_clean();
 	}
 	
+	
+	public static function timeago($date)
+	{
+		ob_start();
+		?>
+		<abbr class="timeago" title="<?php echo date("c", $date)?>"><?php echo date("M d y @ g:i a", $date)?></abbr>
+		<?php
+		return ob_get_clean();	
+	}
 	
 } // end build helper

@@ -82,7 +82,7 @@
  */
  public function start()
  {
-		$this->shell->content = new View('home/create');
+		$this->shell->content = new View('home/start');
 		$this->shell->title = 'Get your free customer reviews system now';
 		$this->shell->content->values = array(
 			'username'	=> '',
@@ -156,7 +156,17 @@
 	}
 
 /*
- * display demo page.
+ * display faq page.
+ */
+	public function faq()
+	{
+		$this->shell->content = new View('home/faq');
+		$this->shell->title = 'Frequenty Asked Questions';
+		die($this->shell);
+	}
+	
+/*
+ * display contact page.
  */
 	public function contact()
 	{

@@ -216,7 +216,7 @@ class Live_Controller extends Controller {
 		$post->add_rules('email', 'required');
 		
 		# on error
-		if(!$post->validate())
+		if(!$post->validate() OR empty($data['rating']))
 		{
 			# this should rarely happen due to client-side js validation...
 			# widget GET error.
@@ -237,11 +237,14 @@ class Live_Controller extends Controller {
 		# on valid submission:
 		
 		# load customer
-		$customer = ORM::factory('customer');
+		$customer = ORM::factory('customer')
+			->where('site_id', $this->site_id)
+			->find($data['email']);
 		
 		# if customer does not exist, create him.
-		if(!$customer->email_exists($this->site_id, $data['email']))
+		if(!$customer->loaded)
 		{
+			$customer = ORM::factory('customer');
 			$customer->site_id = $this->site_id;
 			$customer->email = $data['email'];
 			$customer->display_name = $data['display_name'];
