@@ -27,13 +27,6 @@ abstract class Controller_Core {
 			// Set the instance to the first controller loaded
 			Kohana::$instance = $this;
 		}
-
-		$session	 = Session::instance();
-		$this->site_id		= $_SESSION['site_id'];
-		$this->site_name	= $_SESSION['site_name'];
-		$this->theme			= empty($_SESSION['theme'])
-			? 'gray'
-			: $_SESSION['theme'];
 		
 		// URI should always be available
 		$this->uri = URI::instance();

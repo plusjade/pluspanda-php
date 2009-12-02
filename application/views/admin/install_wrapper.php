@@ -13,13 +13,13 @@ textarea {width:100%; height:100px; margin-bottom:10px;}
 
 	<h4>Standard</h4>
 	<div>The standard install code is good for all websites!</div>
-	<textarea>&lt;div id="plusPandaYes"&gt;&lt;a href="http://<?php echo $this->site_name .'.'. ROOTDOMAIN?>"&gt;View Our Customer Reviews!&lt;/a&gt;&lt;/div&gt;&lt;script type="text/javascript" src="http://<?php echo $this->site_name .'.'. ROOTDOMAIN?>/admin/js/widget" charset="utf-8"&gt;&lt;/script&gt;</textarea>
+	<textarea><?php echo build::embed_code($this->site_id, 'fake')?></textarea>
 
 	<h4>Developer</h4>
 	<div>
 		Pluspanda uses the jquery javascript framework, which gets loaded by the standard embed code.
 		If your website is already using jquery you can use the following code which omits loading jquery again.
 	</div>
-	<textarea>&lt;div id="plusPandaYes"&gt;&lt;a href="http://<?php echo $this->site_name.'.'. ROOTDOMAIN?>"&gt;View Our Customer Reviews!&lt;/a&gt;&lt;/div&gt;&lt;script type="text/javascript" src="http://<?php echo $this->site_name .'.'. ROOTDOMAIN?>/admin/js/widget?jquery=false" charset="utf-8"&gt;&lt;/script&gt;</textarea>
-	
+	<textarea><?php echo build::embed_code($this->site_id, 'fake', FALSE)?></textarea>
+
 </div>

@@ -1,4 +1,4 @@
-html, body, form, h1, h2, h3, h4, h5, h6, p, img, a {
+html, body, form, h1, h2, h3, h4, h5, h6, p, img, a, fieldset {
   margin: 0;
   padding: 0;
   outline: 0;
@@ -60,8 +60,7 @@ p {
 li {
   padding: 3px 0; }
 
-a {
-  text-decoration: none; }
+a {}
   a:hover {
     color: #333; }
 
@@ -111,9 +110,24 @@ img.center {
   margin: 0 auto; }
 
 .main {
-  background: url(../images/bg_top_inner.jpg) repeat-x top;
-  padding-bottom: 20px;}
+  background: url('../images/bg_top_inner.jpg') repeat-x top;
+  padding: 20px;
+	padding-top:0;
+	overflow:auto;
+	}
 
+#login-link{
+display:block;
+float:right;
+padding:7px 20px;
+text-align:center;
+background:#333;
+color:#fff;
+text-decoration:none;
+}
+#login-link:hover{
+	background:#cc0000;
+}
 .logo {
 	position:absolute;
 	top:0; left:20px;
@@ -153,7 +167,8 @@ img.center {
         line-height: 40px;
         color: #afafaf;
         text-transform: uppercase;
-        font-weight: bold; }
+        font-weight: bold; 
+				text-decoration:none;}
         .menu ul li a:hover, .menu ul li a.active {
           color: #333; }
 
@@ -589,6 +604,7 @@ a#demo:hover{
 }
 #signup-form h1 	{font-size: 28px;padding-bottom: 10px;}
 #signup-form input {width:300px; border:1px solid #333; background:#fff;}
+#signup-form fieldset{padding:0 10px;}
 .left-copy{
 float:right;
 width:520px;
@@ -630,3 +646,18 @@ float:right;
 ackground:#fff url('/static/home/images/field.png') no-repeat 0 0;
 border:4px solid #eee;
 }
+
+
+
+/* form status stuff */
+
+div.jade_form_status_box { font-weight: bold; color: #000; font-size: 1.2em; margin: 10px; padding: 10px; text-align: center; -moz-border-radius:7px;-webkit-border-radius:7px;}
+div.jade_form_status_box.box_positive { background: green; border: 1px solid green; color:#fff; }
+div.jade_form_status_box.box_negative { background: #fad6d6; border: 1px solid #cc0000; }
+div.ajax_loading { width: 100%; height: 90px; background: transparent url('/_assets/images/admin/load.gif') no-repeat 50% 50%; text-align: center; }
+fieldset span.jade_required_star{color:red;}
+fieldset.jade_error {padding:10px !important; background: #fad6d6 !important; -moz-border-radius:7px;-webkit-border-radius:7px;}
+fieldset span.error_msg { display: block; color: red; }
+/* ratings */
+
+

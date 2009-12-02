@@ -1,32 +1,22 @@
 /* For widget mode =P */
-$('head').append('<?php echo $stylesheet?>');
+$('head').append('<link type="text/css" href="http://panda.com/static/widget/css/gray.css" media="screen" rel="stylesheet" />');
 
 // attach event triggers.
 $('body').click($.delegate({
-//TODO: combine these two.
  // sorting links.
-	'.panda-reviews-sorters a' : function(e){
-		$('.panda-reviews-sorters a').removeClass('selected');
+	'.panda-reviews-sorters a, .panda-pagination a' : function(e){	
+		var is_sort = e.target.href.indexOf('#');		
+		var parent = (-1 == is_sort)
+			? '.panda-pagination a'
+			: '.panda-reviews-sorters a';
+		var spltr = (-1 == is_sort) ? '?' : '#';
+
+		$(parent).removeClass('selected');
 		$(e.target).addClass('selected'); 	
 		
 		// get GET params from links TOD0: optimize this?
-		var hash = e.target.href.split('#')[1].split('&');
+		var hash = e.target.href.split(spltr)[1].split('&');
 		var params = {"tag":"all","sort":"newest","page":1};
-		for(x in hash){
-				var arr = hash[x].split('=');
-				params[arr[0]] = arr[1]; 
-		}
-		pandaGetRevs(params.tag, params.sort, params.page);
-		return false;
-	},
- //ajaxify the pagination links.
-	'.panda-pagination a' : function(e){
-		$('.panda-pagination a').removeClass('selected');
-		$(e.target).addClass('selected');
-
-		// get GET params from links TOD0: optimize this?
-		var hash = e.target.href.split('?')[1].split('&');
-		var params = {"tag":"all","sort":"newest", "page":1};
 		for(x in hash){
 				var arr = hash[x].split('=');
 				params[arr[0]] = arr[1]; 
@@ -58,7 +48,7 @@ function changeCat(){
 // build the initial interface.
 $('#plusPandaYes').html('<div class="ajax_loading">Loading...</div>'); 	
 function buildIt() { 
-	var html = <?php echo $json_html?>;
+	var html = {"tag_list":"<form id=\"panda-select-tags\" action=\"\/\" method=\"GET\">Categories: <select name=\"tag\"><option value=\"all\">All<\/option><option value='19'>Coke<\/option><option value='20'>Pepsi<\/option><\/select><input type=\"image\" src=\"http:\/\/panda.com\/static\/admin\/images\/magnify.png\" alt=\"Submit button\" style=\"position:relative;top:7px\"><!--<button type=\"submit\"><\/button>--><\/form>","add_wrapper":"<div class=\"panda-add-wrapper\"><a href=\"#panda-add-review\" id=\"add_review_toggle\">+ Add New Review<\/a><\/div>","summary":"<div class=\"panda-reviews-summary\"><table class=\"panda-graph\"><tr><th colspan=\"2\"><b>0.00<\/b> stars based on <span>1<\/span> reviews.<\/th><\/tr><tr><td>0 stars<\/td><td><div rel=\"1\">&#160;<\/div> <span>1<\/span><\/td><\/tr><\/table><\/div>","form":"<form action=\"http:\/\/panda.com\" target=\"panda-iframe\"  method=\"POST\" id=\"panda-add-review\"><input type=\"hidden\" name=\"rating\" value=\"0\" \/><div id=\"panda-star-rating\"><div class=\"one-1\"><\/div><div class=\"two-2\"><\/div><div class=\"three-3\"><\/div><div class=\"four-4\"><\/div><div class=\"five-5\"><\/div><\/div><div class=\"panda-rating-text\">Select a rating.<\/div><fieldset class=\"panda-tag \"><label>Review For <span class=\"jade_required_star\">*<\/span><\/label><select name='tag'><option value='19'>Coke<\/option><option value='20'>Pepsi<\/option><\/select><\/fieldset><fieldset class=\"panda-body \"><label>Review <span class=\"jade_required_star\">*<\/span><\/label><textarea name='body' rel='text_req'><\/textarea><\/fieldset><fieldset class=\"panda-display_name \"><label>Name <span class=\"jade_required_star\">*<\/span><\/label><input type='text' name='display_name' value='' rel='text_req'\/><\/fieldset><fieldset class=\"panda-email \"><label>Email <span class=\"jade_required_star\">*<\/span><\/label><input type='text' name='email' value='' rel='email_req'\/><\/fieldset><fieldset class=\"panda-submit\"><button type=\"submit\">Submit Review<\/button><\/fieldset><\/form>","sorters":"<ul class=\"panda-reviews-sorters\"><li>Sort by:<\/li><li><a href=\"#sort=newest\" class=\"selected\">Newest<\/a><\/li><li><a href=\"#sort=oldest\">Oldest<\/a><\/li><li><a href=\"#sort=highest\">Highest<\/a><\/li><li><a href=\"#sort=lowest\">Lowest<\/a><\/li><\/ul>","iframe":"<iframe name=\"panda-iframe\" id=\"panda-iframe\" style=\"display:none\"><\/iframe>"};
 	//add to DOM
 	$('#plusPandaYes').html(html.iframe + html.add_wrapper + html.tag_list + '<div class="panda-tag-scope">' + html.summary + html.form + html.sorters + '<div class="panda-reviews-list"></div></div>');
 	// init getting the data.
@@ -81,27 +71,13 @@ buildIt(); // init the build!
 
 
 $('#panda-star-rating div').hover(function(){
-		var text = {};
-		text.one = 'Poor';
-		text.two = 'Lacking';
-		text.three = 'Average';
-		text.four = 'Pretty good!';
-		text.five = 'Fantastic!';	
+		var text = {one:'Poor', two:'Lacking', three:'Average', four:'Pretty good!', five:'Fantastic!'};
 		var rating = $(this).attr('class').split('-');
 		$(this).parent().removeClass().addClass(rating[0]).attr({rel:rating[1]});
 		$('.panda-rating-text').html(text[rating[0]]);
-	}
-);
+});
 
 
-<?php
-/*
- * working as a semi-hack. 
- * we CANT seem to get a response message by posting. 
- * we can get it by sending as JSONP GET.
- * SO if the comment is short enough, we GET, else we POST.
-*/
-?>
 // ajaxify the review submission
 $('#panda-add-review').ajaxForm({	 
 	target :"#panda-iframe",
@@ -111,13 +87,13 @@ $('#panda-add-review').ajaxForm({
 		if(!rating){alert('Please select a rating'); return false};	
 		if(! $("input, textarea", form[0]).jade_validate()) return false;
 		$("input:first", form[0]).val(rating);		
-		$('button', form).attr('disabled', 'disabled').html('Submitting...');
+		//$('button', form).attr('disabled', 'disabled').html('Submitting...');
 		var qstr = form.formSerialize();
 		if(7900 > qstr.length){
 			$.ajax({ 
 					type:'GET', 
-					url:"<?php echo $url?>", 
-					data: qstr + "&submit=review&jsoncallback=pandaSubmitRsp", 
+					url:"http://panda.com?apikey=8", 
+					data: "submit=review&jsoncallback=pandaSubmitRsp&"+qstr, 
 					dataType:'jsonp'
 			});
 			return false; // DON'T post the form!!
@@ -135,7 +111,7 @@ function pandaGetRevs(tag, sort, page){
 		$('.panda-reviews-list').html('<div class="ajax_loading">Loading...</div>');
 		$.ajax({ 
 				type:'GET', 
-				url:"<?php echo $url?>", 
+				url:"http://panda.com?apikey=8", 
 				data:"tag="+tag+"&sort="+sort+"&page="+page+"&jsoncallback=pandaLoadRev", 
 				dataType:'jsonp'
 		}); 
@@ -185,7 +161,7 @@ function pandaPages(html){
 
 // callback for submitting a review. response is an object with code and msg
 function pandaSubmitRsp(rsp){
-	var status = <?php echo $json_status?>;
+	var status = {"success":"<div class=\"panda-status-msg\"><div class=\"jade_form_status_box box_positive\">Your review has been submitted successfuly. <br\/>Thank you! =)<\/div><\/div>","error":"<div class=\"panda-status-msg\"><div class=\"jade_form_status_box box_negative\">There was a problem submitting the review. =( <br\/>Please try again later. Sorry!<\/div><\/div>"};
 	if(5 == rsp.code){
 		$('#panda-select-tags').after(status.error);
 	}
@@ -206,18 +182,8 @@ function pandaSubmitRsp(rsp){
 
 // cleanup our jsonp scripts after execution.
 function pandaClean(){
-	//$('head script[src^="<?php echo $url?>"]').remove();
+	//$('head script[src^="http://panda.com?apikey=8"]').remove();
 }
 
-<?php
-/*
- -----------------
-//TODO cross-site hash should work but doesnt =(
-$('iframe').load(function(){
-		//alert('it works');
-		//console.log(window.frames['panda-iframe']);
-		//var hash = window.frames['panda-iframe'].location.hash;
-		//alert(hash);
-});
-*/
-?>
+
+//cached 12.02.09 5:13am America/Los_Angeles

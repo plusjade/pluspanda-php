@@ -1,94 +1,48 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
-	* login to admin panel or show dashboard.
+	* all the marketing site pages are here.
  */
 
- class Home_Controller extends Controller {
+ class Home_Controller extends Public_Controller {
 
-	public $shell;
 	
-	public function __construct()
+	public function __construct($page_name=NULL)
 	{			
 		parent::__construct();
-
-		$this->shell = new View('home/shell');
-		$url_array = Uri::url_array();
-		$this->shell->active  = (empty($url_array['0'])) 
-			? null
-			: $url_array['0'];
+		
+		$this->shell->active  = $page_name;
+		
+		if(empty($page_name) OR 'home' == $page_name)
+			$this->index();
+		
+		$pages = array('start','demo','reviews','faq', 'contact');
+		if(in_array($page_name, $pages))
+			$this->$page_name();
+		else
+			$this->_custom_404();
 	}
 
 
 /*
- * marketing page
+ * plupanda.com homepage.
  */
  public function index()
  {
 		$this->shell->content = new View('home/home');		
 		$this->shell->title = 'Add and Manage Customer Reviews Instantly On Your Website';
 		die($this->shell);
-		
-		
-		if(empty($_POST))
-			die($this->shell);
-
-		# handle the POST.
-		$post = new Validation($_POST);
-		$post->pre_filter('trim');
-		$post->add_rules('email', 'required', 'valid::email'); 
-		$post->add_rules('username', 'required', 'valid::alpha_numeric');
-		$post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');
-		$values = array(
-			'email'		=> '',
-			'username'	=> '',
-			'password'	=> '',
-			'password2'	=> '',
-		);		
-		if(!$post->validate())
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Invalid Fields'));
-			die($this->shell);		
-		}
-		
-		$new_owner = ORM::factory('owner');
-
-		# unique username.
-		if(!$new_owner->username_available($_POST['username']))
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Username Already Exists!'));
-			die($this->shell);			
-		}
-		
-		# unique email.
-		if(!$new_owner->email_available($_POST['email']))
-		{
-			$this->shell->login->alert = alerts::display(array('error'=>'Email Already Exists!'));
-			die($this->shell);			
-		}
-		
-		$new_owner->username	= $_POST['username'];
-		$new_owner->email			= $_POST['email'];
-		$new_owner->password	= $_POST['password'];
-		$new_owner->save();
-		
-		$this->shell->login->alert = alerts::display(array('success'=>'Account Created!!'));
-		die($this->shell);
  }
  
 
 /*
- * create account
+ * display start page 
+ * and handle the create account logic
  */
  public function start()
  {
 		$this->shell->content = new View('home/start');
 		$this->shell->title = 'Get your free customer reviews system now';
-		$this->shell->content->values = array(
-			'username'	=> '',
-			'email'			=> '',
-			'password'	=> '',
-		);
 		
 		if(empty($_POST))
 			die($this->shell);
@@ -100,16 +54,10 @@
 		$post->pre_filter('trim');
 		$post->add_rules('email', 'required', 'valid::email'); 
 		$post->add_rules('username', 'required', 'valid::alpha_numeric');
-		$post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');
-		$values = array(
-			'email'		=> '',
-			'username'	=> '',
-			'password'	=> '',
-			'password2'	=> '',
-		);	
+		$post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');	
 		if(!$post->validate())
 		{
-			$this->shell->content->alert = alerts::display(array('error'=>'Invalid Fields'));
+			$this->shell->content->errors = $post->errors();
 			die($this->shell);		
 		}
 		
@@ -118,14 +66,14 @@
 		# unique username.
 		if(!$new_owner->username_available($_POST['username']))
 		{
-			$this->shell->content->alert = alerts::display(array('error'=>'Username Already Exists!'));
+			$this->shell->content->errors = 'Username Already Exists!';
 			die($this->shell);			
 		}
 		
 		# unique email.
 		if(!$new_owner->email_available($_POST['email']))
 		{
-			$this->shell->content->alert = alerts::display(array('error'=>'Email Already Exists!'));
+			$this->shell->content->errors = 'Email Already Exists!';
 			die($this->shell);			
 		}
 		
@@ -140,9 +88,13 @@
 		$new_site->add($new_owner);
 		$new_site->save();
 		
+		#log the user in and take to admin
+		$this->owner->force_login($new_owner->username);
+		url::redirect('/admin');
+		/*
 		$url = 'http://'.$new_owner->username .'.'. ROOTDOMAIN . "/admin?action=force&name=$new_owner->username&tkn=$new_owner->token";
-		
 		url::redirect($url);
+		*/
  }
  
 /*
@@ -186,4 +138,4 @@
 		die($this->shell);
 	}
 		
-} // End admin Controller
+} // End home Controller

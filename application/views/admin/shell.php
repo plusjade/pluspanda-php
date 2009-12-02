@@ -21,7 +21,14 @@ if(isset($login)):
 else:
 ?>
 <div id="wrapper">
-	<div id="top"><a href="/admin?action=logout">Logout</a></div>
+	<div id="top">
+		<ul>
+			<li><a href="/">Return Home</a></li>
+			<li><a href="/forum">Go To Forum</a></li>
+			<li><a href="/admin/install/widget" target="_blank">View Widget</a></li>
+			<li><a href="/admin?action=logout">Logout</a></li>
+		</ul>
+	</div>
 	<div id="server_response">
 		<span class="rsp"></span>
 		<div class="load" style="display:none">
@@ -30,14 +37,14 @@ else:
 	</div>
 		 
 	<div id="header">
-		<h1>PlusPanda</h1>
+		<!--<h1>PlusPanda</h1>-->
 	</div>
 
     <div id="content_wrapper">
 
 
    <div id="sidebar">
-			<h3>Administration</h3>
+			<h3>Admin Panel</h3>
 			<ul>
 				<li><a href="/admin" <?php echo $active['dashboard']?>><img src="/static/admin/images/001_20.png" width="24" height="24" alt="Home" />Dashboard</a></li>
 				<li><a href="/admin/categories" <?php echo $active['categories']?>><img src="/static/admin/images/001_43.png" width="24" height="24" alt="Folders" />Categories</a></li>
@@ -45,7 +52,6 @@ else:
 				<li><a href="/admin/customers" <?php echo $active['customers']?>><img src="/static/admin/images/001_14.png" width="24" height="24" alt="Favourites" />Customers</a></li>
 				<li><a href="/admin/install" <?php echo $active['install']?>><img src="/static/admin/images/accept.png" width="24" height="24" alt="Installation" />Installation</a></li>
 				<li><a href="/admin/account" <?php echo $active['account']?>><img src="/static/admin/images/001_42.png" width="24" height="24" alt="Account" />Account</a></li>
-				<li><a href="/admin?action=logout" <?php echo $active['logout']?>><img src="/static/admin/images/delete.png" width="24" height="24" alt="Logout" />Logout</a></li>
 		 </ul>
     </div>
     

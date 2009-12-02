@@ -9,6 +9,7 @@
 	public function __construct()
 	{			
 		parent::__construct();
+		
 	}
 
 
@@ -28,6 +29,7 @@
 		
 		$content = new View('admin/dashboard');
 
+	
 		$site = ORM::factory('site', $this->site_id);
 		$reviews = ORM::factory('review')
 			->where('site_id',$this->site_id)
@@ -81,9 +83,14 @@
 
 		# if Post is good, atttempt to log owner in.		
 		if($post->validate())
-			if($this->owner->login($_POST['username'], $_POST['password'], $this->site_id))
+			if($this->owner->login($_POST['username'], $_POST['password'], 0))
+			{	
+				if(isset($_GET['ref']))
+					url::redirect($_GET['ref']);
+				
 				url::redirect('/admin');
-		
+			}
+			
 		# error
 		$this->shell->login->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
 		$this->shell->login->values = $_POST;
@@ -117,7 +124,7 @@
 	private function logout()
 	{
 		$this->owner->logout(TRUE);
-		url::redirect('/admin');
+		url::redirect('/');
 	}
 	
  

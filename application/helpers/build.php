@@ -8,7 +8,6 @@
 class build_Core {
 
 
-
 /*
  * build the top tag select filter.
  */
@@ -183,8 +182,32 @@ class build_Core {
 		<?php
 		return ob_get_clean();
 	}
+
+
+/*
+ * centralize the embed codes
+ */
+	public static function embed_code($apikey, $type=NULL, $jquery=TRUE)
+	{
+		$jquery = ($jquery) ? '': '&jquery=false';
+		ob_start();
+		?>
+		<div id="plusPandaYes"></div>
+		<script type="text/javascript" src="http://<?php echo ROOTDOMAIN?>?apikey=<?php echo $apikey?>&fetch=widget<?php echo $jquery?>" charset="utf-8"></script>
+		<?php
+		if('fake' == $type)
+			return str_replace(
+				array('<','>',"\n","\r","\t"),
+				array('&lt;','&gt;'),
+				ob_get_clean());
+		
+		return ob_get_clean();	
+	}
 	
 	
+/*
+ * centralize the timeago html
+ */	
 	public static function timeago($date)
 	{
 		ob_start();

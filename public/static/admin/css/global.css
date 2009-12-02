@@ -93,7 +93,21 @@ dd 		{
 		LAYOUT
 ------------------------------- */
 
-#top			{ height: 20px; text-align:right;}
+#top {
+min-width:900px;
+font-size:0.9em;
+text-align:center;
+}
+#top ul{
+list-style:none; 
+ padding:5px 0;}
+#top ul li{display:inline;  margin:0 6px;}
+#top ul li a{
+background:#333;padding:5px 10px; color:#fff;
+text-decoration:none;
+}
+#top ul li a:hover{background:#cc0000}
+
 #header	{
 min-width:900px;
 height: 80px;

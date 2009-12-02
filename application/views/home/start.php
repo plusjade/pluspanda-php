@@ -6,24 +6,25 @@
 		Hurry! Get a Plus account <span>FREE FOR LIFE</span> during December.
 		We need 100 accounts so be sure and let your buddies know!
 	</div>
-	<div id="signup-form">	
-		<?php if(isset($alert)) echo $alert?>	
-		<form action="/start" method="POST">			
-			<label>Username</label>
-			<input name="username" type="text" class="input large" value="<?php echo $values['username']?>" />
-			<br/>
-			<label>Email</label>
-			<input name="email" type="text" class="input large" value="<?php echo $values['email']?>" />
-					
-			<label>Password</label>
-			<input name="password" type="password" class="input large" value="<?php echo $values['password']?>" />
-			<br/>
-			<label>Confirm Password</label>
-			<input name="password2" type="password" class="input large"/>
-			
-			<p class="buttons" style="margin-top:15px;">	
+	
+	<?php if(isset($errors)) echo val_form::show_error_box($errors);?>
+		
+	<div id="signup-form">			
+		<form action="/start" method="POST">
+			<?php
+			$fields = array(
+				'username'	=> array('Username','input','text_req','',''),
+				'email'			=> array('Email','input','text_req','',''),
+				'password'	=> array('Password','password','text_req','',''),
+				'password2'	=> array('Confirm Password','password','text_req','',''),
+			);
+			if(!isset($values)) $values = array();
+			if(!isset($errors) OR !is_array($errors)) $errors = array();
+			?>
+			<?php echo val_form::generate_fields($fields, $values, $errors);?>
+			<fieldset class="buttons" style="margin-top:15px;">	
 				<button type="submit" name="Submit" id="button" class="positive">Sign Up!</button>
-			</p>
+			</fieldset>
 		</form>
 	</div>
 	<br/><br/>

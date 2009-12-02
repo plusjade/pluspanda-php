@@ -13,30 +13,37 @@ class Live_Controller extends Controller {
 
 	public $active_tag;
 	public $active_sort;
-	public $shell;
+	public $active_page;
 	public $is_api = FALSE;
 	public $page_name;
 	
-	public function __construct($page_name='', $type=FALSE)
+	public function __construct($site, $page_name='', $type=FALSE)
 	{
 		parent::__construct();
 
-		# setup the shell
-		$this->shell = new View('live/shell');
+		$this->site				= $site;
+		$this->apikey			= $site->id;
+		$this->site_name	= $site->subdomain;
+		$this->site_id		= $site->id;
+		$this->theme			= (empty($site->theme)) ? 'gray' : $site->theme;
+		$this->page_name	= $page_name;
+		
 		# setup active states.
-		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
-		$this->active_sort = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
-		$this->active_page = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;
+		$this->active_tag		= (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
+		$this->active_sort	= (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
+		$this->active_page	= (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;	
 		
-		$this->page_name = $page_name;
 		if('api' == $type)
+		{
 			$this->is_api = TRUE;
-		
+			$this->_ajax();
+		}
+		/*
 		# fast-track ajax
 		if(request::is_ajax())
 			$this->_ajax();
+		*/
 	}
-
 
 /* 
  * The index is only a wrapper for Standalone js-disabled mode mode.
@@ -44,15 +51,13 @@ class Live_Controller extends Controller {
  */
 	public function index()
 	{	
-		$site = ORM::factory('site', $this->site_id);
-
 		if($_POST)
-			$add_review = self::_submit_handler('normal');
+			$add_review = self::submit_handler('normal');
 		else
 		{
 			$add_review = new View('live/add_review');
 			$add_review->page_name = $this->page_name;
-			$add_review->tags = $site->tags->select_list('id','name');
+			$add_review->tags = $this->site->tags->select_list('id','name');
 			$add_review->values = array(
 				'body'					=>'',
 				'display_name'	=> '',
@@ -60,14 +65,17 @@ class Live_Controller extends Controller {
 			);
 		}
 
+		# setup the shell
+		$shell = new View('live/shell');
+	
 		$content = new View('live/wrapper');
-		$content->site = $site;
+		$content->site = $this->site;
 		$content->set_global('active_tag', $this->active_tag);
 		$content->set_global('active_sort', $this->active_sort);
 		$content->get_reviews = $this->get_reviews();
 		$content->add_review = $add_review;
-		$this->shell->content = $content;
-		echo $this->shell->render();
+		$shell->content = $content;
+		echo $shell->render();
 	}
 
 	
@@ -110,10 +118,8 @@ class Live_Controller extends Controller {
 		->orderby($sort)
 		->count_all();
 		
-		# if pagination
-		$offset = ($this->active_page*10) - 10;
-
 		# get the appropriate reviews based on page.
+		$offset = ($this->active_page*10) - 10;
 		$reviews = ORM::factory('review')
 		->where($field, $value)
 		->orderby($sort)
@@ -166,16 +172,13 @@ class Live_Controller extends Controller {
 				$data['tag_name'] = $review->tag->name;
 				$review_array[] = $data;
 			}
-			# debug: http://test.localhost.net/?tag=1&sort=highest&jsoncallback=pandaLoadRev
-			# echo kohana::debug($review_array);die();
-			
+
 			$json_reviews = json_encode($review_array);
 			$json_summary = json_encode($ratings_dist); 
 
 			#pagination html.
-			$pagination = ereg_replace("[\n\r\t]", '', $pagination);
-			
-			
+			$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
+				
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 			header('Content-type: text/plain');
@@ -204,7 +207,7 @@ class Live_Controller extends Controller {
 		ajaxP = posted via ajax
 		ajaxG = GET via widget
  */
-	public function _submit_handler()
+	private function submit_handler()
 	{
 		$data = ($this->is_api) ? $_GET : $_POST;
 
@@ -223,13 +226,10 @@ class Live_Controller extends Controller {
 			if($this->is_api)
 				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
 
-			# get tags.
-			$site = ORM::factory('site', $this->site_id);
-			
 			$view = new View('live/add_review');
 			$view->errors = $post->errors();
 			$view->values = $data;
-			$view->tags		= $site->tags->select_list('id','name');
+			$view->tags		= $this->site->tags->select_list('id','name');
 			$view->page_name = $this->page_name;
 			return $view;
 		}
@@ -273,21 +273,85 @@ class Live_Controller extends Controller {
 		return $view;
 	}
 
-
+	
+	
 /*
- * ajax handler. routes ajax calls to appropriate private method.
+ * build the embeddable widget javascript environment.
+ * cache the result
+ */
+	private function widget()
+	{			
+		# get all the html interfaces.		
+		$tag_list = build::tag_filter($this->site->tags, $this->active_tag);
+		$add_wrapper = build::add_wrapper();
+		$summary = build::summary(array(1));
+		$sorters = build::sorters($this->active_tag, $this->active_sort,'', 'widget');
+		# add review form
+		$form = new View('live/add_review');
+		$form->active_tag = $this->active_tag;
+		$form->tags = $this->site->tags->select_list('id','name');
+		$form->widget = 'yes';
+		
+		$keys = array("\n","\r","\t");
+		
+		# build an object to hold the html.
+		$html = new StdClass(); 
+		$html->tag_list			= str_replace($keys, '', $tag_list);
+		$html->add_wrapper	= str_replace($keys, '', $add_wrapper);
+		$html->summary			= str_replace($keys, '', $summary);
+		$html->form					= str_replace($keys, '', $form->render());
+		$html->sorters			= str_replace($keys, '', $sorters);
+		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
+
+		# build object to hold status msg views.
+		$success	= View::factory('live/status', array('success'=>true))->render();
+		$error		= View::factory('live/status', array('success'=>false))->render();
+		$status = new StdClass();
+		$status->success = str_replace($keys, '', $success);
+		$status->error	 = str_replace($keys, '', $error);
+		
+		# load the widget_js view and place the html as json.
+		$widget_js = new View('live/widget_js');
+		$widget_js->url = 'http://' . ROOTDOMAIN .'?apikey='.$this->apikey;
+		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
+		
+		$widget_js->json_html = json_encode($html);
+		$widget_js->json_status = json_encode($status);
+
+		# output the view then cache the result.		
+		ob_start();
+		echo $widget_js;
+		file_put_contents(
+			DOCROOT . "widget/js/$this->apikey.js",
+			ob_get_contents()."\n//cached ".date('m.d.y g:ia e')
+		);
+	}
+	
+	
+/*
+ * ajax handler.
+ * routes ajax calls to appropriate private method.
  */ 	
 	public function _ajax()
 	{
 		# submit a review via POST, 
 		if($_POST)
-			die($this->_submit_handler('ajaxP'));
+			die($this->submit_handler('ajaxP'));
 
-		# get reviews
+		# fetch the widget environment.
+		if(isset($_GET['fetch']) AND 'widget' == $_GET['fetch'])
+			die($this->widget());
+			
+		# submit a review via GET, return json status
+		if(isset($_GET['submit']) AND 'review' == $_GET['submit'])			
+			die($this->submit_handler());
+			
+		# get reviews in json
 		if(isset($_GET['tag']))
 			die($this->get_reviews('ajax'));
 			
-		die('invalid data');
-	}	
+		die('invalid parameters');
+	}		
+	
 	
 } // End live Controller

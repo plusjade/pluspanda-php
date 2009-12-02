@@ -5,12 +5,20 @@
 	<title><?php if(isset($title)) echo $title?> | PlusPanda</title>
 	<meta name="description" content="Embedable customer reviews." />
 	<link type="text/css" href="/static/home/css/global.css" media="screen" rel="stylesheet" />
+	<link type="text/css" href="/static/home/css/forum.css" media="screen" rel="stylesheet" />
+	
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/addon.js"></script>
+
 </head>
 <body>
 
 <div id="outer">
 	<div class="contentwidth main">
+		
+		<a href="/admin" id="login-link"><?php echo $login_link?></a>
+		
+		
 		<div class="logo">
 				<h1><a href="/">PlusPanda</a></h1>
 		</div>
@@ -22,6 +30,7 @@
 		'start'		=> 'Get Started',
 		'demo'		=> 'Demo',
 		'faq'			=> 'FAQ',
+		'forum'		=> 'Forum',
 		'contact'	=> 'Contact'
 	);
 	foreach($links as $url => $text)

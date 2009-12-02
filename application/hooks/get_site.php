@@ -1,95 +1,67 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /*
- * This is the Main GateKeeper to PlusPanda.
- * fetches and scopes to appropriate site account.
+ * This is the Main GateKeeper to PlusPanda.com
+ * This site serves 3 purposes:
+ * 1. Handles api calls for the widget.
+ * 2. Loads the static marketing site.
+ * 3. Loads the admin panel.
  */
 function get_site()
-{
-	$session = Session::instance();
-	$domain_array = explode('.', $_SERVER['HTTP_HOST']);	
-	
-	# if the url = [subdomain].localhost.net
-	if(in_array(ROOTNAME, $domain_array))
+{	
+	# is this an API call?
+	if(isset($_GET['apikey']))
 	{
-		$field_name	= 'subdomain';
-		$site_name	= $domain_array['0'];
-
-		# if no subdomain, default to marketing website.
-		if('2' == count($domain_array))
-			$site_name = ROOTACCOUNT;
-	}
-	else
-	{
-		# custom domain
-		#if ( isset($_SESSION['site_name']) )
-			#return TRUE;
+		# fetch the widget environment (should be cached)
+		if(isset($_GET['fetch']) AND 'widget' == $_GET['fetch'])
+		{
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Content-type: text/javascript');
 			
-		$field_name	= 'custom_domain';
-		$site_name	= $_SERVER['HTTP_HOST'];
-	}
+			if(empty($_GET['jquery']))
+				readfile(DOCROOT . 'static/js/jquery.js');		
+			readfile(DOCROOT . 'static/js/addon.js');
+			
+			$js_cache = DOCROOT . "widget/js/".$_GET['apikey'].'.js';
+			if(file_exists($js_cache))
+			{
+				readfile($js_cache);
+				die();
+			}
+		}
 
-	$site = ORM::factory('site')
-		->where(array($field_name => $site_name))
-		->find();
-	if (!$site->loaded)
-	{
-		header("HTTP/1.0 404 Not Found");
-		die('pluspanda site does not exist');
-	}
+		# get the account.		
+		$site = ORM::factory('site', $_GET['apikey']);
+		# should we make this a 404 since its an api call?
+		if(!$site->loaded)
+			die('invalid api key');
+		
+		# send to the live controller! bye bye!
+		$live = new Live_Controller($site, NULL, 'api');		
+	}	
 	
-	# IMPORTANT: sets the site name & non-sensitive site_data.
-	$_SESSION['site_name']	= $site->subdomain;
-	$_SESSION['site_id']	= $site->id;
-	$_SESSION['theme']	= $site->theme;
-	
-/* ---- ROUTE THE REQUEST ---- */
-
-	# get the page name if set.
+	# get the page_name.
 	$url_array = Uri::url_array();
 	$page_name = (empty($url_array['0'])) 
 		? null
 		: $url_array['0'];
-
-	# hack to make the homepage for the rootaccount available.
-	# fix this, this is always true =_0
-	if($site_name == ROOTACCOUNT)
+	
+	# if admin, we are done here.
+	if('admin' == $page_name)
+		return FALSE;
+	
+	if('forum' == $page_name)
 	{
-		if(empty($page_name))
-		{
-			$home = new Home_Controller();
-			die($home->index());
-		}
-		$pages = array('start','demo','reviews','faq', 'contact');
-		if(in_array($page_name, $pages))
-		{
-			$home = new Home_Controller();
-			die($home->$page_name());		
-		}
-		
-		# make reviews available at a page-name.
-		if('all_reviews' == $page_name)
-		{
-			$live = new Live_Controller($page_name);
-			die($live->index());
-		}
+		$parent = ORM::factory('forum',1);
+		$forum = new Forum_Controller();
+		die($forum->index($parent));
 	}
-
-		
-	# is this an API call?
-	if('api' == $page_name)
-	{
-		$live = new Live_Controller(NULL, 'api');
-		
-		# submit a review via GET, return JSONP
-		if(isset($_GET['submit']) AND 'review' == $_GET['submit'])
-			die($live->_submit_handler());
-
-		# send to _ajax handler for raw data reponse.
-		die($live->_ajax());
-	}	
-
-	/** default controller is "live" **/
+	
+	# load the marketing site.	
+	new Home_Controller($page_name);
+	die();
+	/** default controller is "home" **/
 }
 Event::add('system.ready', 'get_site');
 /* end */

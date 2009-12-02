@@ -12,8 +12,8 @@
  */
 define('ROOTNAME', 'pluspanda');
 define('ROOTDOMAIN', 'pluspanda.com');
-define('ROOTACCOUNT', 'panda');
-define('ROOTSITEID', 1);
+define('ROOTACCOUNT', 'jade');
+define('ROOTSITEID', 2);
 
 /**
  * Define the website environment status. When this flag is set to TRUE, some

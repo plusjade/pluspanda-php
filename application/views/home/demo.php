@@ -2,8 +2,7 @@
 <h2 class="header">Go Ahead, Try it Out!</h2>
 
 <div class="demo-widget">
-	<div id="plusPandaYes"><a href="http://<?php echo ROOTACCOUNT .'.'. ROOTDOMAIN?>">View Our Customer Reviews!</a>
-	</div><script type="text/javascript" src="http://<?php echo ROOTACCOUNT .'.'. ROOTDOMAIN?>/admin/js/widget?jquery=false" charset="utf-8"></script>
+<?php echo build::embed_code(1, NULL,FALSE)?>
 </div>
 
 <div class="demo-text">	
@@ -12,7 +11,8 @@
 		PlusPanda works like a widget. Just add a piece of custom code wherever you want your reviews to appear and that's it!
 		
 		<br/><br/>Sample Code:<br/>
-		<textarea style="width:99%; height:100px; border:1px solid #777; background:#ffffcc;font-size:0.9em">&lt;div id="plusPandaYes"&gt;&lt;a href="http://jade.pluspanda.com"&gt;View Our Customer Reviews!&lt;/a&gt; &lt;/div&gt;&lt;script type="text/javascript" src="http://test.panda.com/admin/js/widget" charset="utf-8"&gt;&lt;/script&gt;</textarea>
+		<textarea style="width:99%; height:80px; border:1px solid #777; background:#ffffcc;font-size:0.9em"><?php echo build::embed_code('abcd','fake')?></textarea>
+	
 	</div>
 	
 	<h6>Customers Never Leave Your Site.</h6>

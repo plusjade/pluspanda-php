@@ -30,6 +30,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 			// Everything is okay so far
 			$status = TRUE;
 
+			/*
 			if ( ! empty($role))
 			{
 
@@ -65,6 +66,8 @@ class Auth_ORM_Driver extends Auth_Driver {
 					$status = $owner->has($role);
 				}
 			}
+		
+			*/
 		}
 
 		return $status;
@@ -83,7 +86,9 @@ class Auth_ORM_Driver extends Auth_Driver {
 		// If the passwords match, and owner hass access to this site
 		// perform a login
 		#if ($owner->has(ORM::factory('role', 'login')) AND $owner->password === $password)
-		if ($owner->has(ORM::factory('site', $site_id)) AND $owner->password === $password)
+		# for logging into own site...
+		#if ($owner->has(ORM::factory('site', $site_id)) AND $owner->password === $password)
+		if($owner->password === $password)
 		{
 			if ($remember === TRUE)
 			{

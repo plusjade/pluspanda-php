@@ -8,7 +8,7 @@
 		: '<div class="attention">Hello! Let\'s Get Started!</div>';
 	?>
 	
-	<form action="/admin" method="POST">
+	<form action="/admin<?php if(isset($_GET['ref'])) echo '?ref='. $_GET['ref']?>" method="POST">
 		<p><label>Username</label>
 	  	<input name="username" type="text" class="input large" value="username" />
 	  </p>

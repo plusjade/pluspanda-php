@@ -3,7 +3,7 @@
 /*
  * Build a dynamic route for our 'admin' requests
  */
-$config['_default'] = 'live';
+$config['_default'] = 'home';
 
 $parts = explode("/", $_SERVER['REQUEST_URI']);
 if(! empty($parts['1']) AND ($parts['1'] == 'admin'))

@@ -34,4 +34,10 @@
 		die($this->shell);
 	}
 
+	
+	public function widget()
+	{
+		$content = new View('admin/widget');
+		die($content);
+	}
 } // End install Controller

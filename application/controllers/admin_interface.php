@@ -9,7 +9,8 @@
 	// shell view name
 	public $shell = 'admin/shell';
 	public $active;
-
+	public $site_id = null;
+	
 	/**
 	 * shell loading and setup routine.
 	 */
@@ -31,6 +32,16 @@
 		
 		# Auth Instance for editing site capability
 		$this->owner = new Auth();	
+		
+		# setup vars for logged in users...
+		if($this->owner->logged_in())
+		{
+			$owner = $this->owner->get_user();
+			$site = ORM::factory('site', $owner->username);
+			$this->site_id = $site->id;
+		}
+		
+		
 	}
 
 	
