@@ -4,7 +4,7 @@ class Site_Model extends ORM {
 	
 	// Relationships
 	protected $has_and_belongs_to_many = array('owners');
-	protected $has_many = array('tags');
+	protected $has_many = array('categories', 'tags');
 
 
 	public function __set($key, $value)

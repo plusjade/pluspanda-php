@@ -1,6 +1,6 @@
 <?php
 
-class Forum_Controller extends Public_Controller {
+class Forum_Controller extends Public_Interface_Controller {
 
 	function __construct()
 	{

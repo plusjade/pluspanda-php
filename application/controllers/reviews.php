@@ -1,245 +1,364 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
-
 /**
-	* Manage the review categories. (admin mode)
-	*/
-	
- class Reviews_Controller extends Admin_Interface_Controller {
+ * Renders the Live Customer Reviews Engine.
+ * 3 types of data output formats:
+		1. Standalone js-disabled Mode.
+				if no javascript, functions as normal, outputs complete views.
+		2. Standalone Ajax Mode.
+				updates via ajax, only outputs data view.
+		3. Widget Ajax via JSONP.
+				called externally outputs raw json to be formatted other end.
+ */
+class Reviews_Controller extends Controller {
 
- 
 	public $active_tag;
-	public $active_rating;
-	public $active_range;
+	public $active_sort;
 	public $active_page;
+	public $is_api = FALSE;
+	public $page_name;
 	
-	public function __construct()
-	{			
+	public function __construct($site=null, $page_name='', $type=FALSE)
+	{
+		if(empty($site))
+			die('invalid');
+			
 		parent::__construct();
-		if(!$this->owner->logged_in())
-			url::redirect('/admin');
 
-		$this->active_tag = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
-		$this->active_rating = (isset($_GET['rating'])) ? $_GET['rating'] : 'all';
-		$this->active_range = (isset($_GET['range'])) ? $_GET['range'] : 'all';
-		$this->active_page = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;
+		$this->site				= $site;
+		$this->apikey			= $site->id;
+		$this->site_name	= $site->subdomain;
+		$this->site_id		= $site->id;
+		$this->theme			= (empty($site->theme)) ? 'gray' : $site->theme;
+		$this->page_name	= $page_name;
 		
-	}
-	
-/*
- * manage reviewable categories.
- * this is the public wrapper.
- */
-	public function index($action=FALSE)
-	{	
-		$content = new View('admin/reviews_wrapper');
-
-
-		# carry out the action so view is up-to-date.
-		if($action)
-			$content->response = alerts::display($this->$action());
-	
-		$site = ORM::factory('site', $this->site_id);
+		# setup active states.
+		$this->active_tag		= (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
+		$this->active_sort	= (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
+		$this->active_page	= (isset($_GET['page']) AND is_numeric($_GET['page'])) ?	 $_GET['page'] : 1;	
 		
-		$content->categories = build::tag_select_list($site->tags, $this->active_tag, array('all'=>'All'));
-		$content->ratings = build::rating_select_list($this->active_rating);
-		$content->range = build::range_select_list($this->active_range);
-		$content->reviews = $this->get_reviews();
-
-		
+		if('api' == $type)
+		{
+			$this->is_api = TRUE;
+			$this->_ajax();
+		}
+		/*
+		# fast-track ajax
 		if(request::is_ajax())
-			die($content);
-		
-		$this->shell->content = $content;
-		$this->active['reviews'] = 'class="active"';
-		$this->shell->active = $this->active;
-		die($this->shell);
+			$this->_ajax();
+		*/
 	}
 
+/* 
+ * The index is only a wrapper for Standalone js-disabled mode mode.
+ * any ajax or widget functionality will not use this at all.
+ */
+	public function index()
+	{	
+		if($_POST)
+			$add_review = self::submit_handler('normal');
+		else
+		{
+			$add_review = new View('live/add_review');
+			$add_review->page_name = $this->page_name;
+			$add_review->categories = $this->site->categories->select_list('id','name');
+			$add_review->values = array(
+				'body'	=>'',
+				'name'	=> '',
+				'email'	=> ''
+			);
+		}
+
+		# setup the shell
+		$shell = new View('live/shell');
+	
+		$content = new View('live/wrapper');
+		$content->site = $this->site;
+		$content->set_global('active_tag', $this->active_tag);
+		$content->set_global('active_sort', $this->active_sort);
+		$content->get_reviews = $this->get_reviews();
+		$content->add_review = $add_review;
+		$shell->content = $content;
+		echo $shell->render();
+	}
 
 	
+/* ------------- modular methods (ajaxable) -------------  */
+	
 /*
- * get the reviews data
+ * get the reviews data depending on how we are asking for it.
  */
-	private function get_reviews()
+	private function get_reviews($format=NULL)
 	{
 		# defaults
 		$field	= 'site_id';
 		$value	= $this->site_id;
 		$sort		= array('created' => 'desc');
-		$where = array();
-		
+
 		# filter by tag
 		if(is_numeric($this->active_tag))
 		{
-			$field = 'tag_id';
+			$field = 'category_id';
 			$value = $this->active_tag;
 		}
-		$where[$field] = $value;
 		
-		# filter by rating
-		if(is_numeric($this->active_rating))
+		# sort by
+		switch($this->active_sort)
 		{
-			$where['rating'] = $this->active_rating;
+			case 'oldest':
+				$sort = array('created' => 'asc');
+				break;
+			case 'highest':
+				$sort = array('rating' => 'desc');
+				break;
+			case 'lowest':
+				$sort = array('rating' => 'asc');
+				break;
 		}
-	
-		$now = time();
-		#number of seconds in ..
-		$day = 86400;		
 
-		# filter by date
-		switch($this->active_range)
-		{
-			case 'today':
-			
-				break;
-			case 'last7':
-				$where['created >='] = time() - $day*7;
-				break;
-			case 'last14':
-				$where['created >='] = time() - $day*14;
-				break;
-			case 'last30':
-				$where['created >='] = time() - $day*30;
-				break;
-			case 'ytd':
-				$where['created >='] = mktime(0, 0, 0, 1, 1, date("m Y"));
-				break;
-		}
-		
 		# get full count of reviews for this tag.
 		$total_reviews = ORM::factory('review')
-		->where($where)
+		->where($field, $value)
 		->orderby($sort)
 		->count_all();
 		
-		# if pagination
-		$offset = ($this->active_page*10) - 10;
-
 		# get the appropriate reviews based on page.
+		$offset = ($this->active_page*10) - 10;
 		$reviews = ORM::factory('review')
-		->where($where)
+		->where($field, $value)
 		->orderby($sort)
 		->limit(10, $offset)
 		->find_all();
 
 		# build the pagination html
 		$pagination = new Pagination(array(
-			'base_url'			 => "/admin/reviews?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
+			'base_url'			 => "/$this->page_name?tag=$this->active_tag&sort=$this->active_sort&page=",
 			'current_page'	 => $this->active_page, 
 			'total_items'    => $total_reviews,
 			'style'          => 'digg' ,
 			'items_per_page' => 10
+			
 		));
 		
+		# Return Standalone Ajax - 
+		# reviews_data (sorters & pagination).
+		if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
+		{
+			$view = new View('live/reviews_data');
+			$view->reviews = $reviews;
+			$view->pagination = $pagination;
+			die($view);
+		}
 
-		$view = new View('admin/reviews_data');
-		$view->reviews = $reviews;
+		# else we are returning an entirely new tag view.
+		
+		# get summary data: TODO distribution as function of time??
+		$summary = ORM::factory('review')
+		->select('*, COUNT(reviews.id) AS total')
+		->where($field, $value)
+		->orderby(array('rating' => 'desc'))
+		->groupby('rating')
+		->find_all();
+		# build a ratings distribution array.
+		$ratings_dist = array();
+		foreach($summary as $rating)
+			$ratings_dist[$rating->rating] = $rating->total;
+			
+
+		# Return JSON to widget
+		if($this->is_api)
+		{
+			$review_array = array();
+			foreach($reviews as $review)
+			{
+				$data = $review->as_array();
+				$data['name'] = $review->customer->name;
+				$data['category_name'] = $review->category->name;
+				$review_array[] = $data;
+			}
+
+			$json_reviews = json_encode($review_array);
+			$json_summary = json_encode($ratings_dist); 
+
+			#pagination html.
+			$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
+				
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			header('Content-type: text/plain');
+			#header('Content-type: application/json');
+			die("pandaDisplayRevs($json_reviews);pandaDisplaySum($json_summary);pandaPages('$pagination')");
+		}
+		
+		# Return New Tag ajax view.
+		# or standalone non-ajax.
+				
+		$view = new View('live/get_reviews');
+		$view->reviews = $reviews;		
+		$view->ratings_dist = $ratings_dist;
 		$view->pagination = $pagination;
+		$view->set_global('active_tag', $this->active_tag);
+		$view->set_global('active_sort', $this->active_sort);
 		return $view;
+	}
+	
+	
+/*
+ * post review handler.
+ * validates and adds the new review to the site.
+ * $type specifies the way in which the submission is coming.
+ * normal = non javascript request on standalone site.
+		ajaxP = posted via ajax
+		ajaxG = GET via widget
+ */
+	private function submit_handler()
+	{
+		$data = ($this->is_api) ? $_GET : $_POST;
+
+		# validate the form values.
+		$post = new Validation($data);
+		$post->pre_filter('trim');
+		$post->add_rules('body', 'required');
+		$post->add_rules('name', 'required');
+		$post->add_rules('email', 'required');
+		
+		# on error
+		if(!$post->validate() OR empty($data['rating']))
+		{
+			# this should rarely happen due to client-side js validation...
+			# widget GET error.
+			if($this->is_api)
+				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
+
+			$view = new View('live/add_review');
+			$view->errors = $post->errors();
+			$view->values = $data;
+			$view->categories		= $this->site->categories->select_list('id','name');
+			$view->page_name = $this->page_name;
+			return $view;
+		}
+		
+		# on valid submission:
+		
+		# load customer
+		$customer = ORM::factory('customer')
+			->where('site_id', $this->site_id)
+			->find($data['email']);
+		
+		# if customer does not exist, create him.
+		if(!$customer->loaded)
+		{
+			$customer = ORM::factory('customer');
+			$customer->site_id = $this->site_id;
+			$customer->email = $data['email'];
+			$customer->name = $data['name'];
+			$customer->save();
+		}
+		
+		# add review
+		$new_review = ORM::factory('review');
+		$new_review->site_id	= $this->site_id;
+		$new_review->category_id	= $data['category'];
+		$new_review->customer_id	= $customer->id;
+		$new_review->body			= $data['body'];
+		$new_review->rating		= $data['rating'];
+		$new_review->save();
+
+		# return what kind of data??
+		
+		# widget GET 
+		if($this->is_api)
+			die('pandaSubmitRsp({"code":1, "msg":"Yay!"})');
+
+	
+		# stadalone return status
+		$view = new View('live/status');
+		$view->success = true;
+		return $view;
+	}
+
+	
+	
+/*
+ * build the embeddable widget javascript environment.
+ * cache the result
+ */
+	private function widget()
+	{			
+		$keys = array("\n","\r","\t");
+
+		# get all the html interfaces.		
+		$tag_list = build::tag_filter($this->site->categories, $this->active_tag);
+		$add_wrapper = build::add_wrapper();
+		$summary = build::summary(array(1));
+		$sorters = build::sorters($this->active_tag, $this->active_sort,'', 'widget');
+		$review_html = build::review_html();
+		
+		# add review form
+		$form = new View('live/add_review');
+		$form->active_tag = $this->active_tag;
+		$form->categories = $this->site->categories->select_list('id','name');
+		$form->widget = 'yes';
+		
+		
+		# build an object to hold the html.
+		$html = new StdClass(); 
+		$html->tag_list			= str_replace($keys, '', $tag_list);
+		$html->add_wrapper	= str_replace($keys, '', $add_wrapper);
+		$html->summary			= str_replace($keys, '', $summary);
+		$html->form					= str_replace($keys, '', $form->render());
+		$html->sorters			= str_replace($keys, '', $sorters);
+		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
+
+		# build object to hold status msg views.
+		$success	= View::factory('live/status', array('success'=>true))->render();
+		$error		= View::factory('live/status', array('success'=>false))->render();
+		$status = new StdClass();
+		$status->success = str_replace($keys, '', $success);
+		$status->error	 = str_replace($keys, '', $error);
+		
+		# load the widget_js view and place the html as json.
+		$widget_js = new View('live/widget_js');
+		$widget_js->url = 'http://' . ROOTDOMAIN ."?apikey=$this->apikey&service=reviews";
+		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
+		$widget_js->review_html = str_replace($keys, '', $review_html);
+		
+		$widget_js->json_html = json_encode($html);
+		$widget_js->json_status = json_encode($status);
+
+		# output the view then cache the result.		
+		ob_start();
+		echo $widget_js;
+		file_put_contents(
+			DOCROOT . "reviews/js/$this->apikey.js",
+			ob_get_contents()."\n//cached ".date('m.d.y g:ia e')
+		);
+	}
+	
+	
+/*
+ * ajax handler.
+ * routes ajax calls to appropriate private method.
+ */ 	
+	public function _ajax()
+	{
+		# submit a review via POST, 
+		if($_POST)
+			die($this->submit_handler('ajaxP'));
+
+		# fetch the widget environment.
+		if(isset($_GET['fetch']) AND 'reviews' == $_GET['fetch'])
+			die($this->widget());
+			
+		# submit a review via GET, return json status
+		if(isset($_GET['submit']) AND 'review' == $_GET['submit'])			
+			die($this->submit_handler());
+			
+		# get reviews in json
+		if(isset($_GET['tag']))
+			die($this->get_reviews('ajax'));
+			
+		die('invalid parameters');
 	}		
 	
 	
-/*
- * add a new category
- */
-	private function add()
-	{
-		if($_POST)
-		{
-			$max = ORM::factory('tag')
-				->select('MAX(position) as highest')
-				->where('site_id', $this->site_id)
-				->find();		
-				
-			$tag = ORM::factory('tag');
-			$tag->site_id = $this->site_id;
-			$tag->name = mysql_real_escape_string($_POST['name']);
-			$tag->desc = mysql_real_escape_string($_POST['desc']);
-			$tag->position = $max->highest+1;
-			$tag->save();
-			
-			return array('success'=>'Category Added.');
-		}
-		return array('error'=>'Nothing Sent.');
-	}
-
-
-/*
- * delete an existing category
- */
-	private function delete()
-	{
-		if(empty($_GET['tag_id']))
-			return array('error'=>'Nothing Sent.');
-			
-		valid::id_key($_GET['tag_id']);
-		
-		ORM::factory('tag')
-			->where('site_id',$this->site_id)
-			->delete($_GET['tag_id']);
-		
-		return array('success'=>'Category deleted! =(');
-	}
-	
-/*
- * save changes to a category
- */
-	private function save()
-	{
-		if($_POST)
-		{
-			valid::id_key($_POST['id']);
-			$tag = ORM::factory('tag')
-				->where('site_id', $this->site_id)
-				->find($_POST['id']);
-			if(!$tag->loaded)
-				return array('error'=>'Category Does not Exist.');
-				
-			$tag->name = mysql_real_escape_string($_POST['name']);
-			$tag->desc = mysql_real_escape_string($_POST['desc']);
-			$tag->save();
-			
-			return array('success'=>'Changes Saved!');
-		}
-		return array('error'=>'Nothing sent');
-	}
-	
-/*
- * save order positions for categories.
- */
-	private function order()
-	{
-		if(empty($_GET['cat']))
-			return array('error'=>'Nothing Sent.');
-			
-		$db = new Database;
-		foreach($_GET['cat'] as $position => $id)
-			$db->update('tags', array('position' => "$position"), "id = '$id' AND site_id = '$this->site_id'"); 	
-			
-		
-		return array('success'=>'Order Saved!');
-	}
-
-	
-/* 
- * centralize this controllers interface
- * Non-ajax calls get wrapped via the index.
- * ajax calls get fast tracked to their method calls.
- */
-	public function __call($method, $args)
-	{
-		# white-list methods.
-		# note there are methods we don't want in here.
-		# echo kohana::debug(get_class_methods($this));
-		if(!in_array($method, get_class_methods($this)))
-			die('404');
-		
-		if(request::is_ajax())
-			echo alerts::display($this->$method());
-		else
-			$this->index($method);
-		
-		die();
-	}
-	
-} // End categories Controller
+} // End reviews Controller

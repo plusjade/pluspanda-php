@@ -9,14 +9,14 @@
 </div>
 
 <ul id="sortable" class="cat-list">
-<?php foreach($tags as $tag):?>
-	<li id="cat-<?php echo $tag->id?>" class="cat-item cat-sort">
+<?php foreach($categories as $category):?>
+	<li id="cat-<?php echo $category->id?>" class="cat-item cat-sort">
 		<form action="/admin/categories/save" method="POST">
-			<div class="cat-delete buttons"><a href="/admin/categories/delete?tag_id=<?php echo $tag->id?>" class="del-cat" title="Delete Category" alt="Del">&#160;</a></div>
-			<div class="cat-save buttons"><button type="submit" class="save-cat" rel="<?php echo $tag->id?>" title="Save Changes to Category">&#160;</button></div>			
-			<input type="hidden" name="id" value="<?php echo $tag->id?>">
-			Name: <input type="text" name="name" value="<?php echo $tag->name?>" class="cat-name" rel="text_req">
-			<br/>Description: <input type="text" name="desc" value="<?php echo $tag->desc?>" class="cat-desc" rel="text_req">
+			<div class="cat-delete buttons"><a href="/admin/categories/delete?tag_id=<?php echo $category->id?>" class="del-cat" title="Delete Category" alt="Del">&#160;</a></div>
+			<div class="cat-save buttons"><button type="submit" class="save-cat" rel="<?php echo $category->id?>" title="Save Changes to Category">&#160;</button></div>			
+			<input type="hidden" name="id" value="<?php echo $category->id?>">
+			Name: <input type="text" name="name" value="<?php echo $category->name?>" class="cat-name" rel="text_req">
+			<br/>Description: <input type="text" name="desc" value="<?php echo $category->desc?>" class="cat-desc" rel="text_req">
 		</form>
 	</li>
 <?php endforeach;?>

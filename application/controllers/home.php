@@ -4,7 +4,7 @@
 	* all the marketing site pages are here.
  */
 
- class Home_Controller extends Public_Controller {
+ class Home_Controller extends Public_Interface_Controller {
 
 	
 	public function __construct($page_name=NULL)

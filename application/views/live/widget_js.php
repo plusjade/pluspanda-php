@@ -133,7 +133,9 @@ function pandaDisplayRevs(reviews){
 	$(reviews).each(function(){	
 		// format date
 		var date = new Date(this.created*1000);   
-		content += '<div class="review-wrapper"><div class="review-name">Review by <span>'+ this.display_name +'</span></div><div class="review-rating _'+ this.rating +'">&#160;</div><div class="review-body">'+ this.body +'</div> <div class="review-tag"><span>'+ this.tag_name +'</span></div> <div class="review-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div></div>';			
+		content += '<?php echo $review_html?>';
+		
+		//content += '<div class="review-wrapper"><div class="review-name">Review by <span>'+ this.display_name +'</span></div><div class="review-rating _'+ this.rating +'">&#160;</div><div class="review-body">'+ this.body +'</div> <div class="review-tag"><span>'+ this.tag_name +'</span></div> <div class="review-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div></div>';			
 	});
 	$('#plusPandaYes .panda-reviews-list').html(content); 
 	pandaClean();

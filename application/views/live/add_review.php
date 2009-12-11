@@ -23,10 +23,10 @@ $page_name = (isset($page_name)) ? $page_name : '';
 	<?php
 	$ratings = array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5');
 	$fields	 = array(
-		'tag'					=> array('Review For','select','text_req', $tags, $active_tag),
-		'body'				=> array('Review','textarea','text_req', '',''),
-		'display_name'=> array('Name','input','text_req', '',''),
-		'email'				=> array('Email','input','email_req', '',''),
+		'category' => array('Review For','select','text_req', $categories, $active_tag),
+		'body'	=> array('Review','textarea','text_req', '',''),
+		'name'	=> array('Name','input','text_req', '',''),
+		'email'	=> array('Email','input','email_req', '',''),
 	);
 	if(!isset($values)) $values = array();
 	if(!isset($errors)) $errors = array();

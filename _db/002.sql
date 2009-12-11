@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `forum_cat_post_comments` (
   `id` int(9) unsigned NOT NULL AUTO_INCREMENT,
   `fk_site` int(9) unsigned NOT NULL,
   `forum_cat_post_id` int(9) unsigned NOT NULL,
-  `account_user_id` int(9) unsigned NOT NULL,
+  `owner_id` int(9) unsigned NOT NULL,
   `body` text NOT NULL,
   `created` int(10) unsigned NOT NULL,
   `vote_count` int(9) NOT NULL,
@@ -70,8 +70,39 @@ CREATE TABLE IF NOT EXISTS `forum_cat_post_comments` (
 --
 
 CREATE TABLE IF NOT EXISTS `forum_comment_votes` (
-  `account_user_id` int(9) NOT NULL,
+  `owner_id` int(9) NOT NULL,
   `forum_cat_post_comment_id` int(9) NOT NULL,
   `fk_site` int(7) NOT NULL,
-  KEY `author_id` (`account_user_id`)
+  KEY `author_id` (`owner_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+/* make the data ...
+
+INSERT INTO `pluspanda`.`forums` (
+`id` ,
+`fk_site` ,
+`name` ,
+`type` ,
+`view` ,
+`params` ,
+`sticky_posts` ,
+`attributes`
+)
+VALUES (
+NULL , '1', 'blah', 'forums', 'stock', '', '', ''
+);
+
+
+INSERT INTO `forum_cats` (`id`, `forum_id`, `fk_site`, `url`, `name`, `position`) VALUES
+(1, 1, 1, 'feature-requests', 'Feature Requests', 1),
+(2, 1, 1, 'general-feedback', 'General Feedback', 2),
+(3, 1, 1, 'report-bug', 'Report Bugs', 3),
+(4, 1, 1, 'help', 'Help Section', 4);
+
+
+*/
+
+
+
+

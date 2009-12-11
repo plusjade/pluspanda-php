@@ -22,6 +22,8 @@ class Customer_Model extends ORM {
 		if ($this->loaded === FALSE)
 		{
 			$this->created = time();
+			#todo: it is technically possible for this to create a duplicate token
+			$this->token = text::random('alnum',6);
 		}
 		return parent::save();
 	}

@@ -16,7 +16,7 @@
 <div id="outer">
 	<div class="contentwidth main">
 		
-		<a href="/admin" id="login-link"><?php echo $login_link?></a>
+		<a href="/admin/home" id="login-link"><?php echo $login_link?></a>
 		
 		
 		<div class="logo">

@@ -25,8 +25,9 @@ else:
 		<ul>
 			<li><a href="/">Return Home</a></li>
 			<li><a href="/forum">Go To Forum</a></li>
-			<li><a href="/admin/install/widget" target="_blank">View Widget</a></li>
-			<li><a href="/admin?action=logout">Logout</a></li>
+			<li><a href="/admin/account">Account</a></li>
+			<li><a href="/admin/home/logout">Logout</a></li>
+		
 		</ul>
 	</div>
 	<div id="server_response">
@@ -37,23 +38,40 @@ else:
 	</div>
 		 
 	<div id="header">
-		<!--<h1>PlusPanda</h1>-->
+		<div>
+		<?php
+			$services = array('testimonials', 'reviews');
+			foreach($services as $link)
+				if($service == $link)
+					echo "<a href=\"/admin/home?service=$link\" class=\"active\">$link Manager</a> ";
+				else
+					echo "<a href=\"/admin/home?service=$link\">$link Manager</a> ";
+		?>
+		</div>
 	</div>
 
     <div id="content_wrapper">
 
 
    <div id="sidebar">
-			<h3>Admin Panel</h3>
+			<!--<h3>Admin Panel</h3>-->			
 			<ul>
-				<li><a href="/admin" <?php echo $active['dashboard']?>><img src="/static/admin/images/001_20.png" width="24" height="24" alt="Home" />Dashboard</a></li>
-				<li><a href="/admin/categories" <?php echo $active['categories']?>><img src="/static/admin/images/001_43.png" width="24" height="24" alt="Folders" />Categories</a></li>
-				<li><a href="/admin/reviews" <?php echo $active['reviews']?>><img src="/static/admin/images/information.png" width="24" height="24" alt="Comments" />Reviews</a></li>
-				<li><a href="/admin/customers" <?php echo $active['customers']?>><img src="/static/admin/images/001_14.png" width="24" height="24" alt="Favourites" />Customers</a></li>
-				<li><a href="/admin/install" <?php echo $active['install']?>><img src="/static/admin/images/accept.png" width="24" height="24" alt="Installation" />Installation</a></li>
-				<li><a href="/admin/account" <?php echo $active['account']?>><img src="/static/admin/images/001_42.png" width="24" height="24" alt="Account" />Account</a></li>
+				<?php 
+					if(empty($active))
+						$active = 'dashboard';
+					foreach(${"menu_$service"} as $data)
+					{
+						list($name, $link, $text, $class) = $data;
+						$class = (empty($class)) ? '' : "class=\"$class\"";
+						if($name == $active)
+							echo "<li $class><a href=\"$link\" class=\"active\">$text</a></li>";
+						else
+							echo "<li $class><a href=\"$link\">$text</a></li>";
+					}
+				?>
 		 </ul>
-    </div>
+    
+		</div>
     
     <div id="primary_content">
 			<?php if(isset($content)) echo $content?>

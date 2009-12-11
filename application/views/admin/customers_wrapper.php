@@ -16,7 +16,7 @@
 	</tr>
 <?php foreach($customers as $customer):?>
 	<tr>
-		<td><?php echo $customer->display_name?></td>
+		<td><?php echo $customer->name?></td>
 		<td><?php echo $customer->email?></td>
 		<td><?php echo build::timeago($customer->created)?></td>
 	</tr>

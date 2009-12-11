@@ -1,0 +1,173 @@
+﻿#plusPandaYes
+  margin: 0 auto
+  width: 550px
+  div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+    margin: 0
+    padding: 0
+    border: 0
+    outline: 0
+    font-size: 100%
+    vertical-align: baseline
+    background: transparent
+    font-family: "Gill Sans MT",verdana,sans-serif
+    color: #333
+    font-weight: normal
+  fieldset
+    border: 0
+  button
+    border: 0
+    background: #fff
+    color: #333
+    padding: 2px
+    &:hover
+      background: #3399ff
+      color: #fff
+      cursor: cursor
+      cursor: pointer
+  .panda-tag-scope, .panda-add-wrapper
+    margin: 8px
+  #panda-select-tags
+    padding: 10px
+    margin-bottom: 10px
+    background: #333
+    color: white
+    text-align: center
+    select
+      width: 300px
+    button
+      margin-left: 10px
+  .panda-reviews-summary
+    clear: both
+    padding: 10px
+    background: #ccc
+    div
+      text-align: center
+      font-size: 1.2em
+      background: #fff
+      padding: 3px
+    p
+      margin: 0
+  .panda-reviews-summary-title
+    float: left
+    background: #ccc
+    padding: 5px
+    font-size: 1em
+    font-weight: bold
+  #add_review_toggle
+    display: block
+    padding: 5px 10px
+    background: #3399ff
+    float: right
+    color: #fff
+    font-size: 1em
+    font-weight: bold
+    text-decoration: none
+    &:hover
+      background: #ffcc33
+  #panda-add-review
+    clear: both
+    background: #3399ff
+    color: #fff
+    margin: 0
+    padding: 10px
+    fieldset
+      margin-bottom: 5px
+      label
+        font-weight: bold
+        color: #fff
+        .jade_required_star 
+          font-weight: bold
+          color: red
+      input
+        padding: 3px
+        width: 215px
+      textarea
+        width: 500px
+        height: 100px
+      &.panda-display_name
+        float: right
+        width: 235px
+      &.panda-email
+        float: left
+        width: 235px
+      &.panda-submit
+        clear: both
+        text-align: right
+      &.jade_error
+        background: #fad6d6 !important
+      span.error_msg
+        display: block
+        color: red
+  .panda-pagination
+    text-align: right
+    margin-bottom: 10px
+    .panda-showing
+      float: left
+    a
+      text-decoration: underline
+      &:hover
+        color: orange
+  .panda-reviews-list
+    padding: 20px
+    text-align: left
+  .review-rating
+    float: left
+    padding: 3px 6px
+    background: #ccc
+    text-align: center
+  .review-tag
+    float: right
+    text-align: right
+    span
+      font-style: italic
+  .review-body
+    clear: both
+    padding: 10px
+    background: #eee
+  .review-name
+    text-align: right
+    margin-bottom: 10px
+    abbr
+      font-family: verdana
+      color: #fff
+    span
+      font-style: italic
+  ul.panda-reviews-sorters
+    clear: both
+    list-style: none
+    padding: 8px 0
+    margin: 10px 0
+    border-bottom: 1px solid #777
+    text-align: right
+    li
+      display: inline
+      margin-left: 10px
+      a
+        padding: 8px 15px
+        color: #fff
+        background: #afafaf
+        &:hover, &.selected
+          outline: none
+          background: #333
+          border-bottom: 1px solid #777
+  div.jade_form_status_box
+    font-weight: bold
+    color: #000
+    font-size: 1.2em
+    margin-bottom: 10px
+    padding: 10px
+    text-align: center
+  div.jade_form_status_box.box_positive
+    background: green
+    border: 1px solid green
+  div.jade_form_status_box.box_negative
+    background: #fad6d6
+    border: 1px solid #cc0000
+  div.jade_form_status_box div.error_count 
+  div.ajax_loading
+    width: 100%
+    height: 90px
+    background: transparent url('/_assets/images/admin/load.gif') no-repeat 50% 50%
+    text-align: center
+
+

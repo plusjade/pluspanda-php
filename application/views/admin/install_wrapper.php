@@ -8,18 +8,18 @@ textarea {width:100%; height:100px; margin-bottom:10px;}
 <h2>Install PlusPanda</h2>
 <div class="install-page">
 	<div class="info">
-		Place the install code in the exact place on your page where you want your reviews to be displayed.
+		Place the install code in the exact place on your page where you want your widget to be displayed.
 	</div>
 
 	<h4>Standard</h4>
 	<div>The standard install code is good for all websites!</div>
-	<textarea><?php echo build::embed_code($this->site_id, 'fake')?></textarea>
+	<textarea><?php echo $embed_code?></textarea>
 
 	<h4>Developer</h4>
 	<div>
 		Pluspanda uses the jquery javascript framework, which gets loaded by the standard embed code.
 		If your website is already using jquery you can use the following code which omits loading jquery again.
 	</div>
-	<textarea><?php echo build::embed_code($this->site_id, 'fake', FALSE)?></textarea>
+	<textarea><?php echo $embed_code_lite?></textarea>
 
 </div>

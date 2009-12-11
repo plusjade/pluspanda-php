@@ -7,7 +7,42 @@
  
 class build_Core {
 
-
+/*
+ * build the review html
+ */
+	public static function review_html($review=NULL)
+	{
+		# this is for the javascript callback =)
+		if(empty($review)):
+		ob_start();
+		?>
+<div class="review-wrapper">
+	<div class="review-name">
+		Review by <span>'+ this.name +'</span>
+	</div>
+	<div class="review-rating _'+ this.rating +'" title="Rating: '+ this.rating +' stars">&#160;</div>
+	<div class="review-body">'+ this.body +'</div>
+	<div class="review-tag"><span>'+ this.category_name +'</span></div>
+	<div class="review-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
+</div>	
+		<?php 
+			return ob_get_clean();
+			endif;
+		?>
+<div class="review-wrapper">
+	<div class="review-name">
+		Review by <span><?php echo $review->customer->name?></span>
+	</div>
+	<div class="review-rating _<?php echo $review->rating?>" title="Rating: <?php echo $review->rating?> stars">&#160;</div>
+	<div class="review-body"><?php echo $review->body?></div>
+	<div class="review-tag"><span><?php echo $review->tag->name?></span></div>
+	<div class="review-date"><?php echo build::timeago($review->created)?></div>
+</div>		
+		<?php
+	}
+	
+	
+	
 /*
  * build the top tag select filter.
  */
@@ -26,6 +61,7 @@ class build_Core {
 				else
 					echo "<option value='$tag->id'>$tag->name</option>";
 			?>
+				<option value="flagged">[under review]</option>
 			</select>
 		<?php
 		return ob_get_clean();
@@ -193,7 +229,7 @@ class build_Core {
 		ob_start();
 		?>
 		<div id="plusPandaYes"></div>
-		<script type="text/javascript" src="http://<?php echo ROOTDOMAIN?>?apikey=<?php echo $apikey?>&fetch=widget<?php echo $jquery?>" charset="utf-8"></script>
+		<script type="text/javascript" src="http://<?php echo ROOTDOMAIN?>?apikey=<?php echo $apikey?>&fetch=reviews<?php echo $jquery?>" charset="utf-8"></script>
 		<?php
 		if('fake' == $type)
 			return str_replace(

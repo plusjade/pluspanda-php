@@ -4,7 +4,7 @@
  */
 function custom_404()
 {
-	$home = new Home_Controller;
+	$home = new Home_Controller('nonsense');
 	die($home->_custom_404());
 }
 Event::clear('system.404');

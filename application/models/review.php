@@ -4,7 +4,7 @@ class Review_Model extends ORM {
 	
 	// Relationships
 	#protected $has_and_belongs_to_many = array('account_users');
-	protected $has_one = array('customer', 'tag');
+	protected $has_one = array('customer', 'category');
 
 	public function __set($key, $value)
 	{

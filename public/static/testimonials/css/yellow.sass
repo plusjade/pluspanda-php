@@ -1,0 +1,128 @@
+﻿@charset "utf-8"
+#plusPandaYes
+  margin:0 auto
+  width:550px
+  fieldset
+    border:0
+  button
+    border:0
+    background:#fff
+    padding:2px
+    &:hover
+      background:#ffffcc
+      cursor:cursor
+      cursor:pointer
+  .panda-tag-scope, .panda-add-wrapper
+    margin:8px
+  #panda-select-tags
+    padding:10px
+    margin-bottom:10px
+    background:#111
+    color:white
+  .panda-reviews-summary
+    clear:both
+    padding:10px
+    background:#ffffaa
+    div
+      text-align:center
+      font-size:1.2em
+      background:#ffff55
+      padding:3px
+    p
+      margin:0
+  .panda-reviews-summary-title
+    float:left
+    background:#ffffaa
+    padding:5px
+    font-size:1.1em
+    font-weight:bold
+  #add_review_toggle
+    display:block
+    padding:5px 10px
+    background:#e4f6fd
+    float:right
+    font-size:1.1em
+    font-weight:bold
+    text-decoration:none
+    &:hover
+      background:#ffcc33
+  #panda-add-review
+    clear:both
+    background:#e4f6fd
+    margin:0
+    padding:10px
+    fieldset
+      margin-bottom:5px
+      label
+        font-weight:bold
+      input
+        padding:3px
+        width:215px
+      textarea
+        width:500px
+        height:100px
+    // ie sucks
+    fieldset.panda-display_name
+      float:right
+      width:235px
+    fieldset.panda-email
+      float:left
+      width:235px
+    fieldset.panda-submit
+      clear:both
+      text-align:right
+  .panda-pagination
+    font-size:1.6em
+    color:#fff
+    text-align:right
+    .panda-showing
+      float:left
+    a
+      color:#fff
+      &:hover
+        color:orange
+  .panda-reviews-list
+    padding:20px
+    text-align:left
+  .review-rating
+    float:left
+    padding:3px 6px
+    background:#ffff88
+    text-align:center
+  .review-tag
+    float:right
+    text-align:right
+    span
+      font-weight:bold
+  .review-body
+    clear:both
+    padding:10px
+    background:#ffffcc
+  .review-name
+    text-align:right
+    margin-bottom:10px
+    abbr
+      font-family:verdana
+      color:#fff
+    //name
+    span
+      font-weight:bold
+  ul.panda-reviews-sorters
+    clear:both
+    list-style:none
+    padding:8px 0
+    margin:10px 0
+    border-bottom:1px solid #333
+    text-align:right
+    li
+      display:inline
+      margin-left:10px
+      a
+        padding:10px 15px
+        font-weight:bold
+        color:black
+        background:#fff
+        &:hover, &.selected
+          outline:none
+          background:#ffcc33
+          border-bottom:1px solid #333

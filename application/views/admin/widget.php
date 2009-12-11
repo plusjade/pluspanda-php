@@ -6,6 +6,6 @@
 </head>
 
 <body>
-<?php echo build::embed_code($this->site_id)?>
+	<?php echo $embed_code?>
 </body>
 </html>

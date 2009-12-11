@@ -8,8 +8,8 @@
 
 	// shell view name
 	public $shell = 'admin/shell';
-	public $active;
 	public $site_id = null;
+	public $service;
 	
 	/**
 	 * shell loading and setup routine.
@@ -20,14 +20,29 @@
 
 		# Load the shell
 		$this->shell = new View($this->shell);
-		$this->active = array(
-			'dashboard'		=>'',
-			'categories'	=>'',
-			'reviews'			=>'',
-			'customers'		=>'',
-			'install'			=>'',
-			'account'			=>'',
-			'logout'			=>''
+		
+		$this->service = (isset($_GET['service']) AND 'testimonials' == $_GET['service'])
+		? 'testimonials'
+			: 'reviews';
+			
+		$this->shell->service = $this->service;
+		
+		$this->shell->menu_reviews = array(
+			array('dashboard', '/admin/home','Dashboard','ajax'),
+			array('categories', '/admin/categories','Categories','ajax'),
+			array('reviews', '/admin/reviews','Reviews','ajax'),
+			array('customers', '/admin/customers','Customers','ajax'),
+			array('widget', '/admin/widget/reviews','View Widget',''),	
+			array('install', '/admin/install/reviews','Installation','ajax'),
+		);
+
+		$this->shell->menu_testimonials = array(
+			array('dashboard', '/admin/home?service=testimonials','Dashboard','ajax'),
+			array('tags', '/admin/tags','Tags','ajax'),
+			array('testimonials', '/admin/testimonials','Testimonials','ajax'),
+			array('customers', '/admin/customers?service=testimonials','Customers','ajax'),
+			array('widget', '/admin/widget/testimonials','View Widget',''),		
+			array('install', '/admin/install/testimonials','Installation','ajax'),
 		);
 		
 		# Auth Instance for editing site capability
@@ -44,6 +59,11 @@
 		
 	}
 
+	public function __call($method, $args)
+	{
+	
+		die("$method does not exist (admin_interface)");
+	}
 	
 	
 } // End shell_Controller
