@@ -2,11 +2,18 @@
 
 class Forum_Controller extends Public_Interface_Controller {
 
-	function __construct()
+
+	public $sort;
+	
+	public function __construct()
 	{
 		parent::__construct();
 		
 		$this->shell->title = 'User Feedback Forum';
+		
+		$this->sort = (isset($_GET['sort']))
+			? $_GET['sort']
+			: 'newest';
 	}
 
 /*
@@ -20,8 +27,8 @@ class Forum_Controller extends Public_Interface_Controller {
 		$page_name	= 'forum';
 		
 		$data		= $url_array['2'];
-		$data2		= $url_array['3'];
-		$action		= (empty($url_array['1']))
+		$data2	= $url_array['3'];
+		$action	= (empty($url_array['1']))
 			? 'index'
 			: $url_array['1'];
 			
@@ -152,7 +159,12 @@ class Forum_Controller extends Public_Interface_Controller {
  */
 	private static function tab_selected($default='votes')
 	{
-		$selected = array('votes' => '', 'newest'=> '', 'oldest'=> '', 'active'=> '');
+		$selected = array(
+			'votes' => '',
+			'newest'=> '',
+			'oldest'=> '',
+			'active'=> ''
+		);
 
 		if(empty($_GET['sort']))
 			$selected[$default] = 'class="selected"';

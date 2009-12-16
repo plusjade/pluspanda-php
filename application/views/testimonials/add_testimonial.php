@@ -9,11 +9,9 @@ Feel free to be honest and specific- thanks!
 <?php if(isset($widget)):?>
 	<form action="http://<?php echo ROOTDOMAIN?>" enctype="multipart/form-data" target="panda-iframe"  method="POST" id="panda-add-review">
 <?php else:?>
-	<form action="#panda-add-review" enctype="multipart/form-data" method="POST" id="panda-add-review">
+	<form action="" enctype="multipart/form-data" method="POST" id="panda-add-review">
 <?php endif;?>
-	<input type="hidden" name="rating" value="0" />
 	<?php
-	
 	$fields = array();
 	
 	$field = new stdClass();
@@ -75,20 +73,31 @@ Feel free to be honest and specific- thanks!
 	echo val_form::make_fields($fields, $values, $errors);
 
 	?>
-	<fieldset>
+	<fieldset class="panda-rating">
 		<label></label>
 		<div class="info">Please rate your overall satisfaction with working with us.</div>
-		<div id="panda-star-rating">
-			<div class="one-1"></div>
-			<div class="two-2"></div>
-			<div class="three-3"></div>
-			<div class="four-4"></div>
-			<div class="five-5"></div>
-		</div>
-		<div class="panda-rating-text">Select a rating.</div>
-	</fieldset>
+		
+		<select name="rating">
+			<option value="5">5 stars - Excellent!</option>
+			<option value="4">4 stars - </option>
+			<option value="3">3 stars - </option>
+			<option value="2">2 stars - </option>
+			<option value="1">1 stars - </option>
+		</select>
+		
+		<span class="star-rating-wrapper" style="display:none">
+			<div id="panda-star-rating">
+				<div class="one-1"></div>
+				<div class="two-2"></div>
+				<div class="three-3"></div>
+				<div class="four-4"></div>
+				<div class="five-5"></div>
+			</div>
+			<div class="panda-rating-text">Select a rating.</div>
+			<input type="hidden" name="rating" value="0" disabled="disabled"/>
+		</span>
 	
-	<h2 style="font-size:1.2em; font-weight:bold; margin:20px 0;">All Done - Thanks!</h2>
+	</fieldset>
 	
 	<fieldset class="panda-submit">
 		<button type="submit">Submit Testimonial</button>

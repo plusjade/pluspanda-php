@@ -8,23 +8,38 @@
 
 	// shell view name
 	public $shell = 'admin/shell';
-	public $site_id = null;
+	public $site_id = NULL;
 	public $service;
 	
-	/**
-	 * shell loading and setup routine.
-	 */
+/**
+ * shell loading and setup routine.
+ */
 	public function __construct()
 	{
 		parent::__construct();
 
-		# Load the shell
-		$this->shell = new View($this->shell);
-		
-		$this->service = (isset($_GET['service']) AND 'testimonials' == $_GET['service'])
-		? 'testimonials'
-			: 'reviews';
+		# which service are we using?
+		$this->service = (isset($_GET['service']) AND 'reviews' == $_GET['service'])
+			? 'reviews'
+			: 'testimonials';
 			
+		# Auth Instance for editing site capability
+		$this->owner = new Auth();	
+		
+		# setup vars for logged in users...
+		if($this->owner->logged_in())
+		{
+			$owner = $this->owner->get_user();
+			$this->site = ORM::factory('site', $owner->username);
+			$this->site_id = $this->site->id;
+		}				
+				
+		# no need to load the shell if ajax.
+		if(request::is_ajax())
+			return TRUE;
+
+		# Load the shell for non ajax only.
+		$this->shell = new View($this->shell);
 		$this->shell->service = $this->service;
 		
 		$this->shell->menu_reviews = array(
@@ -39,24 +54,12 @@
 		$this->shell->menu_testimonials = array(
 			array('dashboard', '/admin/home?service=testimonials','Dashboard','ajax'),
 			array('tags', '/admin/tags','Tags','ajax'),
-			array('testimonials', '/admin/testimonials','Testimonials','ajax'),
+			array('testimonials', '/admin/testimonials','Testimonials','jax'),
+			
 			array('customers', '/admin/customers?service=testimonials','Customers','ajax'),
 			array('widget', '/admin/widget/testimonials','View Widget',''),		
 			array('install', '/admin/install/testimonials','Installation','ajax'),
 		);
-		
-		# Auth Instance for editing site capability
-		$this->owner = new Auth();	
-		
-		# setup vars for logged in users...
-		if($this->owner->logged_in())
-		{
-			$owner = $this->owner->get_user();
-			$site = ORM::factory('site', $owner->username);
-			$this->site_id = $site->id;
-		}
-		
-		
 	}
 
 	public function __call($method, $args)

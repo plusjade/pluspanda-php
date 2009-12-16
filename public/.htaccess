@@ -13,5 +13,5 @@
 	RewriteRule ^(.*)$ http://%1 [R=301,NC,L]
 	
 # Rewrite all other URLs to index.php/URL
-	RewriteCond $1 !^(index\.php|robots\.txt|static)
+	RewriteCond $1 !^(index\.php|robots\.txt|static|data)
 	RewriteRule ^(.*)$ /index.php/$1 [L]	

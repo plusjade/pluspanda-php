@@ -19,7 +19,7 @@
  */
 	public function index($action=FALSE)
 	{	
-		$content = new View('admin/categories_wrapper');
+		$content = new View('admin/reviews/categories_wrapper');
 		
 		# carry out the action so view is up-to-date.
 		if($action)
@@ -33,6 +33,7 @@
 		
 		$this->shell->content = $content;
 		$this->shell->active = 'categories';
+		$this->shell->service = 'reviews';
 		die($this->shell);
 	}
 

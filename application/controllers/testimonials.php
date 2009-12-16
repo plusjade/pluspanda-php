@@ -82,16 +82,14 @@ class Testimonials_Controller extends Controller {
 	private function get_reviews($format=NULL)
 	{
 		# defaults
-		$field	= 'site_id';
-		$value	= $this->site_id;
+		$where	= array('publish' => 1);
 		$sort		= array('created' => 'desc');
-
+		
 		# filter by tag
 		if(is_numeric($this->active_tag))
-		{
-			$field = 'tag_id';
-			$value = $this->active_tag;
-		}
+			$where['tag_id'] = $this->active_tag;
+		else
+			$where['site_id'] = $this->site_id;
 		
 		# sort by
 		switch($this->active_sort)
@@ -106,17 +104,17 @@ class Testimonials_Controller extends Controller {
 
 		# get full count of reviews for this tag.
 		$total_testimonials = ORM::factory('testimonial')
-		->where($field, $value)
-		->orderby($sort)
-		->count_all();
+			->where($where)
+			->orderby($sort)
+			->count_all();
 		
 		# get the appropriate reviews based on page.
 		$offset = ($this->active_page*10) - 10;
 		$reviews = ORM::factory('testimonial')
-		->where($field, $value)
-		->orderby($sort)
-		->limit(10, $offset)
-		->find_all();
+			->where($where)
+			->orderby($sort)
+			->limit(10, $offset)
+			->find_all();
 
 		# build the pagination html
 		$pagination = new Pagination(array(
@@ -148,8 +146,10 @@ class Testimonials_Controller extends Controller {
 			{
 				$data = $review->as_array();
 				$data['name']			= $review->customer->name;
-				$data['url']			= $review->customer->url;
 				$data['position'] = $review->customer->position;
+				$data['company'] 	= $review->customer->company;
+				$data['location'] = $review->customer->location;
+				$data['url']			= $review->customer->url;
 				$data['tag_name'] = $review->tag->name;
 				$review_array[]		= $data;
 			}
@@ -247,8 +247,9 @@ class Testimonials_Controller extends Controller {
 
 	
 		# stadalone return status
-		$view = new View('testimonials/status');
+		$view = new View('common/status');
 		$view->success = true;
+		$view->type = 'testimonials';
 		return $view;
 		
 		# cross-site post data can't be returned =(
@@ -288,8 +289,8 @@ class Testimonials_Controller extends Controller {
 		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none;"></iframe>';
 		
 		# build object to hold status msg views.
-		$success	= View::factory('testimonials/status', array('success'=>true))->render();
-		$error		= View::factory('testimonials/status', array('success'=>false))->render();
+		$success	= View::factory('common/status', array('success'=>TRUE, 'type'=>'testimonials'))->render();
+		$error		= View::factory('common/status', array('success'=>FALSE, 'type'=>'testimonials'))->render();
 		$status = new StdClass();
 		$status->success = str_replace($keys, '', $success);
 		$status->error	 = str_replace($keys, '', $error);

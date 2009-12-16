@@ -31,7 +31,7 @@
  */
 	public function index($action=FALSE)
 	{	
-		$content = new View('admin/reviews_wrapper');
+		$content = new View('admin/reviews/wrapper');
 
 
 		# carry out the action so view is up-to-date.
@@ -136,8 +136,8 @@
 		
 
 		$view = ('flagged' == $this->active_tag)
-			? new View('admin/flags_data')
-			: new View('admin/reviews_data');
+			? new View('admin/reviews/flags_data')
+			: new View('admin/reviews/data');
 			
 		$view->reviews = $reviews;
 		$view->pagination = $pagination;

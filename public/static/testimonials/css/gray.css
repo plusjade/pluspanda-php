@@ -56,7 +56,7 @@
 		}
 
 					
-  #plusPandaYes .panda-reviews-summary {
+  #plusPandaYes .panda-testimonials-summary {
     clear: both;
     padding: 10px;
     background: #ffff99;
@@ -65,7 +65,7 @@
     -webkit-border-bottom-left-radius: 7px;
     -webkit-border-bottom-right-radius: 7px;
 		}
-    #plusPandaYes .panda-reviews-summary table.panda-graph {
+    #plusPandaYes .panda-testimonials-summary table.panda-graph {
       border-collapse: collapse;
       background: #fff;
       width: 100%;
@@ -75,17 +75,17 @@
       -webkit-border-bottom-left-radius: 7px;
       -webkit-border-bottom-right-radius: 7px;
       border: 1px solid #eee; }
-    #plusPandaYes .panda-reviews-summary tr th {
+    #plusPandaYes .panda-testimonials-summary tr th {
       background: #fff;
       padding: 3px;
       text-align: center;
       font-size: 1.1em;
       font-weight: bold;
       text-decoration: underline; }
-    #plusPandaYes .panda-reviews-summary .panda-graph tr td {
+    #plusPandaYes .panda-testimonials-summary .panda-graph tr td {
       padding: 4px;
       border-bottom: 1px solid #eee; }
-    #plusPandaYes .panda-reviews-summary .panda-graph div {
+    #plusPandaYes .panda-testimonials-summary .panda-graph div {
       height: 18px;
       float: left;
       margin-right: 5px;
@@ -96,7 +96,7 @@
 
 
 			
-  #plusPandaYes #add_review_toggle {
+  #plusPandaYes #add_testimonial_toggle {
     display: block;
     padding: 5px 10px;
     background: #3399ff;
@@ -105,84 +105,84 @@
     font-size: 1em;
     font-weight: bold;
     text-decoration: none; }
-    #plusPandaYes #add_review_toggle:hover {
+    #plusPandaYes #add_testimonial_toggle:hover {
       background: #09C61A; }
-  #plusPandaYes #panda-add-review {
+  #plusPandaYes #panda-add-testimonial {
     overflow: auto;
     clear: both;
     background: #d7f4fd;
     color: #333;
     margin: 0;
     padding: 10px; }
-    #plusPandaYes #panda-add-review fieldset {
+    #plusPandaYes #panda-add-testimonial fieldset {
       margin-bottom: 5px; }
-      #plusPandaYes #panda-add-review fieldset label {
+      #plusPandaYes #panda-add-testimonial fieldset label {
         display:block;
 				margin:10px 0 5px 0;
 				font-size:0.9em;
 				font-weight: bold;
         color: #333; }
-        #plusPandaYes #panda-add-review fieldset label .req_star {
+        #plusPandaYes #panda-add-testimonial fieldset label .req_star {
           font-weight: bold;
           color: red; }
-      #plusPandaYes #panda-add-review fieldset.panda-tag {
+      #plusPandaYes #panda-add-testimonial fieldset.panda-tag {
         clear: both;
         margin-bottom: 10px; }
-        #plusPandaYes #panda-add-review fieldset.panda-tag select {
+        #plusPandaYes #panda-add-testimonial fieldset.panda-tag select {
           padding: 3px;
           border: 1px solid #333; }
-    #plusPandaYes #panda-add-review #panda-star-rating {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating {
       float: left;
       width: 160px;
       height: 33px;
       margin-bottom: 10px;
       background: #fff url('/static/widget/images/rating-select.png') no-repeat 0 0;
       border: 1px solid #333; }
-    #plusPandaYes #panda-add-review .panda-rating-text {
+    #plusPandaYes #panda-add-testimonial .panda-rating-text {
       font-size: 1.2em;
       font-weight: bold; }
-    #plusPandaYes #panda-add-review #panda-star-rating.one {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating.one {
       background-position: 0px -48px; }
-    #plusPandaYes #panda-add-review #panda-star-rating.two {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating.two {
       background-position: 0px -95px; }
-    #plusPandaYes #panda-add-review #panda-star-rating.three {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating.three {
       background-position: 0px -142px; }
-    #plusPandaYes #panda-add-review #panda-star-rating.four {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating.four {
       background-position: 0px -189px; }
-    #plusPandaYes #panda-add-review #panda-star-rating.five {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating.five {
       background-position: 0px -236px; }
-    #plusPandaYes #panda-add-review #panda-star-rating div {
+    #plusPandaYes #panda-add-testimonial #panda-star-rating div {
       width: 32px;
       height: 40px;
       float: left;
       cursor: cursor;
       cursor: pointer; }
-    #plusPandaYes #panda-add-review fieldset textarea {
+    #plusPandaYes #panda-add-testimonial fieldset textarea {
       display: block;
       width: 350px;
       height: 120px;
       border: 1px solid #333; }
-    #plusPandaYes #panda-add-review fieldset.panda-body {
+    #plusPandaYes #panda-add-testimonial fieldset.panda-body {
       
 			}
-    #plusPandaYes #panda-add-review fieldset input {
+    #plusPandaYes #panda-add-testimonial fieldset input {
       padding: 3px;
       width: 170px;
       border: 1px solid #333; }
-    #plusPandaYes #panda-add-review fieldset.panda-display_name {
+    #plusPandaYes #panda-add-testimonial fieldset.panda-display_name {
 
 		}
-    #plusPandaYes #panda-add-review fieldset.panda-email {
+    #plusPandaYes #panda-add-testimonial fieldset.panda-email {
 
 		}
-    #plusPandaYes #panda-add-review fieldset.panda-submit {
+    #plusPandaYes #panda-add-testimonial fieldset.panda-submit {
       width: 175px; }
-      #plusPandaYes #panda-add-review fieldset.panda-submit button {
+      #plusPandaYes #panda-add-testimonial fieldset.panda-submit button {
         width: 181px;
         height: 30px; }
-    #plusPandaYes #panda-add-review fieldset.field_error {
+    #plusPandaYes #panda-add-testimonial fieldset.field_error {
       background: #fad6d6 !important; }
-    #plusPandaYes #panda-add-review fieldset span.error_msg {
+    #plusPandaYes #panda-add-testimonial fieldset span.error_msg {
       display: block;
       color: red; }
 			
@@ -203,23 +203,23 @@
 
 
 				
-  #plusPandaYes .panda-reviews-list {
+  #plusPandaYes .panda-testimonials-list {
     padding: 20px;
     text-align: left; }
 		
 		
-  #plusPandaYes .review-wrapper {
+  #plusPandaYes .testimonial-wrapper {
     clear: both;
     overflow: auto;
     margin-bottom: 20px;
 
 		}
-	#plusPandaYes .review-details {
+	#plusPandaYes .testimonial-details {
 		width:27%;
 		float:left;
 		font-size:11px;
 	}	
-	#plusPandaYes .review-details .image{
+	#plusPandaYes .testimonial-details .image{
 		width:125px;
 		height:125px;
 		margin:0 auto;
@@ -227,61 +227,61 @@
 		background:#eee;
 		border:5px solid #ccc
 	}
-	#plusPandaYes .review-content {
+	#plusPandaYes .testimonial-content {
 		width:71%;
 		float:right;
 		overflow:auto;
 	}	
-  #plusPandaYes .review-rating {
+  #plusPandaYes .testimonial-rating {
     float: right;
     width: 95px;
     height: 22px;
     background: #fff url('/static/widget/images/sm-rating.png') no-repeat 0 0;
     text-align: center; }
-    #plusPandaYes .review-rating._1 {
+    #plusPandaYes .testimonial-rating._1 {
       background-position: 0px 0px; }
-    #plusPandaYes .review-rating._2 {
+    #plusPandaYes .testimonial-rating._2 {
       background-position: 0px -28px; }
-    #plusPandaYes .review-rating._3 {
+    #plusPandaYes .testimonial-rating._3 {
       background-position: 0px -56px; }
-    #plusPandaYes .review-rating._4 {
+    #plusPandaYes .testimonial-rating._4 {
       background-position: 0px -85px; }
-    #plusPandaYes .review-rating._5 {
+    #plusPandaYes .testimonial-rating._5 {
       background-position: 0px -112px; }
-  #plusPandaYes .review-name {
+  #plusPandaYes .testimonial-name {
   
 		}
-    #plusPandaYes .review-name span {
+    #plusPandaYes .testimonial-name span {
       font-weight: bold;
       font-style: italic; }
-  #plusPandaYes .review-tag {
+  #plusPandaYes .testimonial-tag {
     float: left; }
-    #plusPandaYes .review-tag span {
+    #plusPandaYes .testimonial-tag span {
       font-style: italic; }
-  #plusPandaYes .review-body {
+  #plusPandaYes .testimonial-body {
     clear: both;
     padding: 10px;
     background: #E6F5FC;
     margin: 2px 0;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px; }
-  #plusPandaYes .review-date {
+  #plusPandaYes .testimonial-date {
     float: right; }
-    #plusPandaYes .review-date abbr {
+    #plusPandaYes .testimonial-date abbr {
       font-family: verdana; }
-  #plusPandaYes ul.panda-reviews-sorters {
+  #plusPandaYes ul.panda-testimonials-sorters {
     clear: both;
     list-style: none;
     padding: 5px 0;
     margin-top: 10px;
     border-bottom: 2px solid #E6F5FC; }
-    #plusPandaYes ul.panda-reviews-sorters li {
+    #plusPandaYes ul.panda-testimonials-sorters li {
       display: inline;
       margin: 0 5px; }
-      #plusPandaYes ul.panda-reviews-sorters li a {
+      #plusPandaYes ul.panda-testimonials-sorters li a {
         padding: 5px 10px;
         color: blue; }
-        #plusPandaYes ul.panda-reviews-sorters li a:hover, #plusPandaYes ul.panda-reviews-sorters li a.selected {
+        #plusPandaYes ul.panda-testimonials-sorters li a:hover, #plusPandaYes ul.panda-testimonials-sorters li a.selected {
           outline: none;
           background: #ffff99; }
   #plusPandaYes div.jade_form_status_box {

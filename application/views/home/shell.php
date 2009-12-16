@@ -6,54 +6,41 @@
 	<meta name="description" content="Embedable customer reviews." />
 	<link type="text/css" href="/static/home/css/global.css" media="screen" rel="stylesheet" />
 	<link type="text/css" href="/static/home/css/forum.css" media="screen" rel="stylesheet" />
-	
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
 	<script type="text/javascript" src="/static/js/addon.js"></script>
-
 </head>
-<body>
 
+<body>
 <div id="outer">
-	<div class="contentwidth main">
-		
-		<a href="/admin/home" id="login-link"><?php echo $login_link?></a>
-		
-		
+	<div class="contentwidth main">	
+		<a href="/admin/home" id="login-link"><?php echo $login_link?></a>	
 		<div class="logo">
 				<h1><a href="/">PlusPanda</a></h1>
 		</div>
 		<div class="menu">
-				<ul class="clearfix">
+			<ul class="clearfix">
 <?php
-	$links = array(
-		'home'		=> 'Home',
-		'start'		=> 'Get Started',
-		'demo'		=> 'Demo',
-		'faq'			=> 'FAQ',
-		'forum'		=> 'Forum',
-		'contact'	=> 'Contact'
-	);
 	foreach($links as $url => $text)
 		if($active == $url)
 			echo "<li><a href=\"/$url\" class=\"active\">$text</a></li>\n";
 		else
 			echo "<li><a href=\"/$url\">$text</a></li>\n";
 ?>
-				</ul>
+			</ul>
 		</div>    
 		<?php echo $content?>
   </div>
     
 	<div class="footer">
 		<div class="contentwidth">
-					<p><strong>&copy; 2009 PlusPanda =)</strong></p>
-					<ul class="footer-menu">
+			<p><strong>&copy; 2009 PlusPanda =)</strong></p>
+			<ul class="footer-menu">
 <?php
 	foreach($links as $url => $text)
 		echo "<li><a href=\"/$url\">$text</a></li>\n";
 ?>
-					</ul>
-			</div>
+			</ul>
+		</div>
 	</div>
 </div>
 

@@ -7,16 +7,22 @@
  class Home_Controller extends Public_Interface_Controller {
 
 	
-	public function __construct($page_name=NULL)
+	public function __construct()
 	{			
 		parent::__construct();
+
+		# get the page_name.
+		$url_array = Uri::url_array();
+		$page_name = (empty($url_array['0'])) 
+			? NULL
+			: $url_array['0'];
 		
 		$this->shell->active  = $page_name;
 		
 		if(empty($page_name) OR 'home' == $page_name)
 			$this->index();
-		
-		$pages = array('start','demo','reviews','faq', 'contact');
+
+		$pages = array('start','demo','faq','contact');
 		if(in_array($page_name, $pages))
 			$this->$page_name();
 		else
@@ -90,11 +96,7 @@
 		
 		#log the user in and take to admin
 		$this->owner->force_login($new_owner->username);
-		url::redirect('/admin');
-		/*
-		$url = 'http://'.$new_owner->username .'.'. ROOTDOMAIN . "/admin?action=force&name=$new_owner->username&tkn=$new_owner->token";
-		url::redirect($url);
-		*/
+		url::redirect('/admin/home');
  }
  
 /*

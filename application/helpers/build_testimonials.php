@@ -11,52 +11,71 @@ class build_testimonials_Core {
 /*
  * build the html that each testimonial gets displayed in.
  */
-	public static function testimonial_html($testimonial=NULL)
+	public static function testimonial_html($testimonial=NULL, $site_id=0)
 	{
 		# this is for the javascript callback =)
 		if(empty($testimonial)):
 		ob_start();
 		?>
-<div class="review-wrapper">
-	<div class="review-details">
-		<div class="image"></div>		
-		<div class="review-name">
+<div class="testimonial-wrapper">
+	<div class="testimonial-details">
+		<div class="image">'+ this.image +'</div>		
+		<div class="testimonial-name">
 			<span>'+ this.name +'</span>
+		</div>
+		<div class="testimonial-position">
+			<span>'+ this.position +'</span>
 		</div>	
-		<div class="link">
+		<div class="testimonial-company">
+			<span>'+ this.company +'</span>
+		</div>
+		<div class="testimonial-location">
+			<span>'+ this.location +'</span>
+		</div>			
+		<div class="testimonial-url">
 			<a href="#">'+ this.url +'</a>
 		</div>
 	</div>
-	<div class="review-content">
-		<div class="review-rating _' +this.rating+ '" title="Rating: '+this.rating+ ' stars">&#160;</div>
-		<div class="review-body">' +this.body+ '</div>
-		<div class="review-tag"><span>' +this.tag_name+ '</span></div>
-		<div class="review-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
+	<div class="testimonial-content">
+		<div class="testimonial-rating _' +this.rating+ '" title="Rating: '+this.rating+ ' stars">&#160;</div>
+		<div class="testimonial-body">' +this.body+ '</div>
+		<div class="testimonial-tag"><span>' +this.tag_name+ '</span></div>
+		<div class="testimonial-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
 	</div>
 </div>		
 		<?php 
 			return ob_get_clean();
 			endif;
+			
+			$image = (empty($testimonial->image))
+				? ''
+				: "<img src=\"/data/$site_id/tstml/img/$testimonial->image\"/>";
 		?>
-<div class="review-wrapper">
+<div class="testimonial-wrapper">
 
-	<div class="review-details">
-		<div class="image"></div>
+	<div class="testimonial-details">
+		<div class="image"><?php echo $image?></div>
 		
-		<div class="review-name">
+		<div class="testimonial-name">
 			<span><?php echo $testimonial->customer->name?></span>
 		</div>
-		
+		<div class="testimonial-position">
+			<span><?php echo $testimonial->customer->position?></span>
+			, <span><?php echo $testimonial->customer->company?></span>
+		</div>
+		<div class="testimonial-location">
+			<span><?php echo $testimonial->customer->location?></span>
+		</div>			
 		<div class="link">
 			<a href="#">http://mycoolstore.com</a>
 		</div>
 	</div>
 	
-	<div class="review-content">
-		<div class="review-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
-		<div class="review-body"><?php echo $testimonial->body?></div>
-		<div class="review-tag"><span><?php echo $testimonial->tag->name?></span></div>
-		<div class="review-date"><?php echo build::timeago($testimonial->created)?></div>
+	<div class="testimonial-content">
+		<div class="testimonial-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
+		<div class="testimonial-body"><?php echo $testimonial->body?></div>
+		<div class="testimonial-tag"><span><?php echo $testimonial->tag->name?></span></div>
+		<div class="testimonial-date"><?php echo build::timeago($testimonial->created)?></div>
 	</div>
 </div>
 		<?php
@@ -192,57 +211,23 @@ class build_testimonials_Core {
 	
 	
 /*
- * build the add review wrapper.
+ * build the add testimonial wrapper.
  */	
 	public static function add_wrapper()
 	{
 		ob_start();
 		?>
 		<div class="panda-add-wrapper">
-			<a href="#panda-add-review" id="add_review_toggle">+ Add New Review</a>
+			<a href="#panda-add-testimonial" id="add_testimonial_toggle">+ Add New testimonial</a>
 		</div>
 		<?php
 		return ob_get_clean();
 	}
 	
-/*
- * build the reviews summary display.
- */
-	public static function summary($ratings_dist)
-	{
-		$total_reviews = 0;
-		$score_sum = 0;
-		foreach($ratings_dist as $rating => $tally)
-		{
-			$total_reviews += $tally;
-			$score_sum += $tally*$rating;
-		}
-		$average_score = (0 < $total_reviews)
-			? number_format($score_sum/$total_reviews, 2)
-			: 0;
-		ob_start();
-		?>
-		<div class="panda-reviews-summary">
-			<table class="panda-graph">
-				<tr><th colspan="2"><b><?php echo $average_score?></b> stars based on <span><?php echo $total_reviews?></span> reviews.</th></tr>
-				<?php foreach($ratings_dist as $rating => $total):?>
-					<tr>
-						<td><?php echo $rating?> stars</td>
-						<td>
-							<div rel="<?php echo $total?>">&#160;</div>
-							 <span><?php echo $total?></span>
-						</td>
-					</tr>
-				<?php endforeach;?>
-			</table>
-		</div>	
-		<?php
-		return ob_get_clean();
-	}
-	
+
 	
 /*
- * build the reviews sorting display.
+ * build the testimonials sorting display.
  */
 	public static function sorters($active_tag='all', $active_sort=NULL, $widget=NULL)
 	{
@@ -252,7 +237,7 @@ class build_testimonials_Core {
 			: "/?tag=$active_tag&sort=";
 		ob_start();
 		?>
-		<ul class="panda-reviews-sorters">
+		<ul class="panda-testimonials-sorters">
 			<li>Sort testimonials by:</li>
 		<?php 
 			foreach($sort_types as $type)

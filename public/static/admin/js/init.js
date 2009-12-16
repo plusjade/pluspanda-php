@@ -1,5 +1,9 @@
 
+//$('a[rel*=facebox]').facebox();
 
+$('abbr.timeago').timeago();			
+			
+			
 // show server response.
 $(document).bind('rsp.server', function(e, data){
 	$('#server_response .load').hide();
@@ -15,6 +19,8 @@ $(document).bind('submit.server', function(e, data){
 
 
 
+	
+			
 $('body').click($.delegate({
 //main panel links
 	'#sidebar ul li.ajax a' : function(e){
@@ -71,6 +77,80 @@ $('body').click($.delegate({
 			});
 		}
 		return false;
-	}
+	},
 
+	//testimonial page.
+	'.admin-new-testimonials-list table td a' : function(e){	
+		$('.edit-window').html('Loading...');
+			
+		$.get(e.target.href, function(data){
+			$('.edit-window').html(data);
+			$('a[rel*=facebox]').facebox();
+			
+
+			// if body is empty , append all question data.
+			if('' == $('.testimonial-body textarea').val()){
+				var content = '';
+				$('.questions-wrapper p').each(function(){
+					content += $.trim($(this).html()) + ' ';
+				});
+				$('.testimonial-body textarea').val(content);
+			}
+			
+			// ajaxify the testimonial save form.
+			$('#save-testimonial').ajaxForm({	 
+				beforeSubmit: function(fields, form){
+				
+				},
+				success: function(data){
+					alert(data);
+				}
+			});
+		});
+		return false;
+	},
+	
+	// testimonial edit toggle.
+	'a.toggle-edit': function(e){
+		$('.t-details span.label').toggle();
+	
+		$('.testimonial-wrapper input, .testimonial-wrapper select').toggleClass('hide');
+		return false;
+	},
+	
+	// testimonial crop submit
+	'.crop-wrapper button' : function(e){
+		var url = $(e.target).attr('rel');
+		var params = $(e.target).attr('alt');
+		if(!params){alert('please select an area');return false;}
+		
+		$.post(url,{params:params}, function(data){
+			alert(data);
+			
+			newImg = new Image(); 
+			newImg.src = e.target.id;
+			$('.t-details .image').html('<img src="'+ newImg.src +'">');
+		});
+		return false;	
+	}
+	
+	
 }));
+
+
+function showPreview(coords){
+	if (parseInt(coords.w) > 0){
+		var rx = 100 / coords.w;
+		var ry = 100 / coords.h;
+
+		$('.crop-preview img').css({
+			width: Math.round(rx * 500) + 'px',
+			height: Math.round(ry * 370) + 'px',
+			marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+			marginTop: '-' + Math.round(ry * coords.y) + 'px'
+		});
+	}
+	
+	$('.crop-wrapper button').attr('alt', coords.w +'|'+ coords.h +'|'+ coords.y +'|'+ coords.x);
+}
+

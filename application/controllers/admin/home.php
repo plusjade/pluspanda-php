@@ -13,21 +13,14 @@
 
 
 /*
- * executes login logic.
+ * displays dashboard for logged-in users.
+ * executes login logic for non-logged in users.
  */
 	public function index()
-	{
-		$action = (isset($_GET['action'])) ? $_GET['action'] :''; 
-		if('force' == $action)
-			$this->force();
+	{			
 		if(!$this->owner->logged_in())
 			$this->login();
-		if('logout' == $action)
-			$this->logout();
 		
-		
-		$content = new View("admin/dashboard_$this->service");
-
 		$site = ORM::factory('site', $this->site_id);
 		$reviews = ORM::factory('review')
 			->where('site_id',$this->site_id)
@@ -41,8 +34,9 @@
 			->limit(10)
 			->find_all();
 		
+		$content = new View("admin/$this->service/dashboard");
 		$content->categories = $site->categories;
-		$reviews_data = View::factory('admin/reviews_data');
+		$reviews_data = View::factory('admin/reviews/data');
 		$reviews_data->reviews = $reviews;
 		$reviews_data->pagination='';
 		$content->reviews = $reviews_data;
@@ -62,20 +56,16 @@
  */ 
 	private function login()
 	{
-		$this->shell->login = new View('admin/login');
-		
+		$login_shell = new View('admin/login_shell');
+		$login_shell->content = new View('admin/login');
+
 		if(empty($_POST))
-			die($this->shell);			
-		
+			die($login_shell);			
+			
 		$post = new Validation($_POST);
 		$post->pre_filter('trim');
 		$post->add_rules('username', 'required', 'valid::alpha_numeric');
 		$post->add_rules('password', 'required', 'valid::alpha_dash');
-		$values = array(
-			'username'	=> '',
-			'password'	=> ''
-		);
-		$values	= arr::overwrite($values, $post->as_array()); 			
 
 		# if Post is good, atttempt to log owner in.		
 		if($post->validate())
@@ -88,13 +78,14 @@
 			}
 			
 		# error
-		$this->shell->login->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
-		$this->shell->login->values = $_POST;
-		die($this->shell);	
+		$login_shell->content->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
+		$login_shell->content->values = $_POST;
+		die($login_shell);	
 	}
 	
 	
 /*
+ * NOT IN USE.
  * force an external login from created account screen.
  */
 	private function force()
@@ -117,6 +108,10 @@
 		url::redirect('/admin');
 	}
  
+ 
+/*
+ * Logs the current user out.
+ */ 
 	public function logout()
 	{
 		$this->owner->logout(TRUE);

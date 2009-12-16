@@ -16,8 +16,8 @@
 		<p><label>Password</label>
 		<input name="password" type="password" class="input large" value="password" />
 	  </p>
-	  
-	  <p class="buttons" style="margin-top:15px;">
+		
+		<p class="buttons" style="margin-top:15px;">
 			<button type="submit" name="Submit" id="button" class="positive">Login</button>
 		</p>
 	</form>

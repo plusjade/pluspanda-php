@@ -7,13 +7,13 @@
  abstract class Public_Interface_Controller extends Controller {
 
 	public $shell;
-	public $site_id = null;
+	public $site_id = NULL;
 	
 	public function __construct()
 	{
 		parent::__construct();
 
-		# Auth Instance for editing site capability
+		# Auth Instance for login capability
 		$this->owner = new Auth();	
 		$this->site_id = 1;
 
@@ -22,6 +22,14 @@
 		$this->shell->login_link = ($this->owner->logged_in())
 			? 'Admin'
 			: 'Login';
+		$this->shell->links = array(
+			'home'		=> 'Home',
+			'start'		=> 'Get Started',
+			'demo'		=> 'Demo',
+			'faq'			=> 'FAQ',
+			'forum'		=> 'Forum',
+			'contact'	=> 'Contact'
+		);			
 			
 		/*
 		# setup vars for logged in users...

@@ -41,11 +41,6 @@ class Reviews_Controller extends Controller {
 			$this->is_api = TRUE;
 			$this->_ajax();
 		}
-		/*
-		# fast-track ajax
-		if(request::is_ajax())
-			$this->_ajax();
-		*/
 	}
 
 /* 
@@ -58,7 +53,7 @@ class Reviews_Controller extends Controller {
 			$add_review = self::submit_handler('normal');
 		else
 		{
-			$add_review = new View('live/add_review');
+			$add_review = new View('reviews/add_review');
 			$add_review->page_name = $this->page_name;
 			$add_review->categories = $this->site->categories->select_list('id','name');
 			$add_review->values = array(
@@ -69,9 +64,9 @@ class Reviews_Controller extends Controller {
 		}
 
 		# setup the shell
-		$shell = new View('live/shell');
+		$shell = new View('reviews/shell');
 	
-		$content = new View('live/wrapper');
+		$content = new View('reviews/wrapper');
 		$content->site = $this->site;
 		$content->set_global('active_tag', $this->active_tag);
 		$content->set_global('active_sort', $this->active_sort);
@@ -134,7 +129,7 @@ class Reviews_Controller extends Controller {
 			'base_url'			 => "/$this->page_name?tag=$this->active_tag&sort=$this->active_sort&page=",
 			'current_page'	 => $this->active_page, 
 			'total_items'    => $total_reviews,
-			'style'          => 'digg' ,
+			'style'          => 'reviews' ,
 			'items_per_page' => 10
 			
 		));
@@ -143,7 +138,7 @@ class Reviews_Controller extends Controller {
 		# reviews_data (sorters & pagination).
 		if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
 		{
-			$view = new View('live/reviews_data');
+			$view = new View('reviews/reviews_data');
 			$view->reviews = $reviews;
 			$view->pagination = $pagination;
 			die($view);
@@ -178,9 +173,7 @@ class Reviews_Controller extends Controller {
 
 			$json_reviews = json_encode($review_array);
 			$json_summary = json_encode($ratings_dist); 
-
-			#pagination html.
-			$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
+			$pagination		= str_replace(array("\n","\r","\t"), '', $pagination);
 				
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -192,7 +185,7 @@ class Reviews_Controller extends Controller {
 		# Return New Tag ajax view.
 		# or standalone non-ajax.
 				
-		$view = new View('live/get_reviews');
+		$view = new View('reviews/get_reviews');
 		$view->reviews = $reviews;		
 		$view->ratings_dist = $ratings_dist;
 		$view->pagination = $pagination;
@@ -229,7 +222,7 @@ class Reviews_Controller extends Controller {
 			if($this->is_api)
 				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
 
-			$view = new View('live/add_review');
+			$view = new View('reviews/add_review');
 			$view->errors = $post->errors();
 			$view->values = $data;
 			$view->categories		= $this->site->categories->select_list('id','name');
@@ -271,8 +264,9 @@ class Reviews_Controller extends Controller {
 
 	
 		# stadalone return status
-		$view = new View('live/status');
-		$view->success = true;
+		$view = new View('reviews/status');
+		$view->success = TRUE;
+		$view->type = 'review';
 		return $view;
 	}
 
@@ -287,14 +281,14 @@ class Reviews_Controller extends Controller {
 		$keys = array("\n","\r","\t");
 
 		# get all the html interfaces.		
-		$tag_list = build::tag_filter($this->site->categories, $this->active_tag);
-		$add_wrapper = build::add_wrapper();
-		$summary = build::summary(array(1));
-		$sorters = build::sorters($this->active_tag, $this->active_sort,'', 'widget');
-		$review_html = build::review_html();
+		$tag_list			= build::tag_filter($this->site->categories, $this->active_tag);
+		$add_wrapper	= build::add_wrapper();
+		$summary			= build::summary(array(1));
+		$sorters			= build::sorters($this->active_tag, $this->active_sort,'', 'widget');
+		$review_html	= build::review_html();
 		
 		# add review form
-		$form = new View('live/add_review');
+		$form = new View('reviews/add_review');
 		$form->active_tag = $this->active_tag;
 		$form->categories = $this->site->categories->select_list('id','name');
 		$form->widget = 'yes';
@@ -310,14 +304,14 @@ class Reviews_Controller extends Controller {
 		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
 
 		# build object to hold status msg views.
-		$success	= View::factory('live/status', array('success'=>true))->render();
-		$error		= View::factory('live/status', array('success'=>false))->render();
+		$success	= View::factory('reviews/status', array('success'=>TRUE, 'type'=>'review'))->render();
+		$error		= View::factory('reviews/status', array('success'=>FALSE, 'type'=>'review'))->render();
 		$status = new StdClass();
 		$status->success = str_replace($keys, '', $success);
 		$status->error	 = str_replace($keys, '', $error);
 		
 		# load the widget_js view and place the html as json.
-		$widget_js = new View('live/widget_js');
+		$widget_js = new View('reviews/widget_js');
 		$widget_js->url = 'http://' . ROOTDOMAIN ."?apikey=$this->apikey&service=reviews";
 		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
 		$widget_js->review_html = str_replace($keys, '', $review_html);
@@ -328,8 +322,15 @@ class Reviews_Controller extends Controller {
 		# output the view then cache the result.		
 		ob_start();
 		echo $widget_js;
+		
+		$dir = paths::data_dir($this->apikey);
+		if(!is_dir("$dir/rvs"))
+			mkdir("$dir/rvs");
+		if(!is_dir("$dir/rvs/js"))
+			mkdir("$dir/rvs/js");
+			
 		file_put_contents(
-			DOCROOT . "reviews/js/$this->apikey.js",
+			paths::js_cache($this->apikey,'reviews'),
 			ob_get_contents()."\n//cached ".date('m.d.y g:ia e')
 		);
 	}

@@ -128,7 +128,14 @@ function pandaDisplayRevs(reviews){
 	var content = '';
 	$(reviews).each(function(){	
 		// format date
-		var date = new Date(this.created*1000);   
+		var date = new Date(this.created*1000);
+		var image_url = '<?php echo paths::testimonial_image_url(1)?>';
+		if('' != this.image) {
+			this.image = '<img src="'+image_url +'/'+ this.image + '" />';
+		}else {
+			this.image = '';
+		}
+		
 		content += '<?php echo $testimonial_html?>';
 	});
 	$('#plusPandaYes .panda-reviews-list').html(content); 

@@ -7,19 +7,17 @@
 	<!--  REQUIRED FOR IE6 SUPPORT -->
 	<style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
 	<link href="/static/admin/css/global.css" rel="stylesheet" type="text/css" />
-	<link href="/static/admin/css/facebox.css" rel="stylesheet" type="text/css" />
+<link href="/static/testimonials/css/client.css" rel="stylesheet" type="text/css" />
+
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
-	<script type="text/javascript" src="/static/js/jquery.ui.js"></script>
 	<script type="text/javascript" src="/static/js/addon.js"></script>
+<script type="text/javascript" src="/static/js/facebox.js"></script>
+<script type="text/javascript" src="/static/js/jcrop.js"></script>
+
+	
 </head>
 
 <body>
-<?php
-if(isset($login)):
-	echo $login;
-	echo '</body>';
-else:
-?>
 <div id="wrapper">
 	<div id="top">
 		<ul>
@@ -43,46 +41,44 @@ else:
 			$services = array('testimonials', 'reviews');
 			foreach($services as $link)
 				if($service == $link)
-					echo "<a href=\"/admin/home?service=$link\" class=\"active\">$link Manager</a> ";
+					echo "<a href=\"/admin/home?service=$link\" class=\"active\">$link</a> \n";
 				else
-					echo "<a href=\"/admin/home?service=$link\">$link Manager</a> ";
+					echo "<a href=\"/admin/home?service=$link\">$link</a> \n";
 		?>
 		</div>
 	</div>
 
-    <div id="content_wrapper">
-
-
-   <div id="sidebar">
-			<!--<h3>Admin Panel</h3>-->			
+  <div id="content_wrapper">
+		<div id="sidebar">	
 			<ul>
-				<?php 
-					if(empty($active))
-						$active = 'dashboard';
-					foreach(${"menu_$service"} as $data)
-					{
-						list($name, $link, $text, $class) = $data;
-						$class = (empty($class)) ? '' : "class=\"$class\"";
-						if($name == $active)
-							echo "<li $class><a href=\"$link\" class=\"active\">$text</a></li>";
-						else
-							echo "<li $class><a href=\"$link\">$text</a></li>";
-					}
-				?>
-		 </ul>
-    
+			<?php 
+				if(empty($active))
+					$active = 'dashboard';
+				foreach(${"menu_$service"} as $data)
+				{
+					list($name, $link, $text, $class) = $data;
+					$class = (empty($class)) ? '' : "class=\"$class\"";
+					if($name == $active)
+						echo "<li $class><a href=\"$link\" class=\"active\">$text</a></li>\n";
+					else
+						echo "<li $class><a href=\"$link\">$text</a></li>\n";
+				}
+			?>
+			</ul> 
 		</div>
     
-    <div id="primary_content">
+		<div id="primary_content">
 			<?php if(isset($content)) echo $content?>
-    </div>
+		</div>
 		
-<div id="footer">© Copyright 2009 PlusPanda =] | <a href="#">Top</a></div>
+		<div id="footer">© Copyright 2009 PlusPanda =] | <a href="#">Top</a></div>
+	</div>
+	
+</div>
 
-</div>
-</div>
+<script type="text/javascript" src="/static/js/jquery.ui.js"></script>
+<script type="text/javascript" src="/static/admin/js/init.js"></script>	
 </body>
-<script type="text/javascript" src="/static/admin/js/init.js"></script>
-<?php endif;?>
-
 </html>
+
+

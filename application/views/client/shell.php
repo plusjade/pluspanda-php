@@ -8,15 +8,11 @@
 	<style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
 	<link href="/static/client/css/global.css" rel="stylesheet" type="text/css" />
 	<link href="/static/testimonials/css/client.css" rel="stylesheet" type="text/css" />
-	
-	<script type="text/javascript" src="/static/js/jquery.js"></script>
-	<script type="text/javascript" src="/static/js/addon.js"></script>
+
 </head>
 
 <body>
 <div id="wrapper">
-	<div id="top"></div>
-	
 	<div id="server_response">
 		<span class="rsp"></span>
 		<div class="load" style="display:none">
@@ -24,17 +20,20 @@
 		</div>
 	</div>
 	
-	<div id="header"></div>
-    
+	<div id="header"></div>  
+	
 	<div id="content_wrapper">
 		<?php if(isset($content)) echo $content?>
-  
 		<div id="footer">© Copyright 2009 PlusPanda =] | <a href="#">Top</a></div>
 	</div>
 	
 </div>
-</body>
+
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/addon.js"></script>
 <!--
 <script type="text/javascript" src="/static/admin/js/init.js"></script>
--->
+-->	
+</body>
+
 </html>
