@@ -23,3 +23,11 @@ ALTER TABLE `customers` CHANGE `display_name` `name` VARCHAR( 32 ) CHARACTER SET
 ALTER TABLE `reviews` CHANGE `tag_id` `category_id` INT( 9 ) UNSIGNED NOT NULL 
 
 ALTER TABLE `customers` ADD `location` VARCHAR( 155 ) NOT NULL AFTER `url` ;
+
+ALTER TABLE  `customers` ADD INDEX (  `token` );
+ALTER TABLE  `testimonials` ADD  `token` VARCHAR( 9 ) NOT NULL AFTER  `customer_id`
+
+
+
+
+

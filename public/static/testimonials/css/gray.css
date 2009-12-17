@@ -215,20 +215,19 @@
 
 		}
 	#plusPandaYes .testimonial-details {
-		width:27%;
+		width:24%;
 		float:left;
 		font-size:11px;
 	}	
 	#plusPandaYes .testimonial-details .image{
 		width:125px;
 		height:125px;
-		margin:0 auto;
 		margin-bottom:7px;
 		background:#eee;
 		border:5px solid #ccc
 	}
 	#plusPandaYes .testimonial-content {
-		width:71%;
+		width:74%;
 		float:right;
 		overflow:auto;
 	}	

@@ -7,8 +7,9 @@
 	<!--  REQUIRED FOR IE6 SUPPORT -->
 	<style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
 	<link href="/static/client/css/global.css" rel="stylesheet" type="text/css" />
+	<!--
 	<link href="/static/testimonials/css/client.css" rel="stylesheet" type="text/css" />
-
+	-->
 </head>
 
 <body>

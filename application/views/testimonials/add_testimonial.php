@@ -1,105 +1,112 @@
+<?php
+		$testimonial->body = ($fresh)
+			? "Hello this is your testimonial!\nOur survey questions below will guide you easily along.\nPlease answer them, but also feel free to write your own freeform testimonial right in this box.\n\nClear this text when you are ready!\nHave fun!"
+			: $testimonial->body;
+		$welcome_msg = ($fresh)
+			? "Hello, {$testimonial->customer->name}; Create a new testimonial!"
+			: "Welcome back, {$testimonial->customer->name} !";
+?>
 
-Hello, thank you for your help.
-I appreciate your time very much. This should only take about 5 minutes.
-Feel free to be honest and specific- thanks!
-<br/><br/>
+<div class="client-add-wrapper">
+	<!--
+	Hello, thank you for your help.
+	I appreciate your time very much. This should only take about 5 minutes.
+	Feel free to be honest and specific- thanks!
+	<br/><br/>
+	-->
+	
+	<?php if(isset($errors)) echo val_form::show_error_box($errors);?>
 
-<?php if(isset($errors)) echo val_form::show_error_box($errors);?>
-
-<?php if(isset($widget)):?>
-	<form action="http://<?php echo ROOTDOMAIN?>" enctype="multipart/form-data" target="panda-iframe"  method="POST" id="panda-add-review">
-<?php else:?>
 	<form action="" enctype="multipart/form-data" method="POST" id="panda-add-review">
-<?php endif;?>
+
+			
+	<fieldset class="panda-submit">
+		<button type="submit">Save Changes</button>
+		<?php echo $welcome_msg?>
+		<input type="text" name="token" value="<?php echo $testimonial->token?>" READONLY>
+		
+	</fieldset>		
+
+	<fieldset class="panda-image">
+		Upload Headshot or Logo <input type="file" name="image" />
+	</fieldset>	
+	
+	<div class="t-view">
+		<div class="t-details">
+			<div class="image"><img src="/static/images/sample-thumb.jpg"/></div>
+			
+			<span class="label">Full Name</span>
+			<span class="t-name">
+				<input name="name" value="<?php echo $testimonial->customer->name?>" />
+			</span>
+			
+			<span class="label">Position at Company</span>
+			<span class="t-position">
+				<input name="position" value="<?php echo $testimonial->customer->position?>" />
+			</span>
+			
+			<span class="label">Company</span>
+			<span class="t-company">
+				<input name="company" value="<?php echo $testimonial->customer->company?>" />
+			</span>
+			
+			<span class="label">Location</span>
+			<span class="t-location">
+				<input name="location" value="<?php echo $testimonial->customer->location?>" />
+			</span>
+			
+			<span class="label">Website</span>
+			<span class="t-url">
+				http://<input name="url" value="<?php echo $testimonial->customer->url?>" />
+			</span>
+		</div>
+		
+		<div class="t-content">
+			<div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
+			
+			<div class="t-body">
+				<textarea name="body"><?php echo $testimonial->body?></textarea>
+			</div>
+			
+			<div class="t-date"><?php echo build::timeago($testimonial->created)?></div>
+		
+			<div class="t-tag">
+				<?php 
+					echo build_testimonials::tag_select_list(
+						$tags,
+						$testimonial->tag->id,
+						array('0'=>'(Select Category)')
+					);
+				?>
+			</div>
+			
+		</div>
+	</div>		
+			
+	<h1>Survey Questions</h1>
 	<?php
-	$fields = array();
-	
-	$field = new stdClass();
-	$field->name = 'name';
-	$field->title = 'Full Name';
-	$field->type = 'input';
-	$field->req = 'text_req';
-	$field->info = 'You full name please.';
-	$fields[] = $field;
-
-	$field = new stdClass();
-	$field->name = 'email';
-	$field->title = 'Email';
-	$field->type = 'input';
-	$field->req = 'email_req';
-	$field->info = 'Your email is never published. It is only used should we need to contact you.';
-	$fields[] = $field;
-
-	$field = new stdClass();
-	$field->name = 'company';
-	$field->title = 'Company';
-	$field->type = 'input';
-	$field->info = 'You company name will appear alongside your review.';
-	$fields[] = $field;
-
-	$field = new stdClass();
-	$field->name = 'position';
-	$field->title = 'Position at Company';
-	$field->type = 'input';
-	$field->info = 'Your position or role at the company you are representing. Will appear alongside your testimonial';
-	$fields[] = $field;
-
-	$field = new stdClass();
-	$field->name = 'url';
-	$field->title = 'Website';
-	$field->type = 'input';
-	$field->info = 'Your company or professional website. This will appear alongside your testimonial and is a great way to market your website.';
-	$fields[] = $field;
-
-	$field = new stdClass();
-	$field->name = 'location';
-	$field->title = 'Location';
-	$field->type = 'input';
-	$field->info = 'The location of your primary area of business. Helps our customers relate better and additionally markets your company!';
-	$fields[] = $field;		
-	
-	$field = new stdClass();
-	$field->name = 'image';
-	$field->title = 'Headshot or Logo';
-	$field->type = 'upload';
-	$field->info = 'Your photo will be resized to 125px by 125px and will appear alongside your testimonial. This further markets your company and also makes our site look nice!';
-	$fields[] = $field;	
-
-	
 	if(!isset($values)) $values = array();
 	if(!isset($errors)) $errors = array();
-	#echo kohana::debug($values);die();
-	echo val_form::make_fields($questions, $values, $errors);
-	echo val_form::make_fields($fields, $values, $errors);
-
 	?>
-	<fieldset class="panda-rating">
-		<label></label>
-		<div class="info">Please rate your overall satisfaction with working with us.</div>
-		
-		<select name="rating">
-			<option value="5">5 stars - Excellent!</option>
-			<option value="4">4 stars - </option>
-			<option value="3">3 stars - </option>
-			<option value="2">2 stars - </option>
-			<option value="1">1 stars - </option>
-		</select>
-		
-		<span class="star-rating-wrapper" style="display:none">
-			<div id="panda-star-rating">
-				<div class="one-1"></div>
-				<div class="two-2"></div>
-				<div class="three-3"></div>
-				<div class="four-4"></div>
-				<div class="five-5"></div>
-			</div>
-			<div class="panda-rating-text">Select a rating.</div>
-			<input type="hidden" name="rating" value="0" disabled="disabled"/>
-		</span>
+	<div class="t-questions">
 	
+<?php foreach($questions as $question):?>
+	<fieldset>
+		<label><?php echo $question->title?></label>
+		<div class="info"><?php echo $question->info?></div>
+		<textarea><?php echo $info["$question->id"]?></textarea>
 	</fieldset>
+<?php endforeach;?>
+	<?php #echo val_form::make_fields($questions, $values, $errors)?>
 	
-	<fieldset class="panda-submit">
-		<button type="submit">Submit Testimonial</button>
-	</fieldset>
-</form>
+	
+	</div>
+	
+	</form>
+
+</div>
+
+
+
+
+

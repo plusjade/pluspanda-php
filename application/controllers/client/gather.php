@@ -13,16 +13,31 @@ class Gather_Controller extends Controller {
 	{
 		parent::__construct();
 		
-		$client = (isset($_GET['client']))
-			? $_GET['client']
-			: null;
+		$this->shell = new View('client/shell');
+		
+		# get the clients name from url.
+		$url_array = Uri::url_array();
+		$client = (empty($url_array['3'])) 
+			? NULL
+			: $url_array['3'];
 			
 		$this->site = ORM::factory('site',$client);
 		$this->site_id = $this->site->id;
-		
 		if(!$this->site->loaded)
-			die('invalid site');
+		{
+			$this->shell->content = new View('client/no_site');
+			die($this->shell);
+		}
 		
+		# Only registered customers can submit testimonials.
+		$this->customer_token = (isset($_GET['ctk']))
+			? $_GET['ctk']
+			: NULL;
+			
+			
+		$this->testimonial_token = (isset($_GET['ttk']))
+			? $_GET['ttk']
+			: NULL;
 	}
 
 	
@@ -36,9 +51,8 @@ class Gather_Controller extends Controller {
 		else
 			$content = $this->make_form();
 		
-		$shell = new View('client/shell');
-		$shell->content = '<div id="plusPandaYes">'. $content . '</div>';
-		die($shell);
+		$this->shell->content = $content;
+		die($this->shell);
 	}
 
 
@@ -47,15 +61,65 @@ class Gather_Controller extends Controller {
  */ 	
 	private function make_form($values=NULL, $errors=NULL)
 	{
+		# Get a testimonial?
+		if(!empty($this->testimonial_token))
+		{
+			$testimonial = ORM::factory('testimonial')
+				->where(array(
+					'site_id' => $this->site_id,
+					'token'		=> $this->testimonial_token
+				))
+				->find();
+			if(!$testimonial->loaded)
+				die('invalid testimonial');
+
+			# does the testimonial belong to the customer?
+			if($this->customer_token !== $testimonial->customer->token)
+				die('invalid testimonial');	
+				
+				$fresh = FALSE;
+		}
+		else
+		{
+			# make sure the customer is valid.
+			$customer = ORM::factory('customer')
+				->where(array(
+					'site_id' => $this->site_id,
+					'token'		=> $this->customer_token
+				))
+				->find();
+			if(!$customer->loaded)
+			{
+				$this->shell->content = new View('client/blank');
+				die($this->shell);
+			}
+				
+			# load the empty testimonial
+			$testimonial = ORM::factory('testimonial', 1);
+			# hack - update non-customer to real customer.
+			foreach($testimonial->customer->as_array() as $field => $v)
+				$testimonial->customer->$field = $customer->$field;
+				
+			$fresh = TRUE;
+		}
+
+	
 		# get form questions
 		$questions = ORM::factory('question')
 			->where('site_id',$this->site->id)
 			->find_all();
 			
 		$form = new View('testimonials/add_testimonial');
-		$form->questions = $questions;	
-		$form->values = $values;
-		$form->errors = $errors;
+		$form->questions 		= $questions;
+		$form->values 			= $values;
+		$form->errors 			= $errors;
+		$form->fresh	 			= $fresh;
+		$form->tags					= $this->site->tags;
+	
+	
+		$form->info 				= json_decode($testimonial->body_edit, TRUE);
+		$form->testimonial 	= $testimonial;		
+
 		return $form;
 	}
 	

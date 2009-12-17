@@ -32,6 +32,7 @@ $image = (empty($testimonial->image))
 		New image <input type="file" name="image" />
 		
 	</div>
+	
 	<div class="t-view">
 		<div class="t-details">
 			<div class="image"><?php echo $image?></div>
@@ -83,6 +84,7 @@ $image = (empty($testimonial->image))
 			
 		</div>
 	</div>
+	
 </form>
 </div>
 

@@ -152,10 +152,10 @@ class Testimonials_Controller extends Admin_Interface_Controller {
 			->where('site_id',$this->site_id)
 			->find_all($id);
 		
-		$info = json_decode($testimonial->body_edit, TRUE);
+		
 		$view = new View('admin/testimonials/edit');
 		$view->testimonial = $testimonial;
-		$view->info = $info;
+		$view->info = json_decode($testimonial->body_edit, TRUE);
 		$view->questions = $questions;
 		$view->tags = $this->site->tags;
 		$view->image_url = paths::testimonial_image_url($this->site_id);
