@@ -273,4 +273,38 @@ class build_testimonials_Core {
 	}
 	
 	
+	
+/*
+ * display the crop view
+ */ 
+	public static function crop_view($site_id)
+	{
+		if(empty($_GET['image']))
+			return 'image not available';
+			
+		$image_dir = paths::testimonial_image($site_id);
+		if(!file_exists("$image_dir/full_".$_GET['image']))
+			return 'image not available';
+			
+		#hack 
+		$id = explode('.',$_GET['image']);
+		
+		$view = new View('admin/testimonials/crop');
+		$view->image_url	= paths::testimonial_image_url($site_id);
+		$view->filename		= $_GET['image'];
+		$view->id					= $id[0];
+		return $view;	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 } // end build helper

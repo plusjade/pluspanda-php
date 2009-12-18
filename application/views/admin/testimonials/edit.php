@@ -94,7 +94,7 @@ $image = (empty($testimonial->image))
 <?php foreach($questions as $question):?>
 	<div><?php echo $question->title?></div>
 	<p>
-		<?php echo $info["$question->id"]?>
+		<?php if(isset($info["$question->id"])) echo $info["$question->id"]?>
 	</p>
 <?php endforeach;?>
 </div>

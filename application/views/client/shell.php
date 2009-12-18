@@ -32,7 +32,30 @@
 
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
 	<script type="text/javascript" src="/static/js/addon.js"></script>
-<!--
+<script type="text/javascript" src="/static/js/facebox.js"></script> 
+<script type="text/javascript" src="/static/js/jcrop.js"></script> 
+	
+<script type="text/javascript">
+	$('a[rel*=facebox]').facebox();
+	
+function showPreview(coords){
+	if (parseInt(coords.w) > 0){
+		var rx = 100 / coords.w;
+		var ry = 100 / coords.h;
+
+		$('.crop-preview img').css({
+			width: Math.round(rx * 500) + 'px',
+			height: Math.round(ry * 370) + 'px',
+			marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+			marginTop: '-' + Math.round(ry * coords.y) + 'px'
+		});
+	}
+	
+	$('.crop-wrapper button').attr('alt', coords.w +'|'+ coords.h +'|'+ coords.y +'|'+ coords.x);
+}
+</script>
+	
+	<!--
 <script type="text/javascript" src="/static/admin/js/init.js"></script>
 -->	
 </body>

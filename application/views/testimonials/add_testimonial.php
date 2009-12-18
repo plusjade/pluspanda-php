@@ -1,10 +1,11 @@
 <?php
-		$testimonial->body = ($fresh)
-			? "Hello this is your testimonial!\nOur survey questions below will guide you easily along.\nPlease answer them, but also feel free to write your own freeform testimonial right in this box.\n\nClear this text when you are ready!\nHave fun!"
-			: $testimonial->body;
-		$welcome_msg = ($fresh)
-			? "Hello, {$testimonial->customer->name}; Create a new testimonial!"
-			: "Welcome back, {$testimonial->customer->name} !";
+	$testimonial->body = (empty($testimonial->body))
+		? "Hello this is your testimonial!\nOur survey questions below will guide you easily along.\nPlease answer them, but also feel free to write your own freeform testimonial right in this box.\n\nClear this text when you are ready!\nHave fun!"
+		: $testimonial->body;
+		
+	$image_src = (empty($testimonial->image))
+		? '/static/images/sample-thumb.jpg'
+		: "$image_url/$testimonial->image";
 ?>
 
 <div class="client-add-wrapper">
@@ -22,18 +23,19 @@
 			
 	<fieldset class="panda-submit">
 		<button type="submit">Save Changes</button>
-		<?php echo $welcome_msg?>
-		<input type="text" name="token" value="<?php echo $testimonial->token?>" READONLY>
-		
+		Hello, <?php echo $testimonial->customer->name?>, Thanks for your help!
 	</fieldset>		
 
 	<fieldset class="panda-image">
 		Upload Headshot or Logo <input type="file" name="image" />
+		- <a href="<?php echo "$url&a=crop&image=$testimonial->image"?>" rel="facebox">Edit Image</a>
 	</fieldset>	
 	
 	<div class="t-view">
 		<div class="t-details">
-			<div class="image"><img src="/static/images/sample-thumb.jpg"/></div>
+			<div class="image">
+				<img src="<?php echo $image_src?>"/>
+			</div>
 			
 			<span class="label">Full Name</span>
 			<span class="t-name">
@@ -84,25 +86,17 @@
 	</div>		
 			
 	<h1>Survey Questions</h1>
-	<?php
-	if(!isset($values)) $values = array();
-	if(!isset($errors)) $errors = array();
-	?>
-	<div class="t-questions">
-	
+	<div class="t-questions">	
 <?php foreach($questions as $question):?>
-	<fieldset>
-		<label><?php echo $question->title?></label>
-		<div class="info"><?php echo $question->info?></div>
-		<textarea><?php echo $info["$question->id"]?></textarea>
-	</fieldset>
+		<fieldset>
+			<label><?php echo $question->title?></label>
+			<div class="info"><?php echo $question->info?></div>
+			<textarea name="info[<?php echo $question->id?>]"><?php if(isset($info["$question->id"])) echo $info["$question->id"]?></textarea>
+		</fieldset>
 <?php endforeach;?>
-	<?php #echo val_form::make_fields($questions, $values, $errors)?>
-	
-	
 	</div>
 	
-	</form>
+</form>
 
 </div>
 
