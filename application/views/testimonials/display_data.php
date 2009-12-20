@@ -1,8 +1,8 @@
 
 
 <?php 
-	foreach($reviews as $review)
-		echo build_testimonials::testimonial_html($review);
+	foreach($testimonials as $testimonial)
+		echo build_testimonials::testimonial_html($testimonial);
 
 	echo $pagination;
 ?>

@@ -15,26 +15,22 @@ $image = (empty($testimonial->image))
 	
 	<div class="edit-wrapper">
 		<div class="save-list">
+			Publish? <input type="checkbox" name="publish" value="yes" <?php echo (empty($testimonial->publish)) ? '' : 'CHECKED'?>/> (yes)
+		
 			<button type="submit" style="">Update Testimonial</button>
 		</div>
 		
-		<ul class="publisher-list">
-			<li><a href="/admin/testimonials/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a></li>
-			<li><a href="#" class="toggle-edit">Toggle Edit Mode</a></li>
-		</ul>
-		
-		<br style="clear:both" />
-		
-		<span style="float:right">
-			Publish? <input type="checkbox" name="publish" value="yes" <?php echo (empty($testimonial->publish)) ? '' : 'CHECKED'?>/> Yes!
-		</span>
-		
-		New image <input type="file" name="image" />
-		
+		<a href="#" class="toggle-edit">Toggle Edit Mode</a>
 	</div>
 	
+	<fieldset class="panda-image">
+		Upload new headshot or logo <input type="file" name="image" />
+	</fieldset>	
+		
 	<div class="t-view">
 		<div class="t-details">
+			<a href="/admin/testimonials/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a>
+			
 			<div class="image"><?php echo $image?></div>
 			
 			<span class="label">Full Name</span>

@@ -35,7 +35,7 @@
 	public function testimonials()
 	{
 		$content = new View('admin/widget');
-		$content->embed_code = build_testimonials::embed_code($this->site_id);
+		$content->embed_code = build_testimonials::embed_code($this->site->apikey, NULL, FALSE);
 		
 		if(request::is_ajax())
 			die($content);

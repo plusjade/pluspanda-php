@@ -21,9 +21,10 @@
 	<tr>
 		<th>Name</th>
 		<th width="200px">Company</th>
-		<th width="200px">Category</th>
+		<th width="150px">Category</th>
 		<th width="60px">Featured</th>
-		<th width="80px">Public Url</th>
+		<th width="40px">Url</th>
+		<th width="120px">Updated</th>
 		<th width="120px">Created</th>
 		
 	</tr>	
@@ -34,7 +35,11 @@
 			<td><?php echo $testimonial->tag->name?></td>
 			<td><?php echo $testimonial->featured?></td>
 			<td><a href="<?php echo url::site("add/testimonials/{$this->site->subdomain}?ctk={$testimonial->customer->token}&ttk=$testimonial->token")?>">link</a></td>
+			<td><?php if(!empty($testimonial->updated)) echo build::timeago($testimonial->updated)?></td>
+		
 			<td><?php echo build::timeago($testimonial->created)?></td>
+		
+		
 		</tr>
 <?php endforeach;?>
 </table>

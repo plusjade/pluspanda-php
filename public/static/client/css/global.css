@@ -4,8 +4,8 @@
 
 
 /*Change your font here */
-body 					{
-	background-color: #EAEAEA;
+body {
+	background:#EAEAEA;
 	font-family: Arial, Helvetica, sans-serif;
 }
 h1,h2,h3,h4,h5,h6		{ color: #333333;}
@@ -69,6 +69,32 @@ dd 		{
 /* ----------------------------
 		LAYOUT
 ------------------------------- */
+.logo {
+	position:absolute;
+	top:0; left:20px;
+	width:120px;
+	height:15px;
+  padding: 0px 0 20px 0;
+	background: #396033;
+	-moz-border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	-webkit-border-bottom-left-radius:5px;
+	-webkit-border-bottom-right-radius:5px;
+	}
+  .logo h1 {
+    margin: 0;
+		margin-top:10px;
+    padding: 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+   }
+    .logo h1 a {
+      color: #fff; font-size:12px;}
+      .logo h1 a:hover {
+        color: #ccc; }
+
+				
 #header	{
 margin:0 auto;
 width:750px;
@@ -105,13 +131,25 @@ overflow:auto;
 /* ----------------------------
 		FOOTER
 ------------------------------- */
+#panda-powered{
+	clear: both;
+	margin: 20px auto;
+	padding:10px;
+	text-align:center;
+	
+}
+#panda-powered img{display:block;margin:auto;}
+#panda-powered h1{margin:10px 0;}
+#panda-powered a{color:#333}
+#panda-powered a:hover{text-decoration:none}
+
+
 #footer	{
 	clear: both;
-	margin: 20px 0;
-	padding: 10px 0;
+	margin-bottom:20px;
+	padding: 10px;
 	font-size: 10px;
-	padding-left: 20px;
-	text-align:right;
+	text-align:center;
 }
 /* ----------------------------
 		FORMS
@@ -219,7 +257,12 @@ text-align:left;
 
 
 			
-			
+.top-message{
+	margin:20px 0;
+	padding:10px;
+	text-align:center;
+	-webkit-border-radius:7px;
+}			
 
 
 	.client-add-wrapper{}
@@ -228,6 +271,43 @@ text-align:left;
 	overflow: auto;
 	margin-bottom:20px;
 	}
+	
+.panda-submit{
+}
+button.submit-button{
+	float:right;
+	padding:6px 10px;
+	margin:0;
+	border:1px solid #bde99c;
+	margin-right:25px;
+	border-bottom:0;
+	background:#d1f0b9;
+	font-weight:bold;
+	font-size:1.1em;
+	-moz-border-radius-topleft:7px;
+	-moz-border-radius-topright:7px;
+	-webkit-border-top-left-radius:7px;
+	-webkit-border-top-right-radius:7px;
+}
+button.submit-button:hover{
+	cursor:cursor;
+	cursor:pointer;
+	background:#a7db80;
+	color:#fff;
+}
+.panda-image{
+	clear:both;
+	padding:7px 15px;background:#555;color:#fff;
+	text-align:center;
+	-moz-border-radius-topleft:10px;
+	-moz-border-radius-topright:10px;
+	-webkit-border-top-left-radius:10px;
+	-webkit-border-top-right-radius:10px;
+	
+	
+	}
+.panda-image input{color:#fff;}
+	
 	.t-view{
 	clear:both;
 	overflow:auto;
@@ -238,6 +318,8 @@ text-align:left;
 	-webkit-border-bottom-left-radius:10px;
 	-webkit-border-bottom-right-radius:10px;
 	margin-bottom:15px;
+	border-right:2px solid #ddd;
+	border-bottom:2px solid #ddd;
 	}
 	 .t-details {
 		width:190px;
@@ -256,26 +338,42 @@ text-align:left;
 		float:left;
 		overflow:auto;
 	}	
-   .t-rating {
-    float: right;
-    width: 95px;
-    height: 22px;
-    background: #fff url('/static/widget/images/sm-rating.png') no-repeat 0 0;
-    text-align: center; }
-     .t-rating._1 {
-      background-position: 0px 0px; }
-     .t-rating._2 {
-      background-position: 0px -28px; }
-     .t-rating._3 {
-      background-position: 0px -56px; }
-     .t-rating._4 {
-      background-position: 0px -85px; }
-     .t-rating._5 {
-      background-position: 0px -112px; }
-   
-	 .t-name {
-		}
+	.t-rating-wrapper{
+		margin-bottom:5px;
+		overflow:auto;
+	}
+	.rating-fallback{
+		width:100%;
+		text-align:right;
+	}
+#panda-star-rating{
+float:right;
+width:160px; height:33px; margin-bottom:10px;
+background: #fff url('/static/widget/images/rating-select.png') no-repeat 0 0;
+border:1px solid #eee;
+-webkit-border-radius:5px;
+-moz-border-radius:5px;
+}
+.panda-rating-text{
+float:right;
+margin-right:10px;
+padding-top:7px;
+font-size:1.1em;
+font-weight:bold;
+}
 
+#panda-star-rating._1{background-position: 0px -48px;}
+#panda-star-rating._2{background-position: 0px -95px;}
+#panda-star-rating._3{background-position: 0px -142px;}
+#panda-star-rating._4{background-position: 0px -189px;}
+#panda-star-rating._5{background-position: 0px -236px;}
+#panda-star-rating div{
+width:32px;
+height:40px;
+float:left;
+cursor:cursor;
+cursor:pointer;
+}	
 .t-body {
     clear: both;
     padding: 10px;
@@ -316,20 +414,95 @@ border:0
 	
 /* QUESTIONS STUFF */
 
+/* This div isn't entirely necessary but good for getting the side arrows vertically centered */
+.slider-wrap { 
+	margin: 20px 0;
+	position: relative;
+	width: 100%;
+}
+ /* This is the viewing window */
+.stripViewer {
+	position: relative;
+	width: 730px; 
+	height: 250px;
+	margin: auto;
+	clear: both;
+	overflow: hidden; 
+	background:#f1f1f1;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+}
 
-.t-questions{
-width:90%;
-margin:auto;
+/* This is the big long container used to house your end-to-end divs. Width is calculated and specified by the JS  */
+.stripViewer .panelContainer { 
+	position: relative;
+	left: 0; top: 0;
+	width: 100%;
+	list-style-type: none;
+	/* -moz-user-select: none; // This breaks CSS validation but stops accidental (and intentional - beware) panel highlighting in Firefox. Some people might find this useful, crazy fools. */
+}
+
+/* Each panel is arranged end-to-end */
+.stripViewer .panelContainer .panel { 
+	float:left;
+	width: 730px;
+	height: 100%;
+	position: relative;
+}
+.stripViewer .panelContainer .panel .wrapper {padding: 10px 20px;}
+
+
+/* The nav links */
+/* This is the div to hold your nav (the UL generated at run time) */
+.stripNav {margin-left:30px; overflow:auto;}
+.stripNav ul {list-style: none;}
+/* If you change this, be sure to adjust the initial value of navWidth in coda-slider.1.1.1.js */
+.stripNav ul li {float: left; margin-right: 2px; }
+.stripNav a { 
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 32px;
+	background: #ccc;
+	color: #333;
+	text-decoration: none;
+	display: block;
+	padding: 0 15px;
+}
+.stripNav li a:hover,
+.stripNav li a.current {
+	background: #333;
+	color:#fff;
 }	
+
+
+/* The left and right arrows */
+.stripNavL, .stripNavR { 
+	position: absolute;
+	top: 230px;
+	text-indent: -9000em;
+}
+.stripNavL a, .stripNavR a {
+	display: block;
+	height: 40px;
+	width: 40px;
+}
+.stripNavL {left: 0;}
+.stripNavR {right: 0;}
+.stripNavL {background: url("/static/images/arrow-left.gif") no-repeat center;}
+.stripNavR {background: url("/static/images/arrow-right.gif") no-repeat center;}
+	
+
+	
 .t-questions textarea{
 	width:350px;
-	height:110px;
+	height:130px;
 }	
-.t-questions fieldset .info {
+.t-questions div .info {
 	float:right;
 	width:290px;
 	padding:10px;
-	background:#ededed;
+	background:#f9f9f9;
 	font-size:0.8em;
 	-moz-border-radius:7px;
 	-webkit-border-radius: 7px;
@@ -362,14 +535,6 @@ margin:auto;
 }
 
 
-.panda-submit{
-	padding:7px;
-	background:#ffffcc;
-}
-.panda-submit button{
-	float:right;
-}
-.panda-image{padding:7px;background:#ccc}
 
 
 

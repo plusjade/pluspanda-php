@@ -7,14 +7,8 @@
 	<!--  REQUIRED FOR IE6 SUPPORT -->
 	<style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
 	<link href="/static/admin/css/global.css" rel="stylesheet" type="text/css" />
-<link href="/static/testimonials/css/client.css" rel="stylesheet" type="text/css" />
-
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
-	<script type="text/javascript" src="/static/js/addon.js"></script>
-<script type="text/javascript" src="/static/js/facebox.js"></script>
-<script type="text/javascript" src="/static/js/jcrop.js"></script>
 
-	
 </head>
 
 <body>
@@ -76,8 +70,7 @@
 	
 </div>
 
-<script type="text/javascript" src="/static/js/jquery.ui.js"></script>
-<script type="text/javascript" src="/static/admin/js/init.js"></script>	
+<script type="text/javascript" src="/js/admin"></script>
 </body>
 </html>
 

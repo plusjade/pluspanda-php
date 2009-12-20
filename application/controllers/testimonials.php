@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
- * Renders the testimonials Customer Reviews Engine.
+ * Renders the testimonials Customer testimonials Engine.
  * 3 types of data output formats:
 		1. Standalone js-disabled Mode.
 				if no javascript, functions as normal, outputs complete views.
@@ -19,16 +19,10 @@ class Testimonials_Controller extends Controller {
 	
 	public function __construct($site=NULL, $type=FALSE)
 	{
-		/*
-		$site = ORM::factory('site',ROOTSITEID);
-		if(empty($site))
-			die('invalid');
-		*/	
 		parent::__construct();
 	
-			
 		$this->site				= $site;
-		$this->apikey			= $site->id;
+		$this->apikey			= $site->apikey;
 		$this->site_name	= $site->subdomain;
 		$this->site_id		= $site->id;
 		$this->theme			= (empty($site->theme)) ? 'gray' : $site->theme;
@@ -53,11 +47,11 @@ class Testimonials_Controller extends Controller {
 	public function index()
 	{	
 		if($_POST)
-			$add_review = self::submit_handler('normal');
+			$add_testimonial = self::submit_handler('normal');
 		else
 		{
-			$add_review = new View('testimonials/add_testimonial');
-			$add_review->tags = $this->site->tags->select_list('id','name');
+			$add_testimonial = new View('testimonials/add_testimonial');
+			$add_testimonial->tags = $this->site->tags->select_list('id','name');
 		}
 
 		# setup the shell
@@ -67,8 +61,8 @@ class Testimonials_Controller extends Controller {
 		$content->site = $this->site;
 		$content->set_global('active_tag', $this->active_tag);
 		$content->set_global('active_sort', $this->active_sort);
-		$content->get_reviews = $this->get_reviews();
-		#$content->add_review = $add_review;
+		$content->get_testimonials = $this->get_testimonials();
+		#$content->add_testimonial = $add_testimonial;
 		$shell->content = $content;
 		echo $shell->render();
 	}
@@ -77,9 +71,9 @@ class Testimonials_Controller extends Controller {
 /* ------------- modular methods (ajaxable) -------------  */
 	
 /*
- * get the reviews data depending on how we are asking for it.
+ * get the testimonials data depending on how we are asking for it.
  */
-	private function get_reviews($format=NULL)
+	private function get_testimonials($format=NULL)
 	{
 		# defaults
 		$where	= array('publish' => 1);
@@ -102,36 +96,40 @@ class Testimonials_Controller extends Controller {
 				break;
 		}
 
-		# get full count of reviews for this tag.
+		# get full count of testimonials for this tag.
 		$total_testimonials = ORM::factory('testimonial')
 			->where($where)
 			->orderby($sort)
 			->count_all();
 		
-		# get the appropriate reviews based on page.
-		$offset = ($this->active_page*10) - 10;
-		$reviews = ORM::factory('testimonial')
+		# get the appropriate testimonials based on page.
+		$limit = 2;
+		$offset = ($this->active_page*$limit) - $limit;
+		$testimonials = ORM::factory('testimonial')
 			->where($where)
 			->orderby($sort)
-			->limit(10, $offset)
+			->limit($limit, $offset)
 			->find_all();
+		
 
+		/*
 		# build the pagination html
 		$pagination = new Pagination(array(
 			'base_url'			 => "/?tag=$this->active_tag&sort=$this->active_sort&page=",
 			'current_page'	 => $this->active_page, 
 			'total_items'    => $total_testimonials,
 			'style'          => 'testimonials' ,
-			'items_per_page' => 10
-			
+			'items_per_page' => $limit
 		));
+		*/
+		
 		
 		# Return Standalone Ajax - 
-		# reviews_data (sorters & pagination).
+		# testimonials_data (sorters & pagination).
 		if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
 		{
-			$view = new View('testimonials/reviews_data');
-			$view->reviews = $reviews;
+			$view = new View('testimonials/testimonials_data');
+			$view->testimonials = $testimonials;
 			$view->pagination = $pagination;
 			die($view);
 		}
@@ -141,34 +139,43 @@ class Testimonials_Controller extends Controller {
 		# Return JSON to widget
 		if($this->is_api)
 		{
-			$review_array = array();
-			foreach($reviews as $review)
+			$testimonial_array = array();
+			foreach($testimonials as $testimonial)
 			{
-				$data = $review->as_array();
-				$data['name']			= $review->customer->name;
-				$data['position'] = $review->customer->position;
-				$data['company'] 	= $review->customer->company;
-				$data['location'] = $review->customer->location;
-				$data['url']			= $review->customer->url;
-				$data['tag_name'] = $review->tag->name;
-				$review_array[]		= $data;
+				$data = $testimonial->as_array();
+				$data['name']			= $testimonial->customer->name;
+				$data['position'] = $testimonial->customer->position;
+				$data['company'] 	= $testimonial->customer->company;
+				$data['location'] = $testimonial->customer->location;
+				$data['url']			= $testimonial->customer->url;
+				$data['tag_name'] = $testimonial->tag->name;
+				$testimonial_array[]		= $data;
 			}
-			$json_reviews = json_encode($review_array);
 
+			# should we specify a next page link?
+			if($total_testimonials > $offset + $limit)
+			{
+				$next_page = $this->active_page+1;
+				$page_vars = "'$next_page', '$this->active_tag', '$this->active_sort'";
+			}
+			else
+				$page_vars = '';
+			
+			
+			$json_testimonials = json_encode($testimonial_array);
 			#pagination html.
-			$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
+			#$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
 				
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-			#header('Content-type: text/plain');
 			header('Content-type: application/json');
-			die("pandaDisplayRevs($json_reviews);pandaPages('$pagination')");
+			die("pandaDisplayRevs($json_testimonials);pandaPages($page_vars);");
 		}
 		
 		# Return New Tag ajax view.
 		# or standalone non-ajax.
 		$view = new View('testimonials/get_testimonials');
-		$view->reviews = $reviews;		
+		$view->testimonials = $testimonials;		
 		$view->pagination = $pagination;
 		$view->set_global('active_tag', $this->active_tag);
 		$view->set_global('active_sort', $this->active_sort);
@@ -177,8 +184,8 @@ class Testimonials_Controller extends Controller {
 	
 	
 /*
- * post review handler.
- * validates and adds the new review to the site.
+ * post testimonial handler.
+ * validates and adds the new testimonial to the site.
  * $type specifies the way in which the submission is coming.
  * normal = non javascript request on standalone site.
 		ajaxP = posted via ajax
@@ -200,7 +207,7 @@ class Testimonials_Controller extends Controller {
 			# this should rarely happen due to client-side js validation...
 			# widget GET error.
 			if($this->is_api)
-				die('pandaSubmitRsp({"code":5, "msg":"Review Not Added! ('. count($post->errors()) .') Missing Fields"})');			
+				die('pandaSubmitRsp({"code":5, "msg":"testimonial Not Added! ('. count($post->errors()) .') Missing Fields"})');			
 
 			$view = new View('testimonials/add_testimonial');
 			$view->errors = $post->errors();
@@ -251,8 +258,6 @@ class Testimonials_Controller extends Controller {
 		$view->success = true;
 		$view->type = 'testimonials';
 		return $view;
-		
-		# cross-site post data can't be returned =(
 	}
 
 	
@@ -268,39 +273,19 @@ class Testimonials_Controller extends Controller {
 		# get all the html interfaces.		
 		$tag_list = build_testimonials::tag_list($this->site->tags, $this->active_tag);
 		$sorters = build_testimonials::sorters($this->active_tag, $this->active_sort, 'widget');		
-		$testimonial_html = build_testimonials::testimonial_html();
-		
-		# add testimonials form
-		# get form questions
-		$questions = ORM::factory('question')
-			->where('site_id',$this->site_id)
-			->find_all();
-		$form = new View('testimonials/add_testimonial');
-		$form->active_tag = $this->active_tag;
-		$form->tags = $this->site->tags->select_list('id','name');
-		$form->widget = 'yes';
-		$form->questions = $questions;
-		
+		$testimonial_html = build_testimonials::testimonial_html(NULL, $this->site_id);
+			
 		# build an object to hold the html.
 		$html = new StdClass(); 
-		$html->tag_list			= str_replace($keys, '', $tag_list);
-		$html->sorters			= str_replace($keys, '', $sorters);
-		$html->form					= str_replace($keys, '', $form->render());
-		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none;"></iframe>';
-		
-		# build object to hold status msg views.
-		$success	= View::factory('common/status', array('success'=>TRUE, 'type'=>'testimonials'))->render();
-		$error		= View::factory('common/status', array('success'=>FALSE, 'type'=>'testimonials'))->render();
-		$status = new StdClass();
-		$status->success = str_replace($keys, '', $success);
-		$status->error	 = str_replace($keys, '', $error);
-		
+		$html->tag_list	= str_replace($keys, '', $tag_list);
+		$html->sorters	= str_replace($keys, '', $sorters);
+
 		# load the widget_js view and place the html as json.
 		$widget_js = new View('testimonials/widget_js');
-		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/testimonials/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
-		$widget_js->url = 'http://' . ROOTDOMAIN ."?apikey=$this->apikey&service=testimonials";
+		$widget_js->theme = $this->theme;
+		$widget_js->apikey = $this->apikey;
+		$widget_js->asset_url = paths::testimonial_image_url($this->site_id);
 		$widget_js->json_html = json_encode($html);
-		$widget_js->json_status = json_encode($status);
 		$widget_js->testimonial_html = str_replace($keys, '', $testimonial_html);
 		
 		
@@ -322,7 +307,7 @@ class Testimonials_Controller extends Controller {
  */ 	
 	public function _ajax()
 	{
-		# submit a review via POST, 
+		# submit a testimonial via POST, 
 		if($_POST)
 			die($this->submit_handler('ajaxP'));
 
@@ -330,13 +315,13 @@ class Testimonials_Controller extends Controller {
 		if(isset($_GET['fetch']) AND 'testimonials' == $_GET['fetch'])
 			die($this->widget());
 			
-		# submit a review via GET, return json status
+		# submit a testimonial via GET, return json status
 		if(isset($_GET['submit']) AND 'testimonials' == $_GET['submit'])			
 			die($this->submit_handler());
 			
-		# get reviews in json
+		# get testimonials in json
 		if(isset($_GET['tag']))
-			die($this->get_reviews('ajax'));
+			die($this->get_testimonials('ajax'));
 			
 		die('invalid api parameters');
 	}		

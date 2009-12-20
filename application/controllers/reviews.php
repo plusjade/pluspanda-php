@@ -25,7 +25,7 @@ class Reviews_Controller extends Controller {
 		parent::__construct();
 
 		$this->site				= $site;
-		$this->apikey			= $site->id;
+		$this->apikey			= $site->apikey;
 		$this->site_name	= $site->subdomain;
 		$this->site_id		= $site->id;
 		$this->theme			= (empty($site->theme)) ? 'gray' : $site->theme;
@@ -264,7 +264,7 @@ class Reviews_Controller extends Controller {
 
 	
 		# stadalone return status
-		$view = new View('reviews/status');
+		$view = new View('common/status');
 		$view->success = TRUE;
 		$view->type = 'review';
 		return $view;
@@ -304,8 +304,8 @@ class Reviews_Controller extends Controller {
 		$html->iframe				= '<iframe name="panda-iframe" id="panda-iframe" style="display:none"></iframe>';
 
 		# build object to hold status msg views.
-		$success	= View::factory('reviews/status', array('success'=>TRUE, 'type'=>'review'))->render();
-		$error		= View::factory('reviews/status', array('success'=>FALSE, 'type'=>'review'))->render();
+		$success	= View::factory('common/status', array('success'=>TRUE, 'type'=>'review'))->render();
+		$error		= View::factory('common/status', array('success'=>FALSE, 'type'=>'review'))->render();
 		$status = new StdClass();
 		$status->success = str_replace($keys, '', $success);
 		$status->error	 = str_replace($keys, '', $error);
@@ -323,16 +323,18 @@ class Reviews_Controller extends Controller {
 		ob_start();
 		echo $widget_js;
 		
-		$dir = paths::data_dir($this->apikey);
+		$dir = paths::data_dir($this->site_id);
 		if(!is_dir("$dir/rvs"))
 			mkdir("$dir/rvs");
 		if(!is_dir("$dir/rvs/js"))
 			mkdir("$dir/rvs/js");
 			
+			/*
 		file_put_contents(
-			paths::js_cache($this->apikey,'reviews'),
+			paths::js_cache($this->site_id,'reviews'),
 			ob_get_contents()."\n//cached ".date('m.d.y g:ia e')
 		);
+		*/
 	}
 	
 	

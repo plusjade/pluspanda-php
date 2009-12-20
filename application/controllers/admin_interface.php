@@ -53,7 +53,7 @@
 
 		$this->shell->menu_testimonials = array(
 			array('dashboard', '/admin/home?service=testimonials','Dashboard','ajax'),
-			array('tags', '/admin/tags','Tags','ajax'),
+			array('tags', '/admin/tags','Category Tags','ajax'),
 			array('testimonials', '/admin/testimonials','Testimonials','jax'),
 			
 			array('customers', '/admin/customers?service=testimonials','Customers','ajax'),

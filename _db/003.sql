@@ -25,7 +25,12 @@ ALTER TABLE `reviews` CHANGE `tag_id` `category_id` INT( 9 ) UNSIGNED NOT NULL
 ALTER TABLE `customers` ADD `location` VARCHAR( 155 ) NOT NULL AFTER `url` ;
 
 ALTER TABLE  `customers` ADD INDEX (  `token` );
-ALTER TABLE  `testimonials` ADD  `token` VARCHAR( 9 ) NOT NULL AFTER  `customer_id`
+ALTER TABLE  `testimonials` ADD  `token` VARCHAR( 9 ) NOT NULL AFTER  `customer_id`;
+
+
+ALTER TABLE  `sites` ADD  `apikey` VARCHAR( 10 ) NOT NULL AFTER  `id`;
+
+ALTER TABLE  `testimonials` ADD  `updated` INT( 10 ) NOT NULL AFTER  `created`;
 
 
 

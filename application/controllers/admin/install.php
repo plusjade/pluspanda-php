@@ -20,8 +20,8 @@
 	public function reviews($action=FALSE)
 	{	
 		$content = new View('admin/install_wrapper');
-		$content->embed_code = build::embed_code($this->site_id, 'fake');
-		$content->embed_code_lite = build::embed_code($this->site_id, 'fake', FALSE);
+		$content->embed_code = build::embed_code($this->site->apikey, 'fake');
+		$content->embed_code_lite = build::embed_code($this->site->apikey, 'fake', FALSE);
 			
 		# carry out the action so view is up-to-date.
 		if($action)
@@ -43,8 +43,8 @@
 	public function testimonials($action=FALSE)
 	{	
 		$content = new View('admin/install_wrapper');
-		$content->embed_code = build_testimonials::embed_code($this->site_id, 'fake');
-		$content->embed_code_lite = build_testimonials::embed_code($this->site_id, 'fake', FALSE);
+		$content->embed_code = build_testimonials::embed_code($this->site->apikey, 'fake');
+		$content->embed_code_lite = build_testimonials::embed_code($this->site->apikey, 'fake', FALSE);
 			
 		# carry out the action so view is up-to-date.
 		if($action)

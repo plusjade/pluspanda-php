@@ -19,7 +19,7 @@ class build_testimonials_Core {
 		?>
 <div class="testimonial-wrapper">
 	<div class="testimonial-details">
-		<div class="image">'+ this.image +'</div>		
+		<div class="image"><img src="'+ this.image +'"/></div>		
 		<div class="testimonial-name">
 			<span>'+ this.name +'</span>
 		</div>
@@ -210,28 +210,13 @@ class build_testimonials_Core {
 	}
 	
 	
-/*
- * build the add testimonial wrapper.
- */	
-	public static function add_wrapper()
-	{
-		ob_start();
-		?>
-		<div class="panda-add-wrapper">
-			<a href="#panda-add-testimonial" id="add_testimonial_toggle">+ Add New testimonial</a>
-		</div>
-		<?php
-		return ob_get_clean();
-	}
-	
 
-	
 /*
  * build the testimonials sorting display.
  */
 	public static function sorters($active_tag='all', $active_sort=NULL, $widget=NULL)
 	{
-		$sort_types = array('featured', 'newest', 'oldest');
+		$sort_types = array('newest', 'oldest');
 		$url = (isset($widget))
 			? "#sort="
 			: "/?tag=$active_tag&sort=";
@@ -277,22 +262,26 @@ class build_testimonials_Core {
 /*
  * display the crop view
  */ 
-	public static function crop_view($site_id)
+	public static function crop_view($site_id, $action_url=NULL)
 	{
 		if(empty($_GET['image']))
 			return 'image not available';
-			
+		
+		$filename = $_GET['image'];
 		$image_dir = paths::testimonial_image($site_id);
-		if(!file_exists("$image_dir/full_".$_GET['image']))
+		if(!file_exists("$image_dir/full_$filename"))
 			return 'image not available';
 			
 		#hack 
-		$id = explode('.',$_GET['image']);
+		$id = explode('.', $filename);
 		
 		$view = new View('admin/testimonials/crop');
-		$view->image_url	= paths::testimonial_image_url($site_id);
-		$view->filename		= $_GET['image'];
-		$view->id					= $id[0];
+		$view->img_src		= paths::testimonial_image_url($site_id)."/full_$filename?r=". text::random('alnum',6);
+		$view->thmb_src		= paths::testimonial_image_url($site_id)."/$filename?r=". text::random('alnum',6);
+		$view->action_url	= (empty($action_url))
+			? '/admin/testimonials/crop?id='. $id[0]
+			: $action_url;
+		
 		return $view;	
 	}
 	

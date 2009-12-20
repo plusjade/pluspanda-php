@@ -24,6 +24,7 @@ class Testimonial_Model extends ORM {
 			$this->token	 = text::random('alnum', 6);
 		}
 		
+		$this->updated = time();
 		#$this->body_edit = json_encode($this->body_edit);
 		return parent::save();
 	}

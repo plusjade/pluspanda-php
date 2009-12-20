@@ -22,7 +22,9 @@ function get_site()
 			
 			if(empty($_GET['jquery']))
 				readfile(DOCROOT . 'static/js/jquery.js');		
-			readfile(DOCROOT . 'static/js/addon.js');
+			
+			if('reviews' == $_GET['fetch'])
+				readfile(DOCROOT . 'static/js/addon.js');
 	
 			$js_cache = paths::js_cache($_GET['apikey'], $_GET['fetch']);	
 			if(file_exists($js_cache))
@@ -32,7 +34,9 @@ function get_site()
 		}
 		
 		# get the account.		
-		$site = ORM::factory('site', $_GET['apikey']);
+		$site = ORM::factory('site')
+			->where('apikey',$_GET['apikey'])
+			->find();
 		# should we make this a 404 since its an api call?
 		if(!$site->loaded)
 			die('invalid api key');

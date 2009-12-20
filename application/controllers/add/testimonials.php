@@ -15,6 +15,10 @@ class Testimonials_Controller extends Add_Interface_Controller {
 			$this->render(View::factory('client/blank'));
 		$this->testimonial_token = $_GET['ttk'];
 		
+		# define the form action url 
+		$this->form_url = url::site("/add/testimonials/{$this->site->subdomain}?ctk=$this->customer_token&ttk=$this->testimonial_token");
+		
+		
 		# route to method here for better urls =p
 		$allowed = array('crop');
 		$action = (isset($_GET['a']) AND in_array($_GET['a'], $allowed)) 
@@ -58,7 +62,7 @@ class Testimonials_Controller extends Add_Interface_Controller {
 		}
 		
 		# display the crop view.
-		die(build_testimonials::crop_view($this->site_id));
+		die(build_testimonials::crop_view($this->site_id, $this->form_url . "&a=crop"));
 	}
 
 	
@@ -84,7 +88,7 @@ class Testimonials_Controller extends Add_Interface_Controller {
 		$form->info 				= json_decode($testimonial->body_edit, TRUE);
 		$form->testimonial 	= $testimonial;
 		$form->image_url		= paths::testimonial_image_url($this->site_id);
-		$form->url					= url::site("/add/testimonials/{$this->site->subdomain}?ctk=$this->customer_token&ttk=$this->testimonial_token");
+		$form->url					= $this->form_url;
 		return $form;
 	}
 
@@ -94,14 +98,13 @@ class Testimonials_Controller extends Add_Interface_Controller {
  */
 	private function handle_submit()
 	{
-		## valid testimonial are required 
-		# no validation is required since we need to make
-		# sure to save any info sent.		
-		$testimonial = $this->get_testimonial();
+		# valid testimonial are required 
+		# no validation so we can save anything coming in.
+		$testimonial							= $this->get_testimonial();
 		$testimonial->body_edit		= json_encode($_POST['info']);
 		$testimonial->body				= $_POST['body'];
 		$testimonial->tag_id			= $_POST['tag'];
-		#$testimonial->rating			= $_POST['rating'];				
+		$testimonial->rating			= $_POST['rating'];				
 		$testimonial->save();
 		
 		$testimonial->customer->name			= $_POST['name'];
@@ -149,13 +152,9 @@ class Testimonials_Controller extends Add_Interface_Controller {
 		# submit a review via POST, 
 		if($_POST)
 			die($this->handle_submit());
-	
-		# submit a review via GET, return json status
-		if(isset($_GET['submit']) AND 'testimonials' == $_GET['submit'])			
-			die($this->handle_submit());
-			
-			
-		die('invalid gather parameters');
+
+
+		die('invalid add/testimonial parameters');
 	}			
 	
 	

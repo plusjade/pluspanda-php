@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
- * admin interface 
+ * public client "add" interface 
  */
 
  abstract class Add_Interface_Controller extends Controller {
@@ -63,8 +63,8 @@
 	public function __call($method, $args)
 	{
 	
-		die("$method does not exist (admin_interface)");
+		die("$method does not exist (add_interface)");
 	}
 	
 	
-} // End shell_Controller
+} // End add interface controller

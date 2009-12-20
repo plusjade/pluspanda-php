@@ -16,7 +16,7 @@ Our customers are backing us up with their reputations. No anonymous claims here
 	<?php echo build_testimonials::tag_list($site->tags, $active_tag)?>
 	
 	<div class="panda-tag-scope">
-		<?php echo $get_reviews?>
+		<?php echo $get_testimonials?>
 	</div>
 	
 	<div class="panda-powered">

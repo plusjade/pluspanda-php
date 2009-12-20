@@ -6,7 +6,7 @@
 	<?php echo View::factory(
 		'testimonials/display_data',
 		array(
-			'reviews' => $reviews,
+			'testimonials' => $testimonials,
 			'pagination'=>$pagination
 		)
 	)?>

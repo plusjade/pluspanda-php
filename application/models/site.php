@@ -22,6 +22,7 @@ class Site_Model extends ORM {
 		if ($this->loaded === FALSE)
 		{
 			$this->created = time();
+			$site->apikey = text::random('alnum', 8);
 		}
 		return parent::save();
 	}

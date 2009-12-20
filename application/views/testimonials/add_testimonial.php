@@ -8,31 +8,23 @@
 		: "$image_url/$testimonial->image";
 ?>
 
+
+<div class="top-message">
+	Hello, <?php echo $testimonial->customer->name?>, Thanks for your help!
+</div>
+
 <div class="client-add-wrapper">
-	<!--
-	Hello, thank you for your help.
-	I appreciate your time very much. This should only take about 5 minutes.
-	Feel free to be honest and specific- thanks!
-	<br/><br/>
-	-->
-	
-	<?php if(isset($errors)) echo val_form::show_error_box($errors);?>
-
-	<form action="" enctype="multipart/form-data" method="POST" id="panda-add-review">
-
-			
-	<fieldset class="panda-submit">
-		<button type="submit">Save Changes</button>
-		Hello, <?php echo $testimonial->customer->name?>, Thanks for your help!
-	</fieldset>		
+<form action="" enctype="multipart/form-data" method="POST" id="panda-add-review">		
+	<button class="submit-button" type="submit">Save Changes</button>		
 
 	<fieldset class="panda-image">
-		Upload Headshot or Logo <input type="file" name="image" />
-		- <a href="<?php echo "$url&a=crop&image=$testimonial->image"?>" rel="facebox">Edit Image</a>
+		Upload new headshot or logo <input type="file" name="image" />
 	</fieldset>	
 	
 	<div class="t-view">
 		<div class="t-details">
+			<a href="<?php echo "$url&a=crop&image=$testimonial->image"?>" rel="facebox">Re-Crop Image</a>
+	
 			<div class="image">
 				<img src="<?php echo $image_src?>"/>
 			</div>
@@ -64,7 +56,15 @@
 		</div>
 		
 		<div class="t-content">
-			<div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
+			<div class="t-rating-wrapper">
+				<span style="display:none">
+					<input type="hidden" name="rating" value="<?php echo $testimonial->rating?>">
+					<?php echo common::rating_select_nice($testimonial->rating)?>
+				</span>				
+				<div class="rating-fallback">
+					Select a rating <?php echo common::rating_select_dropdown($testimonial->rating);?>
+				</div>
+			</div>
 			
 			<div class="t-body">
 				<textarea name="body"><?php echo $testimonial->body?></textarea>
@@ -86,21 +86,22 @@
 	</div>		
 			
 	<h1>Survey Questions</h1>
-	<div class="t-questions">	
-<?php foreach($questions as $question):?>
-		<fieldset>
-			<label><?php echo $question->title?></label>
-			<div class="info"><?php echo $question->info?></div>
-			<textarea name="info[<?php echo $question->id?>]"><?php if(isset($info["$question->id"])) echo $info["$question->id"]?></textarea>
-		</fieldset>
-<?php endforeach;?>
+	<div class="slider-wrap">
+		<div id="t-questions" class="t-questions">
+			<div class="panelContainer">
+	<?php $x = 0?>	
+	<?php foreach($questions as $question):?>
+				<div class="panel" title="<?php echo ++$x?>">
+					<div class="wrapper">
+						<label><?php echo $question->title?></label>
+						<div class="info"><?php echo $question->info?></div>
+						<textarea name="info[<?php echo $question->id?>]"><?php if(isset($info["$question->id"])) echo $info["$question->id"]?></textarea>
+					</div>
+				</div>
+	<?php endforeach;?>
+			</div>
+		</div>
 	</div>
-	
 </form>
-
 </div>
-
-
-
-
 

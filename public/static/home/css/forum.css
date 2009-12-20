@@ -181,14 +181,12 @@ border:0;
 font-weight:bold;
 }
 form fieldset input {
-	background:#fff url(/_data/pinky/themes/titan/images/input_background.png) repeat-x;
 	padding: 5px; 
 	font-size: 1.2em; 
 	color: #222222;
 	border: 1px solid #cecece;
 }
 form fieldset textarea {
-	background:#fff url(/_data/pinky/themes/titan/images/input_background.png) repeat-x; 
 	width: 99%; 
 	height: 115px; 
 	border: 1px solid #d7d7d7; 
