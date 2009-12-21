@@ -2,151 +2,156 @@
 
 class Forum_Controller extends Public_Interface_Controller {
 
+	/*
+	 * specifies the page your forum is on. Can be blank for root,
+	 * but you must subtract one from each url_array indexices.
+	 */
+	public $page_name ='forum';
 
+	# the filtering params passed via the url.
+	public $filter;
+	public $filter2;
+	
+	# the sorting params passed via $_GET;
 	public $sort;
+	public $sort_by;
+	public $order;
+
 	
 	public function __construct()
 	{
 		parent::__construct();
 		
 		$this->shell->title = 'User Feedback Forum';
-		
+
+		# configure filters.
+		$url_array	= Uri::url_array();
+		$this->action	= (empty($url_array['1']))
+			? 'category'
+			: $url_array['1'];
+		$this->filter		= (isset($url_array['2']))
+			? $url_array['2']
+			: '';
+		$this->filter2	= (isset($url_array['3']))
+			? $url_array['3']
+			: '';
+			
+		# configure sorters.
 		$this->sort = (isset($_GET['sort']))
 			? $_GET['sort']
 			: 'newest';
+		$this->sort_by = (empty($_GET['sort']) OR 'votes' == $_GET['sort'])
+			? 'vote_count'
+			: 'created';
+		$this->order = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
+			? 'desc'
+			: 'asc';
 	}
 
 /*
- * forum index.
- * routes the url in no-ajax mode.
- * expects parent forum table object
+ * Routes all non-ajax forum requests.
+ * This essentially builds the entire page.
  */ 
-	public function index($forum)
+	public function index()
 	{
-		$url_array	= Uri::url_array();
-		$page_name	= 'forum';
-		
-		$data		= $url_array['2'];
-		$data2	= $url_array['3'];
-		$action	= (empty($url_array['1']))
-			? 'index'
-			: $url_array['1'];
+		# handle ajax requests of course =0
+		if(request::is_ajax())
+			die($this->_ajax());
 			
-		$wrapper = new View('public_forum/forums/index');
+		# allowed actions and their methods.
+		$action_mapper = array(
+			'category'	=> 'posts_wrapper',
+			'view'			=> 'comments_wrapper',
+			'submit'		=> 'add_post',
+			'vote'			=> 'vote',
+			'edit'			=> 'edit',
+			'my'				=> 'my',
+		);
 		
-		switch($action)
-		{					
-			case 'index':
-				$wrapper->content = self::posts_wrapper($page_name, $forum->id, 'all');
-				break;
-			case 'category':
-				$wrapper->content = self::posts_wrapper($page_name, $forum->id, $data);
-				break;
-			case 'view':
-				$wrapper->content = self::comments_wrapper($page_name, $forum->id, $data, $data2);
-				break;
-			case 'vote':
-				$wrapper->content = self::vote($page_name, $forum->id, $data, $data2);
-				break;
-			case 'submit':
-				$wrapper->content = self::submit($page_name, $forum->id);
-				break;
-			case 'edit':
-				$wrapper->content = self::edit($page_name, $forum->id, $data, $data2);
-				break;
-			case 'my':
-				$wrapper->content = self::my($page_name, $forum->id, $data, $data2);
-				break;				
-			default:
-				die("$page_name : $action : trigger 404 not found");
-		}
-		
-		$this->shell->active  = $page_name;
+		if(!array_key_exists($this->action, $action_mapper))
+			Event::run('system.404');
+	
 
-		$wrapper->page_name		= $page_name;
-		$wrapper->categories	= self::categories($forum->id);
+	
+		$wrapper = new View('public_forum/index');
+		$method = $action_mapper[$this->action];
+		$wrapper->content = $this->$method(); 
+		$wrapper->categories	= $this->categories();
+		
+		# define your logged in user.
+		# Note: this just makes it easier to change here.
+		$wrapper->user = ($this->owner->logged_in())
+			? $this->owner->get_user()
+			: FALSE;
+			
 		$this->shell->content = $wrapper;
+		$this->shell->active  = $this->page_name;
 		die($this->shell);
 	}
 
 	
 /*
- * output the appropriate javascript based on the forum view.
- * currently we just have one though
- */	
-	private function javascripts()
+ * Ajax request router.
+ * returns only the data/views we need to update DOM.
+ */ 	
+	public function _ajax()
 	{
-		$js = '
-			// the main left panel links
-			$("#forum_navigation_wrapper").click($.delegate({
-				"a": function(e){
-					$("#forum_content_wrapper")
-					.html("<div class=\"ajax_loading\">Loading...</div>")
-					.load(e.target.href);
-					return false;				
-				}
-			}));
+		switch($this->action)
+		{				
+			case 'category':				
+				if(empty($_GET['sort']))
+					return $this->posts_wrapper();
+				return $this->get_posts_list();
+				break;
 				
-			$("#forum_content_wrapper").click($.delegate({
+			case 'view':
+				if(empty($_GET['sort']))
+					return $this->comments_wrapper();
+				return $this->get_comments_list($this->filter);
+				break;
 				
-				// load links into main panel.
-				"a.forum_load_main" : function(e){
-					$("#forum_content_wrapper")
-					.html("<div class=\"ajax_loading\">Loading...</div>")
-					.load(e.target.href);
-					return false;	
-				},
-				
-				// post preview toggle
-				"a.preview": function(e){
-					var id = $(e.target).attr("rel");
-					$("div#preview_"+ id).slideToggle("fast");
-					return false;
-				},
-				
-				// sort tab actions
-				"ul.sort_list a" : function(e){
-					$("ul.sort_list a").removeClass("selected");
-					var url = $(e.target).addClass("selected").attr("href");
-					$("#list_wrapper")
-					.html("<div class=\"ajax_loading\">Loading...</div>")
-					.load(url);
-					return false;
-				},
-				
-				// vote links.
-				".cast_vote" : function(e){
-					var count = $(e.target).siblings("span").html();
-					if(1 == $(e.target).attr("rel"))
-						$(e.target).siblings("span").html(++count);
-					else
-						$(e.target).siblings("span").html(--count);
-					
-					$(e.target).parent("div").children("a").remove();
-					
-					$.get(e.target.href, function(data){});
-					return false;
-				}
-				
-			}));
+			case 'submit':
+				return $this->add_post();
+				break;
 
-			// add friendly time.
-			$("abbr[class*=timeago]").timeago();
-
-		';
-		# place the javascript.
-		return $this->place_javascript($js, FALSE);
+			case 'vote':
+				return $this->vote();
+				break;
+				
+			case 'edit':
+				return $this->edit();
+				break;
+				
+			case 'my':
+				# no sorter default to posts.
+				if(empty($_GET['sort']))
+					return $this->my($this->filter);
+				
+				# has sorter, so we fetch raw content lists
+				if('posts' == $this->filter)
+					return $this->my_posts_list();
+				if('comments' == $this->filter)
+					return $this->my_comments_list();
+				if('starred' == $this->filter)
+					return $this->my_starred_list();
+				break;
+		}
+		
+		return 'invalid url parameters';
 	}
+
+	
+##-----------------##
+## Private methods ##
+##-----------------##
 	
 	
 /*
  * get categories object from this forum
  */
-	private function categories($forum_id)
+	private function categories()
 	{
-		$categories = ORM::factory('forum_cat')
-			->where(array('forum_id' => $forum_id, 'fk_site' => $this->site_id))
-			->find_all();
+		$categories = ORM::factory('forum_cat')->find_all();
 		if(0 == $categories->count())
 			return FALSE;
 			
@@ -157,22 +162,19 @@ class Forum_Controller extends Public_Interface_Controller {
  * return a properly created selected array in order to highlight the 
  * correct sort tab
  */
-	private static function tab_selected($default='votes')
+	private static function tab_selected($default='newest')
 	{
 		$selected = array(
 			'votes' => '',
 			'newest'=> '',
 			'oldest'=> '',
 			'active'=> ''
-		);
-
-		if(empty($_GET['sort']))
+		);		
+		if(empty($_GET['sort']) OR !array_key_exists($_GET['sort'], $selected))
 			$selected[$default] = 'class="selected"';
-		elseif(array_key_exists($_GET['sort'], $selected))
-			$selected["$_GET[sort]"] = 'class="selected"';
 		else
-			$selected[$default] = 'class="selected"';
-		
+			$selected["$_GET[sort]"] = 'class="selected"';
+			
 		return $selected;
 	}
 	
@@ -180,14 +182,13 @@ class Forum_Controller extends Public_Interface_Controller {
 /* 
  * output a posts_wrapper showing tabs for sorting the posts.
  */
-	private function posts_wrapper($page_name, $tool_id, $category)
+	private function posts_wrapper()
 	{
-		$primary			 = new View('public_forum/forums/posts_wrapper');
-		$primary->category	 = (empty($category)) ? 'all' : $category;
-		$primary->page_name	 = $page_name;	
-		$primary->posts_list = self::posts_list($page_name, $primary->category);
-		$primary->selected	 = self::tab_selected('newest');
-		return $primary;
+		$view							= new View('public_forum/posts_wrapper');
+		$view->category	 = (empty($this->filter)) ? 'all' : $this->filter;	
+		$view->posts_list = $this->get_posts_list($view->category);
+		$view->selected	 = self::tab_selected();
+		return $view;
 	}
 
 	
@@ -196,32 +197,35 @@ class Forum_Controller extends Public_Interface_Controller {
  * Can also be "all" where all posts from all categories are included.
 	$sort_by = the method to sort by: newest, votes, active
  */
-	private function posts_list($page_name, $category)
+	private function get_posts_list()
 	{
-		$sort_by = (empty($_GET['sort']) OR 'newest' == $_GET['sort'])
+		$category = $this->filter;
+
+		# filter posts by?
+		$where = array();
+		if('all' != $category)
+			$where['forum_cats.url'] = $category;
+			
+		# order posts by?
+		$order_by = ('newest' == $this->sort)
 			? 'forum_cat_post_comment:created'
-			: (('votes' == $_GET['sort'])
+			: (('votes' == $this->sort)
 				? 'forum_cat_post_comment:vote_count'
 				: 'forum_cat_posts.last_active');
 
-		$where_filter = array('forum_cats.fk_site' => $this->site_id);
-		if('all' != $category)
-			$where_filter['forum_cats.url'] = $category;
-		
 		$posts = ORM::factory('forum_cat_post')
 			->select('forum_cat_posts.*, forum_cats.name, forum_cats.url')
 			->with('forum_cat_post_comment')
 			->join('forum_cats', 'forum_cats.id', 'forum_cat_posts.forum_cat_id')
-			->where($where_filter)
-			->orderby("$sort_by", 'desc')
+			->where($where)
+			->orderby("$order_by", 'desc')
 			->find_all();
 		if(0 == $posts->count())
 			return 'No posts in this category';
-		
-		$primary = new View('public_forum/forums/posts_list');		
-		$primary->posts = $posts;
-		$primary->page_name	= $page_name;
-		return $primary;
+	
+		$view = new View('public_forum/posts_list');		
+		$view->posts = $posts;
+		return $view;
 	}
 	
 	
@@ -229,26 +233,13 @@ class Forum_Controller extends Public_Interface_Controller {
  * output the full post view of a category post.
  * output raw view contents. initiated by "view" action.
  */
-	private function comments_wrapper($page_name, $tool_id, $post_id)
-	{
-		valid::id_key($post_id);
-		if($_POST AND $this->owner->logged_in($this->site_id))
-		{
-			if(empty($_POST['body']))
-				die('Reply cannot be empty.');
-			
-			$new_comment = ORM::Factory('forum_cat_post_comment');
-			$new_comment->fk_site			= $this->site_id;
-			$new_comment->forum_cat_post_id = $post_id;
-			$new_comment->owner_id	= $this->owner->get_user()->id;
-			$new_comment->body				= $_POST['body'];
-			$new_comment->created			= time();
-			$new_comment->save();
-			#die('Thank you, your comment has been added!'); # send data to javascript if enabled.
-		}
+	private function comments_wrapper()
+	{		
+		if($_POST)
+			$this->add_comment();
 
-
-		$owner_id = ($this->owner->logged_in($this->site_id))
+		$post_id = valid::id_key($this->filter);
+		$owner_id = ($this->owner->logged_in())
 			? $this->owner->get_user()->id
 			: FALSE;
 			
@@ -263,40 +254,31 @@ class Forum_Controller extends Public_Interface_Controller {
 				) AS has_voted
 			")
 			->join('forum_cats', 'forum_cats.id', 'forum_cat_posts.forum_cat_id')
-			->where(array(
-				'forum_cat_posts.fk_site' => $this->site_id,
-				'forum_cat_posts.id' => $post_id
-			))
+			->where('forum_cat_posts.id', $post_id)
 			->find();
-		if(TRUE != $post->loaded)
-			die('render 404 not found');
+		if(!$post->loaded)
+			Event::run('system.404');
 
-		$primary = new View('public_forum/forums/posts_comments_wrapper');
-		$primary->post			= $post;
-		$primary->page_name 	= $page_name;	
-		$primary->is_logged_in	= $this->owner->logged_in();	
-		$primary->owner	= $owner_id;
-		$primary->comments_list = self::comments_list($page_name, $post_id);
-		$primary->selected		= self::tab_selected('votes');		
-		return $primary;
+		$view = new View('public_forum/posts_comments_wrapper');
+		$view->post			= $post;
+		$view->is_logged_in	= $this->owner->logged_in();	
+		$view->owner	= $owner_id;
+		$view->comments_list = $this->get_comments_list($post_id);
+		$view->selected		= self::tab_selected('votes');		
+		return $view;
 	}
-
-
+	
+	
 /*
  * output a list of comments from a specified post.
  * $sort_by = the method to sort by: newest, votes, active
  */
-	private function comments_list($page_name, $post_id)
+	private function get_comments_list($post_id)
 	{
-		$order = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
-			? 'desc' : 'asc';
-		$sort_by = (empty($_GET['sort']) OR 'votes' == $_GET['sort'])
-			? 'vote_count' : 'created';
-
-		$owner_id = ($this->owner->logged_in($this->site_id))
+		$owner_id = ($this->owner->logged_in())
 			? $this->owner->get_user()->id
 			: FALSE;
-			
+
 		$comments = ORM::Factory('forum_cat_post_comment')
 			->select("
 				forum_cat_post_comments.*,
@@ -308,149 +290,59 @@ class Forum_Controller extends Public_Interface_Controller {
 			")
 			->where(array(
 				'forum_cat_post_comments.forum_cat_post_id' => $post_id,
-				'forum_cat_post_comments.fk_site' => $this->site_id,
 				'forum_cat_post_comments.is_post !=' => '1',
 			))
-			->orderby("forum_cat_post_comments.$sort_by", "$order")
+			->orderby("forum_cat_post_comments.$this->sort_by", "$this->order")
 			->find_all();
 		if(0 == $comments->count())
 			return 'No comments yet';
 
-		$primary = new View('public_forum/forums/comments_list');
-		$primary->is_logged_in	= $this->owner->logged_in($this->site_id);	
-		$primary->page_name		= $page_name;
-		$primary->owner	= $owner_id;			
-		$primary->comments		= $comments;
-		return $primary;
-	}
-	
-/*
- * output a view wrapper for the "my" data view.
- * the data is: posts, comments, starred posts (not live yet)
- */
-	private function my($page_name, $tool_id, $type)
-	{
-		if(!$this->owner->logged_in($this->site_id))
-			return new View('public_forum/forums/login');
-
-		if(empty($type))
-			$type = 'posts';
-		$allowed = array('posts', 'comments', 'starred');
-		if(in_array($type, $allowed))
-		{
-			$wrapper = new View('public_forum/forums/my_index');
-			$wrapper->page_name = $page_name;
-			$wrapper->type = $type;
-
-			$type = "my_{$type}_list";
-			$wrapper->items_list = self::$type($page_name);
-
-			$wrapper->selected = self::tab_selected('newest'); 
-			return $wrapper;
-		}
-		die('trigger 404 not found for (invalid "my" type)');
-	}
-	
-	
-/*
- * return a list of posts belonging to the logged in user.
- */
-	private function my_posts_list($page_name)
-	{
-		$order = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
-			? 'desc' : 'asc';
-		$sort_by = (empty($_GET['sort']) OR 'newest' == $_GET['sort'] OR 'oldest' == $_GET['sort'])
-			? 'created' : 'vote_count';
-
-		$posts = ORM::factory('forum_cat_post')
-			->select('forum_cat_posts.*, forum_cats.name, forum_cats.url')
-			->with('forum_cat_post_comment')
-			->join('forum_cats', 'forum_cats.id', 'forum_cat_posts.forum_cat_id')
-			->where(array(
-				'forum_cat_post_comment.fk_site'		 => $this->site_id,
-				'forum_cat_post_comment.owner_id' => $this->owner->get_user()->id,
-			))
-			->orderby("forum_cat_post_comment.$sort_by", $order)
-			->find_all();
-		if(0 == $posts->count())
-			return 'No posts created yet.';
-
-		$primary			= new View('public_forum/forums/posts_list');	
-		$primary->posts 	= $posts;
-		$primary->page_name = $page_name;
-		return $primary;
-	}
-
-/*
- * return a list of comments belonging to the logged in user.
- */
-	private function my_comments_list($page_name)
-	{
-		$order = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
-			? 'desc' : 'asc';
-		$sort_by = (empty($_GET['sort']) OR 'newest' == $_GET['sort'] OR 'oldest' == $_GET['sort'])
-			? 'created' : 'vote_count';
-
-		$comments = ORM::factory('forum_cat_post_comment')
-			->with('forum_cat_post')
-			->where(array(
-				'forum_cat_post_comments.fk_site'	=> $this->site_id,
-				'owner_id'		=> $this->owner->get_user()->id,
-				'is_post'	=> '0'
-			))
-			->orderby("forum_cat_post_comments.$sort_by", $order)
-			->find_all();
-		if(0 == $comments->count())
-			return 'No comments added yet.';
-			
-		$view = new View('public_forum/forums/my_comments_list');
-		$view->comments = $comments;
-		$view->page_name = $page_name;
+		$view = new View('public_forum/comments_list');
+		$view->is_logged_in	= $this->owner->logged_in();	
+		$view->owner	= $owner_id;			
+		$view->comments		= $comments;
 		return $view;
 	}
 
-/*
- * return a list of posts starred by the logged in user.
- * THIS IS OFFLINE.
- */
-	private function my_starred_list($page_name)
-	{
-		return 'this is the starred list';
-		$order	 = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
-			? 'desc' : 'asc';
-		$sort_by = (empty($_GET['sort']) OR 'votes' == $_GET['sort'])
-			? 'vote_count' : 'created';		
-		
-		$posts = ORM::factory('forum_cat_post')
-			->select('forum_cat_posts.*, forum_cats.name, forum_cats.url')
-			->with('forum_cat_post_comment')
-			->join('forum_cats', 'forum_cats.id', 'forum_cat_posts.forum_cat_id')
-			->where(array(
-				'forum_cat_post_comment.fk_site'		 => $this->site_id,
-				'forum_cat_post_comment.owner_id' => $this->owner->get_user()->id,
-			))
-			->orderby("forum_cat_post_comment.$sort_by", $order)
-			->find_all();
-		if(0 == $posts->count())
-			return 'No posts have been starred yet.';
 
-		$primary = new View('public_forum/forums/posts_list');	
-		$primary->posts = $posts;
-		$primary->page_name = $page_name;
-		return $primary;
-	}
+	##--------------------------------##
+	## Stuff for logged in users only ##
+	##--------------------------------##
+
 	
 
-
-
+	
 /*
- * submit a new post to a category.
- */
-	private function submit($page_name, $tool_id)
+ * add a comment to a valid post
+ */ 
+	private function add_comment()
 	{
-		if(!$this->owner->logged_in($this->site_id))
-			return new View('public_forum/forums/login');
-			
+		if(!$this->owner->logged_in())
+			return new View('public_forum/login');
+		
+		if(empty($_POST['body']))
+			return 'Reply cannot be empty.';
+		
+		$post_id = $this->filter;
+		$new_comment = ORM::Factory('forum_cat_post_comment');
+		$new_comment->forum_cat_post_id = $post_id;
+		$new_comment->owner_id	= $this->owner->get_user()->id;
+		$new_comment->body			= $_POST['body'];
+		$new_comment->save();
+		return 'Thank you, your comment has been added!';		
+	}
+
+	
+	
+/*
+ * the view and handler to
+ * add a new post to a category.
+ */
+	private function add_post()
+	{
+		if(!$this->owner->logged_in())
+			return new View('public_forum/login');
+		
 		if($_POST)
 		{
 			# validate submit form.
@@ -463,12 +355,11 @@ class Forum_Controller extends Public_Interface_Controller {
 			if(!$post->validate())
 			{
 				# get the categories
-				$categories = self::categories($tool_id);
+				$categories = $this->categories();
 				if(!$categories)
 					return 'There are no categories to add posts to =(';
 					
-				$view = new View('public_forum/forums/submit');
-				$view->page_name = $page_name;
+				$view = new View('public_forum/submit');
 				$view->categories = $categories;
 				$view->errors = $post->errors();
 				$view->values = $_POST;
@@ -477,18 +368,15 @@ class Forum_Controller extends Public_Interface_Controller {
 
 			# add to post table
 			$new_post = ORM::Factory('forum_cat_post');
-			$new_post->fk_site		= $this->site_id;
 			$new_post->forum_cat_id	= $_POST['forum_cat_id'];
-			$new_post->title		= $_POST['title'];
+			$new_post->title				= $_POST['title'];
 			$new_post->save();
 			
 			# add the child comment.
 			$new_comment = ORM::Factory('forum_cat_post_comment');
-			$new_comment->fk_site			= $this->site_id;
 			$new_comment->forum_cat_post_id	= $new_post->id;
 			$new_comment->owner_id	= $this->owner->get_user()->id;
 			$new_comment->body				= $_POST['body'];
-			$new_comment->created			= time();
 			$new_comment->is_post			= '1';
 			$new_comment->save();
 			
@@ -497,20 +385,19 @@ class Forum_Controller extends Public_Interface_Controller {
 			$new_post->save();
 			
 			# output a success message.
-			$status = new View('public_forum/forums/status');
+			$status = new View('public_forum/status');
 			$status->success = true;
 			return $status;
 		}
 		
 		# get the categories
-		$categories = self::categories($tool_id);
+		$categories = $this->categories();
 		if(!$categories)
 			return 'There are no categories to add posts to =(';
 			
-		$primary = new View('public_forum/forums/submit');
-		$primary->page_name = $page_name;
-		$primary->categories = $categories;
-		return $primary;
+		$view = new View('public_forum/submit');
+		$view->categories = $categories;
+		return $view;
 	}
 
 /*
@@ -519,12 +406,14 @@ class Forum_Controller extends Public_Interface_Controller {
  * vote is added to comments, and logged so user can only vote once per comment.
  * TODO: degrade this for non-ajax requests.
  */	
-	private function vote($page_name, $tool_id, $comment_id, $vote)
+	private function vote()
 	{
-		valid::id_key($comment_id);
-		if(!$this->owner->logged_in($this->site_id))
-			die('Please login to vote.');
-			
+		if(!$this->owner->logged_in())
+			return new View('public_forum/login');
+		
+		$comment_id = valid::id_key($this->filter);
+		$vote = $this->filter2;
+		
 		$has_voted = ORM::factory('forum_comment_vote')
 			->where(array(
 				'owner_id'		 	=> $this->owner->get_user()->id,
@@ -544,22 +433,25 @@ class Forum_Controller extends Public_Interface_Controller {
 		$log_vote = ORM::factory('forum_comment_vote');
 		$log_vote->owner_id = $this->owner->get_user()->id;
 		$log_vote->forum_cat_post_comment_id = $comment_id;
-		$log_vote->fk_site = $this->site_id; # for site garbage collection.
 		$log_vote->save();
 
 		return 'Vote has been accepted!';
 	}	
+
+
 	
 /*
- * edit a comment
- * make sure the comment belongs to the logged in user.
+ * edit a comment or post.
+ TODO: check to see if i made sure the comment belogns to user.
  */
-	private function edit($page_name, $tool_id, $type, $id)
+	private function edit()
 	{
-		valid::id_key($id);
-		if(!$this->owner->logged_in($this->site_id))
-			die('Please Login');
-			
+		if(!$this->owner->logged_in())
+			return new View('public_forum/login');
+		
+		$type = $this->filter;
+		$id = valid::id_key($this->filter2);
+		
 		if(!empty($_POST['body']))
 		{			
 			if('post' == $type)
@@ -575,14 +467,13 @@ class Forum_Controller extends Public_Interface_Controller {
 			$comment->save();
 			
 			# output a success message.
-			$status = new View('public_forum/forums/status');
+			$status = new View('public_forum/status');
 			$status->success = true;
 			$status->message = 'Edits Saved!!';
 			return $status;
 		}
 
-		$primary = new View('public_forum/forums/edit');
-		$primary->page_name = $page_name;
+		$view = new View('public_forum/edit');
 		
 		switch($type)
 		{
@@ -591,11 +482,11 @@ class Forum_Controller extends Public_Interface_Controller {
 					->find($id);
 				if(!$post->loaded)
 					return 'invalid post id';
-				$primary->post = (TRUE == $post->loaded) ? $post : FALSE ;
+				$view->post = (TRUE == $post->loaded) ? $post : FALSE ;
 				$comment_id = $post->forum_cat_post_comment_id;
 				break;	
 			case 'comment':
-				$primary->post = FALSE;
+				$view->post = FALSE;
 				$comment_id = $id;
 				break;	
 			default:
@@ -608,75 +499,91 @@ class Forum_Controller extends Public_Interface_Controller {
 		if(!$comment->loaded)
 			return 'invalid comment id';
 	
-		$primary->comment = $comment;
-		$primary->type	  = $type;
-		$primary->id	  = $id;
-		return $primary;
+		$view->comment = $comment;
+		$view->type	  = $type;
+		$view->id	  = $id;
+		return $view;
 	}
 
+	
+	
+/*
+ * output a view wrapper for the "my" data view.
+ * the data is: posts, comments, starred posts (not live yet)
+ */
+	private function my()
+	{
+		if(!$this->owner->logged_in())
+			return new View('public_forum/login');
+		
+		$type = empty($this->filter) ? 'posts' : $this->filter;
+		
+		$allowed = array('posts', 'comments', 'starred');
+		if(!in_array($type, $allowed))
+			Event::run('system.404');
+			
+		$wrapper = new View('public_forum/my_index');
+		$wrapper->type = $type;
+
+		$type = "my_{$type}_list";
+		$wrapper->items_list = $this->$type();
+
+		$wrapper->selected = self::tab_selected(); 
+		return $wrapper;
+	}
+	
+	
+/*
+ * return a list of posts belonging to the logged in user.
+ */
+	private function my_posts_list()
+	{
+		$posts = ORM::factory('forum_cat_post')
+			->select('forum_cat_posts.*, forum_cats.name, forum_cats.url')
+			->with('forum_cat_post_comment')
+			->join('forum_cats', 'forum_cats.id', 'forum_cat_posts.forum_cat_id')
+			->where('forum_cat_post_comment.owner_id', $this->owner->get_user()->id)
+			->orderby("forum_cat_post_comment.$this->sort_by", $this->order)
+			->find_all();
+		if(0 == $posts->count())
+			return 'No posts created yet.';
+
+		$view			= new View('public_forum/posts_list');	
+		$view->posts 	= $posts;
+		return $view;
+	}
 
 /*
- * Ajax request handler.
- * param $url_array = (array) an array of url signifiers
- * param $tool_id 	= (int) the tool id of the tool.
- */ 	
-	public function _ajax($url_array, $tool_id)
+ * return a list of comments belonging to the logged in user.
+ */
+	private function my_comments_list()
 	{
-		list($page_name, $action, $data, $data2) = $url_array;
-		$action = (empty($action) OR 'tool' == $action)
-			? 'index'
-			: $action;
+		$comments = ORM::factory('forum_cat_post_comment')
+			->with('forum_cat_post')
+			->where(array(
+				'owner_id'	=> $this->owner->get_user()->id,
+				'is_post'		=> '0'
+			))
+			->orderby("forum_cat_post_comments.$this->sort_by", $this->order)
+			->find_all();
+		if(0 == $comments->count())
+			return 'No comments added yet.';
+			
+		$view = new View('public_forum/my_comments_list');
+		$view->comments = $comments;
+		return $view;
+	}
 
-		switch($action)
-		{				
-			case 'category':				
-				if(empty($_GET['sort']))
-					die(self::posts_wrapper($page_name, $tool_id, $data));
-
-				die(self::posts_list($page_name, $data));
-				break;
-				
-			case 'view':
-				if(empty($_GET['sort']))
-					die(self::comments_wrapper($page_name, $tool_id, $data));
-				
-				die(self::comments_list($page_name, $data));
-				break;
-				
-			case 'my':
-				# no sorter default to posts.
-				if(empty($_GET['sort']))
-					die(self::my($page_name, $tool_id, $data));
-				
-				# has sorter, so we fetch raw content lists
-				if('posts' == $data)
-					die(self::my_posts_list($page_name));
-				if('comments' == $data)
-					die(self::my_comments_list($page_name));
-				if('starred' == $data)
-					die(self::my_starred_list($page_name));
-				
-				Event::run('system.404');
-				break;
-
-			case 'submit':
-				die(self::submit($page_name, $tool_id));
-				break;
-
-			case 'vote':
-				die(self::vote($page_name, $tool_id, $data, $data2));
-				break;
-			case 'edit':
-				die(self::edit($page_name, $tool_id, $data, $data2));
-				break;
-			default:
-				Event::run('system.404');
-		}
-		die('incorrect url parameters');
+/*
+ * return a list of posts starred by the logged in user.
+ * THIS IS OFFLINE.
+ */
+	private function my_starred_list()
+	{
+		return 'this is the starred list';
 	}
 	
-	
-	
+
 	
 } /*end*/
 

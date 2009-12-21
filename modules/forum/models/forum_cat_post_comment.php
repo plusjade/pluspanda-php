@@ -6,8 +6,6 @@ class Forum_Cat_Post_Comment_Model extends ORM {
 	protected $belongs_to = array('forum_cat_post');
 	protected $has_one = array('owner');
 	protected $has_and_belongs_to_many = array('forum_comment_votes');
-
-	#protected $sorting = array('vote_count' => 'desc', 'created' => 'desc');
 	protected $load_with = array('owner');
 
 
@@ -19,6 +17,9 @@ class Forum_Cat_Post_Comment_Model extends ORM {
 	{
 		if ($this->loaded === FALSE)
 		{
+			$this->created = time();
+			
+			# update the parent post of this comment.
 			$post = ORM::factory('forum_cat_post', $this->forum_cat_post_id);
 			$post->comment_count = ++$post->comment_count;
 			$post->last_active = time();
@@ -28,4 +29,4 @@ class Forum_Cat_Post_Comment_Model extends ORM {
 	}
 	
 
-} // End Account User Model
+} // End forum_cat_post_comment Model

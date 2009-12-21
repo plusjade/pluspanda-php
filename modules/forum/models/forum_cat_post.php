@@ -6,8 +6,5 @@ class Forum_Cat_Post_Model extends ORM {
 	protected $belongs_to = array('forum_cat');
 	protected $has_one = array('forum_cat_post_comment');
 	protected $has_many = array('forum_cat_post_comment');
-	#protected $load_with = array('forum_cat');
 
-
-
-} // End Account User Model
+} // End form_cat_post Model

@@ -14,12 +14,12 @@
 		
 		<div class="summary">
 			<div class="title">
-				<a href="<?php echo url::site("$page_name/view/$post->id").'/'.valid::filter_php_url($post->title)?>" class="forum_load_main"><?php echo $post->title?></a>
+				<a href="<?php echo url::site("$this->page_name/view/$post->id").'/'.valid::filter_php_url($post->title)?>" class="forum_load_main"><?php echo $post->title?></a>
 			</div>
 			<div>
 				<a href="#" class="preview" rel="<?php echo $post->id?>">preview</a>
 				created by <a href="/profile/<?php echo $post->forum_cat_post_comment->owner->username?>"><?php echo $post->forum_cat_post_comment->owner->username?></a>
-				in <a href="<?php echo url::site("$page_name/category/$post->url")?>" class="forum_load_main"><?php echo $post->name?></a>
+				in <a href="<?php echo url::site("$this->page_name/category/$post->url")?>" class="forum_load_main"><?php echo $post->name?></a>
 				 <?php echo build::timeago($post->forum_cat_post_comment->created)?>
 				<span>
 				<em>last active</em> <?php echo build::timeago($post->last_active)?>
@@ -31,11 +31,3 @@
 	
 	<div class="post_comment" id="preview_<?php echo $post->id?>"><?php echo $post->forum_cat_post_comment->body?></div>
 <?php endforeach;?>
-
-<script type="text/javascript">
-$(document).ready(function()
-{
-	$('div.post_comment').hide();
-	$('abbr[class*=timeago]').timeago();
-});
-</script>

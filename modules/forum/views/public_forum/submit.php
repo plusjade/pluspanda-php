@@ -1,5 +1,5 @@
 
-<form id="forum_submit_item" action="<?php echo url::site("$page_name/submit")?>" method="POST" class="fieldsets">
+<form id="forum_submit_item" action="<?php echo url::site("$this->page_name/submit")?>" method="POST" class="fieldsets">
 	
 	<h3>Submit a New Post</h3>
 
@@ -41,7 +41,7 @@ $('#forum_submit_item').ajaxForm({
 		var category = $('select[name="forum_cat_id"] > option:selected').attr('rel');
 		$('#forum_content_wrapper')
 		.html('<div class="ajax_loading">loading...</div>')
-		.load('<?php echo url::site("$page_name/category")?>/'+ category);
+		.load('<?php echo url::site("$this->page_name/category")?>/'+ category);
 	}
 });
 

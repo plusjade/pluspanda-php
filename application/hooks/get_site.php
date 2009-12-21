@@ -78,9 +78,8 @@ function get_site()
 			break;
 			
 		case 'forum':
-			$parent = ORM::factory('forum',1);
 			$forum = new Forum_Controller();
-			die($forum->index($parent));		
+			die($forum->index());		
 			break;
 	}
 	

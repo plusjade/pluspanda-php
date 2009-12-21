@@ -1,7 +1,7 @@
 
 
 
-<form id="forum_edit_comment" action="<?php echo url::site("$page_name/edit/$type/$id")?>" method="POST" class="fieldsets">
+<form id="forum_edit_comment" action="<?php echo url::site("$this->page_name/edit/$type/$id")?>" method="POST" class="fieldsets">
 	
 	<h3>Edit Your Entry</h3>
 	

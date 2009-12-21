@@ -32,6 +32,13 @@ ALTER TABLE  `sites` ADD  `apikey` VARCHAR( 10 ) NOT NULL AFTER  `id`;
 
 ALTER TABLE  `testimonials` ADD  `updated` INT( 10 ) NOT NULL AFTER  `created`;
 
+DROP TABLE `forums`;
+ALTER TABLE  `forum_cats` DROP  `fk_site`;
+ALTER TABLE  `forum_cats` DROP  `forum_id`;
+ALTER TABLE  `forum_cat_posts` DROP  `fk_site`;
+ALTER TABLE  `forum_cat_post_comments` DROP  `fk_site`;
+ALTER TABLE  `forum_comment_votes` DROP  `fk_site`;
+
 
 
 
