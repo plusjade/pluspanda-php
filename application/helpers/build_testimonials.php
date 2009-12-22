@@ -57,14 +57,14 @@ class build_testimonials_Core {
 		<div class="image"><?php echo $image?></div>
 		
 		<div class="testimonial-name">
-			<span><?php echo $testimonial->customer->name?></span>
+			<span><?php echo $testimonial->patron->name?></span>
 		</div>
 		<div class="testimonial-position">
-			<span><?php echo $testimonial->customer->position?></span>
-			, <span><?php echo $testimonial->customer->company?></span>
+			<span><?php echo $testimonial->patron->position?></span>
+			, <span><?php echo $testimonial->patron->company?></span>
 		</div>
 		<div class="testimonial-location">
-			<span><?php echo $testimonial->customer->location?></span>
+			<span><?php echo $testimonial->patron->location?></span>
 		</div>			
 		<div class="link">
 			<a href="#">http://mycoolstore.com</a>

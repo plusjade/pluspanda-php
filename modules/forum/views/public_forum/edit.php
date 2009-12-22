@@ -7,15 +7,15 @@
 	
 	<? if(FALSE != $post):?>
 		<b>Title</b>
-		<br><input type="text" name="title" value="<?php echo $post->title?>" rel="text_req">
-		<br><br>
+		<br/><input type="text" name="title" value="<?php echo $post->title?>" rel="text_req">
+		<br/><br/>
 	<? endif;?>
 	
 	
 	<b>Body</b>
-	<br><textarea name="body" style="width:100%;height:150px"><?php echo $comment->body?></textarea>
+	<br/><textarea name="body" style="width:100%;height:150px"><?php echo $comment->body?></textarea>
 	
-	<br><br>
+	<br/><br/>
 	<button type="submit">Save Changes</button>
 </form>
 

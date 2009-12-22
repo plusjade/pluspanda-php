@@ -11,7 +11,7 @@ $image = (empty($testimonial->image))
 
 <div class="testimonial-wrapper">
 
-<form id="save-testimonial" action="/admin/testimonials/save?id=<?php echo $testimonial->id?>" method="POST">
+<form id="save-testimonial" action="/admin/testimonials/manage/save?id=<?php echo $testimonial->id?>" method="POST">
 	
 	<div class="edit-wrapper">
 		<div class="save-list">
@@ -29,33 +29,33 @@ $image = (empty($testimonial->image))
 		
 	<div class="t-view">
 		<div class="t-details">
-			<a href="/admin/testimonials/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a>
+			<a href="/admin/testimonials/manage/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a>
 			
 			<div class="image"><?php echo $image?></div>
 			
 			<span class="label">Full Name</span>
 			<span class="t-name">
-				<input name="name" value="<?php echo $testimonial->customer->name?>" />
+				<input name="name" value="<?php echo $testimonial->patron->name?>" />
 			</span>
 			
 			<span class="label">Position at Company</span>
 			<span class="t-position">
-				<input name="position" value="<?php echo $testimonial->customer->position?>" />
+				<input name="position" value="<?php echo $testimonial->patron->position?>" />
 			</span>
 			
 			<span class="label">Company</span>
 			<span class="t-company">
-				<input name="company" value="<?php echo $testimonial->customer->company?>" />
+				<input name="company" value="<?php echo $testimonial->patron->company?>" />
 			</span>
 			
 			<span class="label">Location</span>
 			<span class="t-location">
-				<input name="location" value="<?php echo $testimonial->customer->location?>" />
+				<input name="location" value="<?php echo $testimonial->patron->location?>" />
 			</span>
 			
 			<span class="label">Website</span>
 			<span class="t-url">
-				http://<input name="url" value="<?php echo $testimonial->customer->url?>" />
+				http://<input name="url" value="<?php echo $testimonial->patron->url?>" />
 			</span>
 		</div>
 		

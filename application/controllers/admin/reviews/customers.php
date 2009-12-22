@@ -38,6 +38,7 @@
 		
 		$this->shell->content = $content;
 		$this->shell->active = 'customers';
+		$this->shell->service = 'reviews';
 		die($this->shell);
 	}
 

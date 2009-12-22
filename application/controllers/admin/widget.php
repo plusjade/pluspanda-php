@@ -17,7 +17,7 @@
 	public function reviews()
 	{
 		$content = new View('admin/widget');
-		$content->embed_code = build::embed_code($this->site_id);
+		$content->embed_code = build::embed_code($this->site->apikey);
 
 		# carry out the action so view is up-to-date.
 		#if($action)

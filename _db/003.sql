@@ -40,6 +40,20 @@ ALTER TABLE  `forum_cat_post_comments` DROP  `fk_site`;
 ALTER TABLE  `forum_comment_votes` DROP  `fk_site`;
 
 
+-- decentralize customers table
+-- reviewers -> reviews and patrons -> testimonials
+
+CREATE TABLE patrons LIKE customers;
+ALTER TABLE  `testimonials` CHANGE  `customer_id`  `patron_id` INT( 9 ) NOT NULL;
+
+ALTER TABLE  `patrons` DROP  `site_id` ,
+DROP  `created` ;
+
+
+
+
+
+
 
 
 

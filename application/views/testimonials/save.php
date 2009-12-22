@@ -10,7 +10,7 @@
 
 
 <div class="top-message">
-	Hello, <?php echo $testimonial->customer->name?>, Thanks for your help!
+	Hello, <?php echo $testimonial->patron->name?>, Thanks for your help!
 </div>
 
 <div class="client-add-wrapper">
@@ -31,31 +31,32 @@
 			
 			<span class="label">Full Name</span>
 			<span class="t-name">
-				<input name="name" value="<?php echo $testimonial->customer->name?>" />
+				<input name="name" value="<?php echo $testimonial->patron->name?>" />
 			</span>
 			
 			<span class="label">Position at Company</span>
 			<span class="t-position">
-				<input name="position" value="<?php echo $testimonial->customer->position?>" />
+				<input name="position" value="<?php echo $testimonial->patron->position?>" />
 			</span>
 			
 			<span class="label">Company</span>
 			<span class="t-company">
-				<input name="company" value="<?php echo $testimonial->customer->company?>" />
+				<input name="company" value="<?php echo $testimonial->patron->company?>" />
 			</span>
 			
 			<span class="label">Location</span>
 			<span class="t-location">
-				<input name="location" value="<?php echo $testimonial->customer->location?>" />
+				<input name="location" value="<?php echo $testimonial->patron->location?>" />
 			</span>
 			
 			<span class="label">Website</span>
 			<span class="t-url">
-				http://<input name="url" value="<?php echo $testimonial->customer->url?>" />
+				http://<input name="url" value="<?php echo $testimonial->patron->url?>" />
 			</span>
 		</div>
 		
 		<div class="t-content">
+    
 			<div class="t-rating-wrapper">
 				<span style="display:none">
 					<input type="hidden" name="rating" value="<?php echo $testimonial->rating?>">

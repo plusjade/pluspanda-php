@@ -14,11 +14,15 @@ class Testimonials_Controller extends Add_Interface_Controller {
 		if(empty($_GET['ttk']))
 			$this->render(View::factory('client/blank'));
 		$this->testimonial_token = $_GET['ttk'];
+
+		# make sure the customer token is sent:
+		if(empty($_GET['ctk']))
+			$this->render(View::factory('client/blank'));
+		$this->patron_token = $_GET['ctk'];
 		
 		# define the form action url 
-		$this->form_url = url::site("/add/testimonials/{$this->site->subdomain}?ctk=$this->customer_token&ttk=$this->testimonial_token");
-		
-		
+		$this->form_url = url::site("/add/testimonials/{$this->site->subdomain}?ctk=$this->patron_token&ttk=$this->testimonial_token");
+				
 		# route to method here for better urls =p
 		$allowed = array('crop');
 		$action = (isset($_GET['a']) AND in_array($_GET['a'], $allowed)) 
@@ -73,16 +77,16 @@ class Testimonials_Controller extends Add_Interface_Controller {
 	{
 		$testimonial = $this->get_testimonial();
 
-		# does the testimonial belong to the customer?
-		if($this->customer_token !== $testimonial->customer->token)
-			$this->render('invalid customer token');	
+		# does the testimonial belong to the patron?
+		if($this->patron_token !== $testimonial->patron->token)
+			$this->render('invalid patron token');	
 
 		# get form questions
 		$questions = ORM::factory('question')
 			->where('site_id',$this->site->id)
 			->find_all();
 			
-		$form = new View('testimonials/add_testimonial');
+		$form = new View('testimonials/save');
 		$form->questions 		= $questions;
 		$form->tags					= $this->site->tags;
 		$form->info 				= json_decode($testimonial->body_edit, TRUE);
@@ -107,12 +111,12 @@ class Testimonials_Controller extends Add_Interface_Controller {
 		$testimonial->rating			= $_POST['rating'];				
 		$testimonial->save();
 		
-		$testimonial->customer->name			= $_POST['name'];
-		$testimonial->customer->company		= $_POST['company'];
-		$testimonial->customer->position	= $_POST['position'];
-		$testimonial->customer->location	= $_POST['location'];
-		$testimonial->customer->url				= $_POST['url'];
-		$testimonial->customer->save();
+		$testimonial->patron->name			= $_POST['name'];
+		$testimonial->patron->company		= $_POST['company'];
+		$testimonial->patron->position	= $_POST['position'];
+		$testimonial->patron->location	= $_POST['location'];
+		$testimonial->patron->url				= $_POST['url'];
+		$testimonial->patron->save();
 		# save image if sent.
 		if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
 			$testimonial->save_image($this->site_id, $_FILES, $testimonial->id);
@@ -136,7 +140,7 @@ class Testimonials_Controller extends Add_Interface_Controller {
 			))
 			->find();
 		if(!$testimonial->loaded)
-			$this->render('Invalid Customer token');	
+			$this->render('Invalid patron token');	
 	
 		return $testimonial;
 	}

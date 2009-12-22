@@ -35,9 +35,9 @@
 			$services = array('testimonials', 'reviews');
 			foreach($services as $link)
 				if($service == $link)
-					echo "<a href=\"/admin/home?service=$link\" class=\"active\">$link</a> \n";
+					echo "<a href=\"/admin/$link/dashboard\" class=\"active\">$link</a> \n";
 				else
-					echo "<a href=\"/admin/home?service=$link\">$link</a> \n";
+					echo "<a href=\"/admin/$link/dashboard\">$link</a> \n";
 		?>
 		</div>
 	</div>

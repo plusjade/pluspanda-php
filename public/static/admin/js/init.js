@@ -82,6 +82,21 @@ $(document).ready(function(){
 		},
 
 		//testimonial page.
+    
+    // add a new testimonial profile.
+    '#add-testimonial button' : function(e){
+      $('#add-testimonial').ajaxSubmit({
+        beforeSubmit : function(fields, form){
+          if(!$("input", form[0]).jade_validate()) return false;
+        },
+        success : function(data){
+          alert(data);
+        }
+      });
+    
+      return false;
+    },
+    
 		'.admin-new-testimonials-list table td a' : function(e){	
 			$('.edit-window').html('Loading...');
 				

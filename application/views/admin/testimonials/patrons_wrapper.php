@@ -31,10 +31,10 @@
 
 <?php foreach($testimonials as $testimonial):?>
 	<tr>
-		<td><?php echo $testimonial->customer->name?></td>
-		<td><?php echo $testimonial->customer->company?></td>
-		<td><?php echo $testimonial->customer->email?></td>
-		<td><?php echo build::timeago($testimonial->customer->created)?></td>
+		<td><?php echo $testimonial->patron->name?></td>
+		<td><?php echo $testimonial->patron->company?></td>
+		<td><?php echo $testimonial->patron->email?></td>
+		<td><?php echo build::timeago($testimonial->patron->created)?></td>
 	</tr>
 <?php endforeach;?>
 </table>

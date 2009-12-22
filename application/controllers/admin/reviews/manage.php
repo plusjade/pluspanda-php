@@ -4,7 +4,7 @@
 	* Manage the review categories. (admin mode)
 	*/
 	
- class Reviews_Controller extends Admin_Interface_Controller {
+ class Manage_Controller extends Admin_Interface_Controller {
 
  
 	public $active_tag;
@@ -51,6 +51,7 @@
 		
 		$this->shell->content = $content;
 		$this->shell->active = 'reviews';
+		$this->shell->service = 'reviews';
 		die($this->shell);
 	}
 
@@ -127,7 +128,7 @@
 
 		# build the pagination html
 		$pagination = new Pagination(array(
-			'base_url'			 => "/admin/reviews?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
+			'base_url'			 => "/admin/reviews/manage?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
 			'current_page'	 => $this->active_page, 
 			'total_items'    => $total_reviews,
 			'style'          => 'digg' ,

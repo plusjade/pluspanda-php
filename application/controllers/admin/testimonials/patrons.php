@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
-	* Manage customers. (admin mode)
+	* Manage Patrons. (admin mode)
 	*/
 	
- class Customers_Controller extends Admin_Interface_Controller {
+ class Patrons_Controller extends Admin_Interface_Controller {
 
 	public function __construct()
 	{
@@ -14,12 +14,12 @@
 	}
 	
 /*
- * manage customers.
+ * manage patrons.
  * this is the public wrapper.
  */
 	public function index($action=FALSE)
 	{	
-		$content = new View('admin/testimonials/customers_wrapper');
+		$content = new View('admin/testimonials/patrons_wrapper');
 
 		$testimonials = ORM::factory('testimonial')
 			->where('site_id',$this->site_id)
@@ -34,7 +34,7 @@
 			die($content);
 		
 		$this->shell->content = $content;
-		$this->shell->active = 'customers';
+		$this->shell->active = 'patrons';
 		die($this->shell);
 	}
 

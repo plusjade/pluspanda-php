@@ -4,7 +4,7 @@
 
 <?php if(isset($response))echo $response?>
 
-<form action="/admin/reviews" method="GET" style="text-align:center">
+<form action="/admin/reviews/manage" method="GET" style="text-align:center">
 	Categories: <?php echo $categories?>
 	<br/>
 	Show <?php echo $ratings?> ratings.
@@ -14,7 +14,7 @@
 </form>
 
 
-<form class="flag-review" action="/admin/moderate" method="POST">
+<form class="flag-review" action="/admin/reviews/moderate" method="POST">
 	Flagging this review will send a friendly email
 	to the reviewer asking him/her to confirm the validity of the review.
 	<br/>

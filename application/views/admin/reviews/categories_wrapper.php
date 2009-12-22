@@ -11,7 +11,7 @@
 <ul id="sortable" class="cat-list">
 <?php foreach($categories as $category):?>
 	<li id="cat-<?php echo $category->id?>" class="cat-item cat-sort">
-		<form action="/admin/categories/save" method="POST">
+		<form action="/admin/reviews/categories/save" method="POST">
 			<div class="cat-delete buttons"><a href="/admin/categories/delete?tag_id=<?php echo $category->id?>" class="del-cat" title="Delete Category" alt="Del">&#160;</a></div>
 			<div class="cat-save buttons"><button type="submit" class="save-cat" rel="<?php echo $category->id?>" title="Save Changes to Category">&#160;</button></div>			
 			<input type="hidden" name="id" value="<?php echo $category->id?>">
@@ -25,7 +25,7 @@
 <br/>
 <h4>Add New Category</h4>
 
-<form id="add-cat" action="/admin/categories/add" method="POST">
+<form id="add-cat" action="/admin/reviews/categories/add" method="POST">
 	<div style="text-align:right" class="buttons">
 	<button type="submit" id="add-cat" class="positive" style="float:right">Add Category</button>
 	</div>
@@ -56,7 +56,7 @@
 			$(document).trigger('rsp.server', rsp);
 			$('form#add-cat button').removeAttr('disabled').html('Add Category');
 			$('form#add-cat').clearFields();
-			$('#primary_content').load('/admin/categories');
+			$('#primary_content').load('/admin/reviews/categories');
 		}
 	});
 	

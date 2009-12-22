@@ -8,7 +8,7 @@
 
 	public $site;
 	public $site_id;
-	public $customer_token;
+	public $patron_token;
 	
 /**
  * shell loading and setup routine.
@@ -31,20 +31,6 @@
 			$this->render(View::factory('client/no_site'));
 
 		$this->site_id	= $this->site->id;
-		
-		# Verify a valid customer:
-		if(empty($_GET['ctk']))
-			$this->render(View::factory('client/blank'));
-		$this->customer_token = $_GET['ctk'];
-
-		$customer = ORM::factory('customer')
-			->where(array(
-				'site_id' => $this->site_id,
-				'token'		=> $this->customer_token
-			))
-			->find();
-		if(!$customer->loaded)
-			$this->render(View::factory('client/blank'));
 	}
 
 	

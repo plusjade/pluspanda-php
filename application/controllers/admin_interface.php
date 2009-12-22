@@ -43,22 +43,22 @@
 		$this->shell->service = $this->service;
 		
 		$this->shell->menu_reviews = array(
-			array('dashboard', '/admin/home','Dashboard','ajax'),
-			array('categories', '/admin/categories','Categories','ajax'),
-			array('reviews', '/admin/reviews','Reviews','ajax'),
-			array('customers', '/admin/customers','Customers','ajax'),
+			array('dashboard', '/admin/reviews/dashboard','Dashboard','jax'),
+			array('categories', '/admin/reviews/categories','Categories','jax'),
+			array('reviews', '/admin/reviews/manage','Reviews','jax'),
+			array('customers', '/admin/reviews/customers','Customers','jax'),
 			array('widget', '/admin/widget/reviews','View Widget',''),	
-			array('install', '/admin/install/reviews','Installation','ajax'),
+			array('install', '/admin/install/reviews','Installation','jax'),
 		);
 
 		$this->shell->menu_testimonials = array(
-			array('dashboard', '/admin/home?service=testimonials','Dashboard','ajax'),
-			array('tags', '/admin/tags','Category Tags','ajax'),
-			array('testimonials', '/admin/testimonials','Testimonials','jax'),
+			array('dashboard', '/admin/testimonials/dashboard','Dashboard','jax'),
+			array('tags', '/admin/tags','Category Tags','jax'),
+			array('testimonials', '/admin/testimonials/manage','Testimonials','jax'),
 			
-			array('customers', '/admin/customers?service=testimonials','Customers','ajax'),
+			array('customers', '/admin/','Start Campaign','jax'),
 			array('widget', '/admin/widget/testimonials','View Widget',''),		
-			array('install', '/admin/install/testimonials','Installation','ajax'),
+			array('install', '/admin/install/testimonials','Installation','jax'),
 		);
 	}
 
