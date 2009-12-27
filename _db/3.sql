@@ -11,8 +11,7 @@ CREATE TABLE `pluspanda`.`flags` (
 
 ALTER TABLE `reviews` CHANGE `flagged` `flag_id` INT( 1 ) NOT NULL ;
 
-ALTER TABLE `flags`
-  DROP `review_id`;
+ALTER TABLE `flags` DROP `review_id`;
 	
 ALTER TABLE `customers` ADD `company` VARCHAR( 144 ) NOT NULL AFTER `display_name` ;
 ALTER TABLE `customers` ADD `position` VARCHAR( 144 ) NOT NULL AFTER `company` ;
@@ -49,7 +48,13 @@ ALTER TABLE  `testimonials` CHANGE  `customer_id`  `patron_id` INT( 9 ) NOT NULL
 ALTER TABLE  `patrons` DROP  `site_id` ,
 DROP  `created` ;
 
+ALTER TABLE  `testimonials` ADD  `requests` INT( 3 ) NOT NULL;
 
+
+ALTER TABLE  `version` CHANGE  `at`  `at` INT( 4 ) NOT NULL
+
+-- update the version
+UPDATE version set at=3;
 
 
 

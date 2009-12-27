@@ -312,8 +312,8 @@ class Reviews_Controller extends Controller {
 		
 		# load the widget_js view and place the html as json.
 		$widget_js = new View('reviews/widget_js');
-		$widget_js->url = 'http://' . ROOTDOMAIN ."?apikey=$this->apikey&service=reviews";
-		$widget_js->stylesheet = '<link type="text/css" href="http://'.ROOTDOMAIN.'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
+		$widget_js->url = url::site() ."?apikey=$this->apikey&service=reviews";
+		$widget_js->stylesheet = '<link type="text/css" href="'. url::site() .'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
 		$widget_js->review_html = str_replace($keys, '', $review_html);
 		
 		$widget_js->json_html = json_encode($html);

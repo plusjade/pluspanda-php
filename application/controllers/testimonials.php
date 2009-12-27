@@ -65,43 +65,22 @@ class Testimonials_Controller extends Controller {
  */
   private function get_testimonials($format=NULL)
   {
-    # defaults
-    $where  = array('publish' => 1);
-    $sort   = array('created' => 'desc');
-    
-    # filter by tag
-    if(is_numeric($this->active_tag))
-      $where['tag_id'] = $this->active_tag;
-    else
-      $where['site_id'] = $this->site_id;
-    
-    # sort by
-    switch($this->active_sort)
-    {
-      case 'newest':
-        $sort = array('created' => 'desc');
-        break;
-      case 'oldest':
-        $sort = array('created' => 'asc');
-        break;
-    }
-
-    # get full count of testimonials for this tag.
+		$limit = 2;
+		$params = array(
+			'site_id'	=> $this->site_id,
+			'page'		=> $this->active_page,
+			'tag'			=> $this->active_tag,
+			'publish'	=> 1,
+			'created'	=> $this->active_sort,
+			'limit'		=> $limit
+		);
     $total_testimonials = ORM::factory('testimonial')
-      ->where($where)
-      ->orderby($sort)
-      ->count_all();
-    
-    # get the appropriate testimonials based on page.
-    $limit = 2;
-    $offset = ($this->active_page*$limit) - $limit;
-    $testimonials = ORM::factory('testimonial')
-      ->where($where)
-      ->orderby($sort)
-      ->limit($limit, $offset)
-      ->find_all();
-    
+			->fetch($params, 'count');
+  		
+		$testimonials = ORM::factory('testimonial')
+			->fetch($params);
 
+		
     /*
     # build the pagination html
     $pagination = new Pagination(array(
@@ -144,6 +123,7 @@ class Testimonials_Controller extends Controller {
 
       # should we specify a next page link?
 			$page_vars = '';
+			$offset = ($this->active_page*$limit) - $limit;
       if($total_testimonials > $offset + $limit)
       {
         $next_page = $this->active_page+1;

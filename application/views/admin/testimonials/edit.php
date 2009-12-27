@@ -20,7 +20,7 @@ $image = (empty($testimonial->image))
 			<button type="submit" style="">Update Testimonial</button>
 		</div>
 		
-		<a href="#" class="toggle-edit">Toggle Edit Mode</a>
+		<a href="#">Send Email</a>
 	</div>
 	
 	<fieldset class="panda-image">
@@ -60,8 +60,15 @@ $image = (empty($testimonial->image))
 		</div>
 		
 		<div class="t-content">
-			<div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
 			
+			<span style="display:none">
+				<input type="hidden" name="rating" value="<?php echo $testimonial->rating?>">
+				<?php echo common::rating_select_nice($testimonial->rating)?>
+			</span>				
+			<div class="rating-fallback">
+				Select a rating <?php echo common::rating_select_dropdown($testimonial->rating);?>
+			</div>
+
 			<div class="t-body">
 				<textarea name="body"><?php echo $testimonial->body?></textarea>
 			</div>
@@ -94,4 +101,48 @@ $image = (empty($testimonial->image))
 	</p>
 <?php endforeach;?>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+		
+	$('a[rel*=facebox]').facebox();
+
+		
+// star rating stuff.
+	$('.t-content .rating-fallback').remove();
+	$('.t-content span').show();
+	function pandaUpdateText(rating){
+		var text = {1:'Poor', 2:'Lacking', 3:'Average', 4:'Pretty good!', 5:'Fantastic!'};
+		$('.panda-rating-text').html(text[rating]);
+	}
+	$('#panda-star-rating div').hover(function(){
+			var rating = $(this).attr('class').substr(1);	
+			$(this).parent().removeClass().addClass('_'+rating);
+			pandaUpdateText(rating);
+		},function(){
+			var old_rating = $(this).parent().attr('rel');
+			$(this).parent().removeClass().addClass('_'+old_rating);	
+			pandaUpdateText(old_rating);
+		}
+	);
+	$('#panda-star-rating div').click(function(){
+			var rating = $(this).attr('class').substr(1);	
+			$(this).parent().removeClass().addClass('_'+rating).attr({rel:rating});			
+			$('.t-rating-wrapper input').val(rating);
+			pandaUpdateText(rating);
+	});
+	
+}); // end document ready
+
+</script>
+
+
+
+
+
+
+
+
+
+
 

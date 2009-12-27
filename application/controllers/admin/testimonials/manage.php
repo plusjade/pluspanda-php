@@ -35,7 +35,7 @@ class Manage_Controller extends Admin_Interface_Controller {
  */
   public function index()
   {  
-    $content = new View('admin/testimonials/wrapper');
+    $content = new View('admin/testimonials/manage');
     $content->categories    = build::tag_select_list($this->site->tags, $this->active_tag, array('all'=>'All'));
     $content->ratings       = build::rating_select_list($this->active_rating);
     $content->range         = build::range_select_list($this->active_range);
@@ -56,65 +56,19 @@ class Manage_Controller extends Admin_Interface_Controller {
  */
   private function get_testimonials()
   {
-    $sort   = array('created' => 'desc');
-    $where  = array();
-    
-    # filter by publish
-    if('yes' == $this->publish)
-      $where['publish'] = 1;
-    elseif('no' == $this->publish)
-      $where['publish'] = 0;
-      
-      
-    # filter by tag
-    if(is_numeric($this->active_tag))
-      $where['tag_id'] = $this->active_tag;
-    else
-      $where['site_id'] = $this->site_id;
-        
-        
-    # filter by rating
-    if(is_numeric($this->active_rating))
-      $where['rating'] = $this->active_rating;
-  
-
-    # filter by date
-    $now = time();
-    $day = 86400;
-    switch($this->active_range)
-    {
-      case 'today':
-      
-        break;
-      case 'last7':
-        $where['created >='] = time() - $day*7;
-        break;
-      case 'last14':
-        $where['created >='] = time() - $day*14;
-        break;
-      case 'last30':
-        $where['created >='] = time() - $day*30;
-        break;
-      case 'ytd':
-        $where['created >='] = mktime(0, 0, 0, 1, 1, date("m Y"));
-        break;
-    }
-    
-    # get full count of testimonials for this tag.
+		$params = array(
+			'site_id'	=> $this->site_id,
+			'page'		=> $this->active_page,
+			'tag'			=> $this->active_tag,
+			'publish'	=> $this->publish,
+		);
+		
     $total_testimonials = ORM::factory('testimonial')
-      ->where($where)
-      ->orderby($sort)
-      ->count_all();
-      
-    # get the appropriate testimonials based on page.
-    $offset = ($this->active_page*10) - 10;
-    $testimonials = ORM::factory('testimonial')
-      ->with(null)
-      ->where($where)
-      ->orderby($sort)
-      ->limit(10, $offset)
-      ->find_all();
-
+			->fetch($params, 'count');
+  		
+		$testimonials = ORM::factory('testimonial')
+			->fetch($params);
+			
     # build the pagination html
     $pagination = new Pagination(array(
       'base_url'       => "/admin/testimonials/manage?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
@@ -125,7 +79,7 @@ class Manage_Controller extends Admin_Interface_Controller {
     ));
     
 
-    $view = new View('admin/testimonials/display');
+    $view = new View('admin/testimonials/data');
     $view->testimonials  = $testimonials;
     $view->pagination    = $pagination;
     $view->tags          = $this->site->tags;
@@ -179,8 +133,12 @@ class Manage_Controller extends Admin_Interface_Controller {
   public function add_new()
   {
     if(!$_POST)
-      die('nothing sent');
+		{
+      $view = new View('admin/testimonials/add');
+			die($view);
 
+		}
+		
     # validate the form values.
     $post = new Validation($_POST);
     $post->pre_filter('trim');
@@ -237,7 +195,7 @@ class Manage_Controller extends Admin_Interface_Controller {
     $testimonial->publish = (empty($_POST['publish']))
       ? 0
       : 1;
-    #$testimonial->rating  = $_POST['rating'];      
+    $testimonial->rating  = $_POST['rating'];      
     $testimonial->save();
     die('Testimonial Saved!');
   }

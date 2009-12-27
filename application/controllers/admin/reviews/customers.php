@@ -10,7 +10,7 @@
 	{
 		parent::__construct();
 		if(!$this->owner->logged_in())
-			url::redirect('/admin');
+			url::redirect('/admin/home');
 	}
 	
 /*

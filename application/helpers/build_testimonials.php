@@ -144,7 +144,7 @@ class build_testimonials_Core {
 			Show testimonials from: 
 			<?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'Everyone'))?>
 
-			<input type="image" src="http://<?php echo ROOTDOMAIN?>/static/admin/images/magnify.png" alt="Submit button" style="position:relative;top:7px">
+			<input type="image" src="<?php echo url::site()?>/static/admin/images/magnify.png" alt="Submit button" style="position:relative;top:7px">
 
 			<!--<button type="submit"></button>-->
 		</form>
@@ -246,7 +246,7 @@ class build_testimonials_Core {
 		ob_start();
 		?>
 		<div id="plusPandaYes"></div>
-		<script type="text/javascript" src="http://<?php echo ROOTDOMAIN?>?apikey=<?php echo $apikey?>&fetch=testimonials<?php echo $jquery?>" charset="utf-8"></script>
+		<script type="text/javascript" src="<?php echo url::site()?>?apikey=<?php echo $apikey?>&fetch=testimonials<?php echo $jquery?>" charset="utf-8"></script>
 		<?php
 		if('fake' == $type)
 			return str_replace(

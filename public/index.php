@@ -7,14 +7,6 @@
  * @see http://kohanaphp.com
  */
 
-/*
- * define website defaults and dev/production toggling.
- */
-define('ROOTNAME', 'panda');
-define('ROOTACCOUNT', 'test');
-define('ROOTDOMAIN', 'panda.com');
-define('ROOTSITEID', 1);
-
 /**
  * Define the website environment status. When this flag is set to TRUE, some
  * module demonstration controllers will result in 404 errors. For more information

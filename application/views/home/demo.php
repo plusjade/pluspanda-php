@@ -2,7 +2,7 @@
 <h2 class="header">Go Ahead, Try it Out!</h2>
 
 <div class="demo-widget">
-<?php echo build::embed_code('gAbpWSc5', NULL,FALSE)?>
+<?php echo build::embed_code(Kohana::config('core.apikey'), NULL,FALSE)?>
 </div>
 
 <div class="demo-text">	

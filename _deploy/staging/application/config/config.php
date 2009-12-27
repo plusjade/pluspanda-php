@@ -4,9 +4,11 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = 'panda.com';
+$config['site_domain'] = 'stfugid.com';
+#apikey for the sample account we want to display.
+$config['apikey'] = 'something';
 
-$config['apikey'] = 'gAbpWSc5';
+
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
  * specified, then the current protocol is used, or when possible, only an

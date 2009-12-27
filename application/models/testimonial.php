@@ -48,6 +48,106 @@ class Testimonial_Model extends ORM {
     
     return parent::delete($id=NULL);
 	}
+
+
+/*
+ * interface for fetching testimonials
+ * based on defined filters, sorters, and limits.
+ 
+ * filters: page, publish, tag, rating, date.
+ * sorters: created
+ */
+	public function fetch($new_params, $get_count=FALSE)
+	{
+		$params = array(
+			'site_id'	=> '',
+			'page'		=> 1,
+			'tag'			=> '',
+			'publish'	=> '',
+			'rating'	=> '',
+			'range'		=> '',
+			'created'	=> '',
+			'updated'	=> '',
+			'requests'=> FALSE,
+			'limit'		=> 10
+		);
+		foreach($new_params as $key => $value)
+			$params[$key] = $value;
+		
+		#die(kohana::debug($params));
+		
+    $sort   = array('created' => 'desc');
+    $where  = array();
+    
+    # filter by publish
+    if('yes' == $params['publish'])
+      $where['publish'] = 1;
+    elseif('no' == $params['publish'])
+      $where['publish'] = 0;
+      
+      
+    # filter by tag
+    if(is_numeric($params['tag']))
+      $where['tag_id'] = $params['tag'];
+    else
+      $where['site_id'] = $params['site_id'];
+        
+    /*    
+    # filter by rating
+    if(is_numeric($params['rating']))
+      $where['rating'] = $params['rating'];
+		*/
+
+    # filter by date
+    $now = time();
+    $day = 86400;
+    switch($params['range'])
+    {
+      case 'today':
+      
+        break;
+      case 'last7':
+        $where['created >='] = time() - $day*7;
+        break;
+      case 'last14':
+        $where['created >='] = time() - $day*14;
+        break;
+      case 'last30':
+        $where['created >='] = time() - $day*30;
+        break;
+      case 'ytd':
+        $where['created >='] = mktime(0, 0, 0, 1, 1, date("m Y"));
+        break;
+    }	
+
+		# filter by requests:
+		if(FALSE !== $params['requests'])
+			$where['requests'] = $params['requests'];
+			
+		#--sorters--
+    switch($params['created'])
+    {
+      case 'newest':
+        $sort = array('created' => 'desc');
+        break;
+      case 'oldest':
+        $sort = array('created' => 'asc');
+        break;
+    }
+
+		if($get_count)
+			return $this->where($where)->count_all();
+		
+		# determine the offset and limits.
+		$offset = ($params['page']*$params['limit']) - $params['limit'];
+		
+		return $this
+      ->where($where)
+      ->orderby($sort)
+      ->limit($params['limit'], $offset)
+      ->find_all();
+	}
+
 	
 /*
  * handle uploaded file as image

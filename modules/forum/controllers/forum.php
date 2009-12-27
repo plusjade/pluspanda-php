@@ -25,15 +25,15 @@ class Forum_Controller extends Public_Interface_Controller {
 		$this->shell->title = 'User Feedback Forum';
 
 		# configure filters.
-		$url_array	= Uri::url_array();
-		$this->action	= (empty($url_array['1']))
+		$url_array	= $this->uri->segment_array();
+		$this->action	= (empty($url_array['2']))
 			? 'category'
-			: $url_array['1'];
-		$this->filter		= (isset($url_array['2']))
-			? $url_array['2']
-			: '';
-		$this->filter2	= (isset($url_array['3']))
+			: $url_array['2'];
+		$this->filter		= (isset($url_array['3']))
 			? $url_array['3']
+			: '';
+		$this->filter2	= (isset($url_array['4']))
+			? $url_array['4']
 			: '';
 			
 		# configure sorters.
@@ -46,18 +46,21 @@ class Forum_Controller extends Public_Interface_Controller {
 		$this->order = (empty($_GET['sort']) OR 'oldest' != $_GET['sort'])
 			? 'desc'
 			: 'asc';
+			
+		# handle ajax requests of course =0
+		if(request::is_ajax())
+			die($this->_ajax());
+
+		# handle non-ajax.
+		die($this->_index());
 	}
 
 /*
  * Routes all non-ajax forum requests.
  * This essentially builds the entire page.
  */ 
-	public function index()
-	{
-		# handle ajax requests of course =0
-		if(request::is_ajax())
-			die($this->_ajax());
-			
+	public function _index()
+	{	
 		# allowed actions and their methods.
 		$action_mapper = array(
 			'category'	=> 'posts_wrapper',

@@ -53,12 +53,14 @@
 
 		$this->shell->menu_testimonials = array(
 			array('dashboard', '/admin/testimonials/dashboard','Dashboard','jax'),
-			array('tags', '/admin/tags','Category Tags','jax'),
-			array('testimonials', '/admin/testimonials/manage','Testimonials','jax'),
+			array('collect', '/admin/testimonials/collect','Collect','jax'),
 			
-			array('customers', '/admin/','Start Campaign','jax'),
-			array('widget', '/admin/widget/testimonials','View Widget',''),		
-			array('install', '/admin/install/testimonials','Installation','jax'),
+			array('testimonials', '/admin/testimonials/manage','Manage','jax'),
+			
+			array('tags', '/admin/testimonials/tags','Categories','jax'),
+			
+			array('widget', '/admin/widget/testimonials','Display',''),		
+			array('install', '/admin/install/testimonials','Install','jax'),
 		);
 	}
 
