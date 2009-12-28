@@ -23,7 +23,11 @@ function api()
     if('reviews' == $_GET['fetch'])
       readfile(DOCROOT . 'static/js/addon.js');
 
-    $js_cache = paths::js_cache($_GET['apikey'], $_GET['fetch']);  
+    # attempt to serve the cache.
+    $js_cache = ('testimonials' == $_GET['fetch'])
+      ? t_paths::js_cache($_GET['apikey'])
+      : r_paths::js_cache($_GET['apikey']);
+      
     if(file_exists($js_cache))
       die(readfile($js_cache));
       
@@ -46,14 +50,14 @@ function api()
       new Testimonials_Controller($site, 'api');
 
 
-  # do some work with the appropriate service api          
+  # do some work with the appropriate service api
   if(isset($_GET['service']))
     if('reviews' == $_GET['service'])
       new Reviews_Controller($site, NULL, 'api');
     elseif('testimonials' == $_GET['service'])
-      new Testimonials_Controller($site, 'api');  
+      new Testimonials_Controller($site, 'api');
     
-  die();  
+  die;
   
 
   /** default controller is "home" **/

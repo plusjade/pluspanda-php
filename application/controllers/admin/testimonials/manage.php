@@ -4,7 +4,7 @@
   * Manage the testimonials. (admin mode)
  */
   
-class Manage_Controller extends Admin_Interface_Controller {
+class Manage_Controller extends Admin_Template_Controller {
 
   public $active_tag;
   public $active_rating;
@@ -15,9 +15,7 @@ class Manage_Controller extends Admin_Interface_Controller {
   public function __construct()
   {      
     parent::__construct();
-    if(!$this->owner->logged_in())
-      url::redirect('/admin/home');
-
+    
     $this->active_tag     = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
     $this->publish        = (isset($_GET['publish'])) ? $_GET['publish'] : NULL;
     $this->active_rating  = (isset($_GET['rating'])) ? $_GET['rating'] : 'all';
@@ -36,9 +34,9 @@ class Manage_Controller extends Admin_Interface_Controller {
   public function index()
   {  
     $content = new View('admin/testimonials/manage');
-    $content->categories    = build::tag_select_list($this->site->tags, $this->active_tag, array('all'=>'All'));
-    $content->ratings       = build::rating_select_list($this->active_rating);
-    $content->range         = build::range_select_list($this->active_range);
+    $content->categories    = t_build::tag_select_list($this->site->tags, $this->active_tag, array('all'=>'All'));
+    #$content->ratings       = common_build::rating_select_list($this->active_rating);
+    #$content->range         = common_build::range_select_list($this->active_range);
     $content->testimonials  = $this->get_testimonials();
     
     if(request::is_ajax())
@@ -56,19 +54,19 @@ class Manage_Controller extends Admin_Interface_Controller {
  */
   private function get_testimonials()
   {
-		$params = array(
-			'site_id'	=> $this->site_id,
-			'page'		=> $this->active_page,
-			'tag'			=> $this->active_tag,
-			'publish'	=> $this->publish,
-		);
-		
+    $params = array(
+      'site_id' => $this->site_id,
+      'page'    => $this->active_page,
+      'tag'     => $this->active_tag,
+      'publish' => $this->publish,
+    );
+    
     $total_testimonials = ORM::factory('testimonial')
-			->fetch($params, 'count');
-  		
-		$testimonials = ORM::factory('testimonial')
-			->fetch($params);
-			
+      ->fetch($params, 'count');
+      
+    $testimonials = ORM::factory('testimonial')
+      ->fetch($params);
+      
     # build the pagination html
     $pagination = new Pagination(array(
       'base_url'       => "/admin/testimonials/manage?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
@@ -119,10 +117,10 @@ class Manage_Controller extends Admin_Interface_Controller {
     
     $view = new View('admin/testimonials/edit');
     $view->testimonial  = $testimonial;
-    $view->info          = json_decode($testimonial->body_edit, TRUE);
+    $view->info         = json_decode($testimonial->body_edit, TRUE);
     $view->questions    = $questions;
-    $view->tags          = $this->site->tags;
-    $view->image_url    = paths::testimonial_image_url($this->site_id);
+    $view->tags         = $this->site->tags;
+    $view->image_url    = t_paths::image($this->site->apikey, 'url');
     die($view);
   }
 
@@ -133,12 +131,12 @@ class Manage_Controller extends Admin_Interface_Controller {
   public function add_new()
   {
     if(!$_POST)
-		{
+    {
       $view = new View('admin/testimonials/add');
-			die($view);
+      die($view);
 
-		}
-		
+    }
+    
     # validate the form values.
     $post = new Validation($_POST);
     $post->pre_filter('trim');
@@ -181,7 +179,7 @@ class Manage_Controller extends Admin_Interface_Controller {
 
     # save image if sent.
     if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
-      $testimonial->save_image($this->site_id, $_FILES, $testimonial->id);
+      $testimonial->save_image($this->site->apikey, $_FILES, $testimonial->id);
     
     $testimonial->patron->name     = $_POST['name'];
     $testimonial->patron->company  = $_POST['company'];
@@ -219,14 +217,14 @@ class Manage_Controller extends Admin_Interface_Controller {
     if($_POST)
     {
       echo $this->get_testimonial()->save_crop(
-              $this->site_id,
+              $this->site->apikey,
               explode('|',$_POST['params'])
             );
       die();
     }
     
     # display the crop view.
-    die(build_testimonials::crop_view($this->site_id));
+    die(t_build::crop_view($this->site->apikey));
   }
 
   

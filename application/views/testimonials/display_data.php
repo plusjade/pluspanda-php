@@ -1,10 +1,10 @@
 
 
 <?php 
-	foreach($testimonials as $testimonial)
-		echo build_testimonials::testimonial_html($testimonial);
+  foreach($testimonials as $testimonial)
+    echo t_build::item_html($testimonial);
 
-	echo $pagination;
+  echo $pagination;
 ?>
 <script type="text/javascript">$('abbr.timeago').timeago();</script>
 

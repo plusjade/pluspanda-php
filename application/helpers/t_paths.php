@@ -6,49 +6,57 @@
  
 class t_paths_Core {
 
+  public static $folder = 'tstmls';
+  
 /*
  * return the path to the data directory
  * either url path or directory path.
  */
-	public static function data($site_id, $type='dir')
-	{
-		if('url' == $type)
-			return 'http://'. ROOTDOMAIN ."/data/$site_id";
-		
-		return DOCROOT . "data/$site_id";
-	}
+  public static function data($apikey, $type='dir')
+  {
+    if('url' == $type)
+      return url::site("/data/$apikey"); 
+    
+    if(!is_dir(DOCROOT . "data/$apikey"))
+      mkdir(DOCROOT . "data/$apikey");
+      
+    return DOCROOT . "data/$apikey";
+  }
 
 /*
  * return path to the image directory
  * either url path or directory path.
- */	
-	public static function image($site_id, $type='dir')
-	{
-		if('url' == $type)
-			return self::data($site_id, 'url') . '/tstml/img';
-		
-		$dir = self::data($site_id, 'dir');
-		if(!is_dir("$dir/tstml"))
-			mkdir("$dir/tstml");
-		if(!is_dir("$dir/tstml/img"))
-			mkdir("$dir/tstml/img");
+ */  
+  public static function image($apikey, $type='dir')
+  {
+    if('url' == $type)
+      return self::data($apikey, 'url') . '/'. self::$folder .'/img';
+    
+    $dir = self::data($apikey, 'dir');
+    $service_dir = $dir .'/'. self::$folder;
+    if(!is_dir($service_dir))
+      mkdir($service_dir);
+    if(!is_dir("$service_dir/img"))
+      mkdir("$service_dir/img");
 
-		return "$dir/tstml/img";
-	}	
-	
-	
-	public static function js_cache($site_id, $type)
-	{
-		$type = ('testimonials' == $type)
-			? 'tstmls'
-			: 'rvs';
-		$dir = self::data_dir($site_id);
-		
-		$js_cache = "$dir/$type/js/view.js";
-		return $js_cache;
-	}
+    return "$service_dir/img";
+  }  
+  
+  
+  public static function js_cache($apikey)
+  {
+    $dir = self::data($apikey, 'dir');
+    $service_dir = $dir .'/'. self::$folder;
+
+    if(!is_dir($service_dir))
+      mkdir($service_dir);
+    if(!is_dir("$service_dir/js"))
+      mkdir("$service_dir/js");
+
+    return "$service_dir/js/view.js";
+  }
 
 
-	
-} // end alerts helper
+  
+} // end t_paths helper
 

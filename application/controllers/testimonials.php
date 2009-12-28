@@ -21,6 +21,9 @@ class Testimonials_Controller extends Controller {
   {
     parent::__construct();
   
+		if(NULL === $site)
+			Event::run('system.404');
+			
     $this->site       = $site;
     $this->apikey     = $site->apikey;
     $this->site_name  = $site->subdomain;
@@ -53,7 +56,7 @@ class Testimonials_Controller extends Controller {
 
     # setup the shell
     $shell = new View('testimonials/shell');    
-		$shell->content = $content;
+    $shell->content = $content;
     echo $shell->render();
   }
 
@@ -65,46 +68,33 @@ class Testimonials_Controller extends Controller {
  */
   private function get_testimonials($format=NULL)
   {
-		$limit = 2;
-		$params = array(
-			'site_id'	=> $this->site_id,
-			'page'		=> $this->active_page,
-			'tag'			=> $this->active_tag,
-			'publish'	=> 1,
-			'created'	=> $this->active_sort,
-			'limit'		=> $limit
-		);
+    $limit = 2;
+    $params = array(
+      'site_id'  => $this->site_id,
+      'page'     => $this->active_page,
+      'tag'      => $this->active_tag,
+      'publish'  => 'yes',
+      'created'  => $this->active_sort,
+      'limit'    => $limit
+    );
     $total_testimonials = ORM::factory('testimonial')
-			->fetch($params, 'count');
-  		
-		$testimonials = ORM::factory('testimonial')
-			->fetch($params);
+      ->fetch($params, 'count');
+      
+    $testimonials = ORM::factory('testimonial')
+      ->fetch($params);
 
-		
     /*
-    # build the pagination html
-    $pagination = new Pagination(array(
-      'base_url'       => "/?tag=$this->active_tag&sort=$this->active_sort&page=",
-      'current_page'   => $this->active_page, 
-      'total_items'    => $total_testimonials,
-      'style'          => 'testimonials' ,
-      'items_per_page' => $limit
-    ));
-    */
-    
-    
     # Return Standalone Ajax - 
     # testimonials_data (sorters & pagination).
     if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
     {
       $view = new View('testimonials/testimonials_data');
       $view->testimonials = $testimonials;
-      $view->pagination = $pagination;
+      $view->pagination   = $pagination;
       die($view);
     }
+    */
 
-    # else we are returning an entirely new tag view.
-    
     # Return JSON to widget
     if($this->is_api)
     {
@@ -113,7 +103,7 @@ class Testimonials_Controller extends Controller {
       {
         $data = $testimonial->as_array();
         $data['name']     = $testimonial->patron->name;
-        $data['position']	= $testimonial->patron->position;
+        $data['position'] = $testimonial->patron->position;
         $data['company']  = $testimonial->patron->company;
         $data['location'] = $testimonial->patron->location;
         $data['url']      = $testimonial->patron->url;
@@ -122,8 +112,8 @@ class Testimonials_Controller extends Controller {
       }
 
       # should we specify a next page link?
-			$page_vars = '';
-			$offset = ($this->active_page*$limit) - $limit;
+      $page_vars = '';
+      $offset = ($this->active_page*$limit) - $limit;
       if($total_testimonials > $offset + $limit)
       {
         $next_page = $this->active_page+1;
@@ -137,7 +127,7 @@ class Testimonials_Controller extends Controller {
       header('Cache-Control: no-cache, must-revalidate');
       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       header('Content-type: application/json');
-      die("pandaDisplayRevs($json_testimonials);pandaPages($page_vars);");
+      die("pandaDisplayTstmls($json_testimonials);pandaPages($page_vars);");
     }
     
     # Return New Tag ajax view.
@@ -160,22 +150,22 @@ class Testimonials_Controller extends Controller {
     $keys = array("\n","\r","\t");
     
     # get all the html interfaces.    
-    $tag_list = build_testimonials::tag_list($this->site->tags, $this->active_tag);
-    $sorters = build_testimonials::sorters($this->active_tag, $this->active_sort, 'widget');    
-    $testimonial_html = build_testimonials::testimonial_html(NULL, $this->site_id);
+    $tag_list   = t_build::tag_list($this->site->tags, $this->active_tag);
+    $sorters    = t_build::sorters($this->active_tag, $this->active_sort, 'widget');    
+    $item_html  = t_build::item_html(NULL, $this->site_id);
       
     # build an object to hold the html.
     $html = new StdClass(); 
-    $html->tag_list  = str_replace($keys, '', $tag_list);
+    $html->tag_list = str_replace($keys, '', $tag_list);
     $html->sorters  = str_replace($keys, '', $sorters);
 
     # load the widget_js view and place the html as json.
     $widget_js = new View('testimonials/widget_js');
-    $widget_js->theme = $this->theme;
-    $widget_js->apikey = $this->apikey;
-    $widget_js->asset_url = paths::testimonial_image_url($this->site_id);
+    $widget_js->theme     = $this->theme;
+    $widget_js->apikey    = $this->apikey;
+    $widget_js->asset_url = t_paths::image($this->apikey, 'url');
     $widget_js->json_html = json_encode($html);
-    $widget_js->testimonial_html = str_replace($keys, '', $testimonial_html);
+    $widget_js->item_html = str_replace($keys, '', $item_html);
     
     
     # output the view then cache the result.    

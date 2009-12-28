@@ -11,6 +11,20 @@
   {      
     parent::__construct();
 
+		
+		/* test */
+		$path = $dir = DOCROOT . "data";
+		#$path = paths::data_dir();
+		echo $path;
+		echo '<br/>';
+		echo (mkdir("$path/test")) ? 'made' : 'not made';
+		
+		#echo (is_dir($path)) ? 'yes' : 'no';		
+		
+		die();
+		
+		
+		
 		if(empty($_GET['pw']) AND 'willow' !== $_GET['pw'])
 			die('nothing');
   }

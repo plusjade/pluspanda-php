@@ -56,7 +56,10 @@ class Js_Controller {
 	}
 
 	
-
+	public function __call($args, $method)
+	{
+		Event::run('system.404');
+	}
 	
 
 	
