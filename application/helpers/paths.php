@@ -17,8 +17,7 @@ class paths_Core {
 
 	public static function data_url($site_id)
 	{
-		$dir = 'http://'. ROOTDOMAIN ."/data/$site_id";
-		return $dir;
+		return url::site("/data/$site_id");
 	}
 	
 	

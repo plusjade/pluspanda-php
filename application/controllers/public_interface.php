@@ -27,7 +27,7 @@
 			'start'		=> 'Get Started',
 			'demo'		=> 'Demo',
 			'faq'			=> 'FAQ',
-			'forum'		=> 'Forum',
+			#'forum'		=> 'Forum',
 			'contact'	=> 'Contact'
 		);			
 			

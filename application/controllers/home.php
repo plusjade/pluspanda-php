@@ -12,10 +12,10 @@
     parent::__construct();
 
     # get the page_name.
-    $url_array = Uri::url_array();
-    $page_name = (empty($url_array['0'])) 
+    $url_array = $this->uri->segment_array();
+    $page_name = (empty($url_array['1'])) 
       ? NULL
-      : $url_array['0'];
+      : $url_array['1'];
     
     $this->shell->active  = $page_name;
     

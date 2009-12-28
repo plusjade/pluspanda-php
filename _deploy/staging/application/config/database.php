@@ -35,7 +35,7 @@ $config['default'] = array
 		'host'     => '',
 		'port'     => FALSE,
 		'socket'   => FALSE,
-		'database' => 'pluspanda'
+		'database' => 'pluspanda_staging'
 	),
 	'character_set' => 'utf8',
 	'table_prefix'  => '',

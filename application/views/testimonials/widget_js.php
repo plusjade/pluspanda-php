@@ -16,7 +16,7 @@ var pandaHtml = <?php echo $json_html?>;
 jQuery.delegate = function(rules) {return function(e) { var target = $(e.target); for (var selector in rules) if (target.is(selector)) return rules[selector].apply(this, $.makeArray(arguments));}}
 
 /* For testimonial widget mode =P */
-$('head').append('<link type="text/css" href="http://<?php echo ROOTDOMAIN?>/static/testimonials/css/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
+$('head').append('<link type="text/css" href="<?php echo url::site()?>/static/testimonials/css/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
 
 // attach event triggers.
 $('body').click($.delegate({
@@ -103,7 +103,7 @@ function pandaGetTstmls(tag, sort, page){
 		
 		$.ajax({ 
 				type:'GET', 
-				url: 'http://<?php echo ROOTDOMAIN?>', 
+				url: '<?php echo url::site()?>', 
 				data:"apikey="+pandaApikey+"&service=testimonials&tag="+tag+"&sort="+sort+"&page="+page+"&jsoncallback=pandaLoadRev", 
 				dataType:'jsonp'
 		}); 
@@ -129,13 +129,13 @@ function pandaPages(nextPage, tag, sort){
 	if(!nextPage)
 		return false;
 		
-	var link = '<a href="http://<?php echo ROOTDOMAIN?>?apikey='+pandaApikey+'&service=testimonials&tag='+tag+'&sort='+sort+'&page='+ nextPage +'" class="show-more">Show More</a>';
+	var link = '<a href="<?php echo url::site()?>?apikey='+pandaApikey+'&service=testimonials&tag='+tag+'&sort='+sort+'&page='+ nextPage +'" class="show-more">Show More</a>';
 	$('.panda-testimonials-list').append(link);
 }
 
 // cleanup our jsonp scripts after execution.
 function pandaClean(){
-	$('head script[src^="http://<?php echo ROOTDOMAIN?>"]').remove();
+	$('head script[src^="<?php echo url::site()?>"]').remove();
 }
 
 
