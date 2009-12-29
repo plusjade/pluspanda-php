@@ -5,7 +5,7 @@
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
 $config['site_domain'] = 'pluspanda.com';
-$config['apikey'] = 'something';
+$config['apikey'] = 'nbE6zpH';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is

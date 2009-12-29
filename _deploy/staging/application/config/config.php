@@ -6,7 +6,7 @@
  */
 $config['site_domain'] = 'stfugid.com';
 #apikey for the sample account we want to display.
-$config['apikey'] = 'NkU76Y3';
+$config['apikey'] = '7VK1rNP';
 
 
 /**
