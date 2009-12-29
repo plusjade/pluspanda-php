@@ -67,7 +67,7 @@ class Testimonials_Controller extends Collect_Template_Controller {
     }
     
     # display the crop view.
-    die(build_testimonials::crop_view($this->site->apikey, $this->form_url . "&a=crop"));
+    die(t_build::crop_view($this->site->apikey, $this->form_url . "&a=crop"));
   }
 
   
@@ -87,7 +87,7 @@ class Testimonials_Controller extends Collect_Template_Controller {
       ->where('site_id',$this->site->id)
       ->find_all();
       
-    $form = new View('testimonials/save');
+    $form = new View('testimonials/edit');
     $form->questions    = $questions;
     $form->tags         = $this->site->tags;
     $form->info         = json_decode($testimonial->body_edit, TRUE);

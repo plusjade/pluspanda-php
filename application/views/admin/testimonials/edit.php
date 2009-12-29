@@ -1,27 +1,22 @@
 
 <?php
-$rand = text::random('alnum',6);
-$image = (empty($testimonial->image))
+$rand   = text::random('alnum',6);
+$image  = (empty($testimonial->image))
   ? ''
   : "<img src=\"$image_url/$testimonial->image?r=$rand\"/>";
 ?>
 
-
-<h2>Publisher</h2>
-
-<div class="testimonial-wrapper">
-
+<div class="admin-testimonial-wrapper">
 <form id="save-testimonial" action="/admin/testimonials/manage/save?id=<?php echo $testimonial->id?>" method="POST">
   
-  <div class="edit-wrapper">
-    <div class="save-list">
-      Publish? <input type="checkbox" name="publish" value="yes" <?php echo (empty($testimonial->publish)) ? '' : 'CHECKED'?>/> (yes)
-    
-      <button type="submit" style="">Update Testimonial</button>
-    </div>
-    
-    <a href="#">Send Email</a>
+  <button class="submit-button" type="submit">Save Changes</button>
+
+  
+  <div class="t-publish">
+    Publish? <input type="checkbox" name="publish" value="yes" <?php echo (empty($testimonial->publish)) ? '' : 'CHECKED'?>/> (yes)
+    <!--<a href="#">Send Email</a>-->
   </div>
+  
   
   <fieldset class="panda-image">
     Upload new headshot or logo <input type="file" name="image" />
@@ -31,7 +26,9 @@ $image = (empty($testimonial->image))
     <div class="t-details">
       <a href="/admin/testimonials/manage/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a>
       
-      <div class="image"><?php echo $image?></div>
+      <div class="image" rel="<?php echo "$image_url/$testimonial->id"?>">
+        <?php echo $image?>
+      </div>
       
       <span class="label">Full Name</span>
       <span class="t-name">
@@ -103,37 +100,9 @@ $image = (empty($testimonial->image))
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
-    
-  $('a[rel*=facebox]').facebox();
-
-    
-// star rating stuff.
-  $('.t-content .rating-fallback').remove();
-  $('.t-content span').show();
-  function pandaUpdateText(rating){
-    var text = {1:'Poor', 2:'Lacking', 3:'Average', 4:'Pretty good!', 5:'Fantastic!'};
-    $('.panda-rating-text').html(text[rating]);
-  }
-  $('#panda-star-rating div').hover(function(){
-      var rating = $(this).attr('class').substr(1);  
-      $(this).parent().removeClass().addClass('_'+rating);
-      pandaUpdateText(rating);
-    },function(){
-      var old_rating = $(this).parent().attr('rel');
-      $(this).parent().removeClass().addClass('_'+old_rating);  
-      pandaUpdateText(old_rating);
-    }
-  );
-  $('#panda-star-rating div').click(function(){
-      var rating = $(this).attr('class').substr(1);  
-      $(this).parent().removeClass().addClass('_'+rating).attr({rel:rating});      
-      $('.t-rating-wrapper input').val(rating);
-      pandaUpdateText(rating);
+  $(document).ready(function(){
+    $(document).trigger('tstml.edit');
   });
-  
-}); // end document ready
-
 </script>
 
 

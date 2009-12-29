@@ -20,7 +20,7 @@
   </div>
 
   <div class="pane-screenshot">
-    <img src="/static/home/images/screenshot.png" />
+    <img src="/static/images/marketing/screenshot.png" />
   </div>
   
 </div>

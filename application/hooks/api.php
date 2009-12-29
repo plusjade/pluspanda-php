@@ -18,10 +18,10 @@ function api()
     header('Content-type: text/javascript');
     
     if(empty($_GET['jquery']))
-      readfile(DOCROOT . 'static/js/jquery.js');    
+      readfile(DOCROOT . 'static/js/common/jquery.js');    
     
     if('reviews' == $_GET['fetch'])
-      readfile(DOCROOT . 'static/js/addon.js');
+      readfile(DOCROOT . 'static/js/common/addon.js');
 
     # attempt to serve the cache.
     $js_cache = ('testimonials' == $_GET['fetch'])

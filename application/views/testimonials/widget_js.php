@@ -16,7 +16,7 @@ var pandaHtml = <?php echo $json_html?>;
 jQuery.delegate = function(rules) {return function(e) { var target = $(e.target); for (var selector in rules) if (target.is(selector)) return rules[selector].apply(this, $.makeArray(arguments));}}
 
 /* For testimonial widget mode =P */
-$('head').append('<link type="text/css" href="<?php echo url::site()?>static/testimonials/css/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
+$('head').append('<link type="text/css" href="<?php echo url::site()?>static/css/testimonials/widget/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
 
 // attach event triggers.
 $('body').click($.delegate({

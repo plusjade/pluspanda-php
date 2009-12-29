@@ -78,7 +78,7 @@ class r_build_Core {
     <form id="panda-select-tags" action="/<?php echo $page_name?>" method="GET">
       Categories: <?php echo self::tag_select_list($tags, $active_tag, array('all'=> 'All'))?>
 
-      <input type="image" src="<?php echo url::site('static/admin/images/magnify.png')?>" alt="Submit button" style="position:relative;top:7px">
+      <input type="image" src="<?php echo url::site('static/images/admin/magnify.png')?>" alt="Submit button" style="position:relative;top:7px">
 
       <!--<button type="submit"></button>-->
     </form>

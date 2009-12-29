@@ -1,6 +1,6 @@
 
 
-<h2>Manage Testimonials</h2>
+<h2 class="head">Manage Testimonials</h2>
 
 <?php if(isset($response))echo $response?>
 

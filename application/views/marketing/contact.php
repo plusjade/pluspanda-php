@@ -2,7 +2,7 @@
 <h2 class="header">Why Hello, There!</h2>
 
 <div id="jade">
-  <img src="/static/home/images/tapex.jpg" alt="self-pic" />
+  <img src="/static/images/marketing/tapex.jpg" alt="self-pic" />
   <div class="contact-text">
     <br/>
     My name is Jade.
@@ -16,7 +16,7 @@
 </div>
 
 <div id="ben">
-  <img src="/static/home/images/ben.jpg" alt="ben-pic" />
+  <img src="/static/images/marketing/ben.jpg" alt="ben-pic" />
   <div class="contact-text">
     <br/>
     My name is Ben.

@@ -32,7 +32,7 @@
 </div>
 
 <div class="left-copy">
-  <img src="/static/home/images/tags.png" />
+  <img src="/static/images/marketing/tags.png" />
   
   <br/><br/>
   <h3>100% Happiness Guarantee.</h3>

@@ -41,17 +41,8 @@
     $this->shell = new View($this->shell);
     $this->shell->service = $this->service;
     
-    $this->shell->menu_reviews = array(
-      array('dashboard', '/admin/reviews/dashboard','Dashboard','jax'),
-      array('categories', '/admin/reviews/categories','Categories','jax'),
-      array('reviews', '/admin/reviews/manage','Reviews','jax'),
-      array('customers', '/admin/reviews/customers','Customers','jax'),
-      array('widget', '/admin/widget/reviews','Display',''),  
-      array('install', '/admin/install/reviews','Installation','jax'),
-    );
-
     $this->shell->menu_testimonials = array(
-      array('dashboard', '/admin/testimonials/dashboard','Dashboard','jax'),
+      array('dashboard', '/admin/testimonials/dashboard','Dashboard','ajax'),
       array('collect', '/admin/testimonials/collect','Collect','jax'),
       
       array('testimonials', '/admin/testimonials/manage','Manage','jax'),
@@ -60,6 +51,15 @@
       
       array('widget', '/admin/widget/testimonials','Display',''),    
       array('install', '/admin/install/testimonials','Install','jax'),
+    );
+    
+    $this->shell->menu_reviews = array(
+      array('dashboard', '/admin/reviews/dashboard','Dashboard','jax'),
+      array('categories', '/admin/reviews/categories','Categories','jax'),
+      array('reviews', '/admin/reviews/manage','Reviews','jax'),
+      array('customers', '/admin/reviews/customers','Customers','jax'),
+      array('widget', '/admin/widget/reviews','Display',''),  
+      array('install', '/admin/install/reviews','Installation','jax'),
     );
   }
 

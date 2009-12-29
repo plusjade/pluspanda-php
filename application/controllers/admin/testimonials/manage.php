@@ -195,7 +195,9 @@ class Manage_Controller extends Admin_Template_Controller {
       : 1;
     $testimonial->rating  = $_POST['rating'];      
     $testimonial->save();
-    die('Testimonial Saved!');
+    
+    echo alerts::display(array('success'=>'Testimonial Saved!'));
+    die;
   }
 
 /* 

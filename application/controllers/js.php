@@ -8,59 +8,61 @@
 class Js_Controller {
 
 /*
- * javascript bundle for /add/testimonials 
+ * javascript bundle for /collect/testimonials 
  */
-	public static function add_testimonials()
-	{
-		header('Content-type: text/javascript');
-		header("Expires: Sat, 26 Jul 2010 05:00:00 GMT");	
+  public static function t_collect()
+  {
+    header('Content-type: text/javascript');
+    header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
 
-		$files = array(
-			'js/addon.js',
-			'js/facebox.js',
-			'js/jcrop.js',
-			'js/slider.js',
-		);
-		
-		ob_start();
-		foreach($files as $file)
-			if(file_exists(DOCROOT . "static/$file"))
-				readfile(DOCROOT . "static/$file");
+    $files = array(
+      'js/common/addon.js',
+      'js/common/facebox.js',
+      'js/common/jcrop.js',
+      'js/common/slider.js',
+      'js/testimonials/bind.js',
+    );
+    
+    ob_start();
+    foreach($files as $file)
+      if(file_exists(DOCROOT . "static/$file"))
+        readfile(DOCROOT . "static/$file");
 
-		die();
-	}
+    die;
+  }
 
-	
+  
 /*
  * javascript bundle for /admin 
  */
-	public static function admin()
-	{
-		header('Content-type: text/javascript');
-		header("Expires: Sat, 26 Jul 2010 05:00:00 GMT");	
+  public static function admin()
+  {
+    header('Content-type: text/javascript');
+    header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
 
-		$files = array(
-			'js/addon.js',
-			'js/jquery.ui.js',
-			'js/facebox.js',
-			'js/jcrop.js',
-			'admin/js/init.js',
-		);
-		
-		ob_start();
-		foreach($files as $file)
-			if(file_exists(DOCROOT . "static/$file"))
-				readfile(DOCROOT . "static/$file");
+    $files = array(
+      'js/common/addon.js',
+      'js/common/jquery.ui.js',
+      'js/common/facebox.js',
+      'js/common/jcrop.js',
+      'js/testimonials/bind.js',
+      'js/admin/init.js',
+    );
+    
+    ob_start();
+    foreach($files as $file)
+      if(file_exists(DOCROOT . "static/$file"))
+        readfile(DOCROOT . "static/$file");
 
-		die();
-	}
+    die;
+  }
 
-	
-	public function __call($args, $method)
-	{
-		Event::run('system.404');
-	}
-	
+  
+  public function __call($args, $method)
+  {
+    Event::run('system.404');
+  }
+  
 
-	
+  
 } /* End  */

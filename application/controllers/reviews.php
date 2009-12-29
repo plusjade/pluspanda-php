@@ -19,8 +19,8 @@ class Reviews_Controller extends Controller {
   
   public function __construct($site=null, $page_name='', $type=FALSE)
   {
-		if(NULL === $site)
-			Event::run('system.404');
+    if(NULL === $site)
+      Event::run('system.404');
       
     parent::__construct();
 
@@ -313,7 +313,7 @@ class Reviews_Controller extends Controller {
     # load the widget_js view and place the html as json.
     $widget_js = new View('reviews/widget_js');
     $widget_js->url         = url::site() ."?apikey=$this->apikey&service=reviews";
-    $widget_js->stylesheet  = '<link type="text/css" href="'. url::site() .'/static/widget/css/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
+    $widget_js->stylesheet  = '<link type="text/css" href="'. url::site() .'/static/css/reviews/widget/'. $this->theme .'.css" media="screen" rel="stylesheet" />';
     $widget_js->item_html   = str_replace($keys, '', $item_html);
     $widget_js->json_html   = json_encode($html);
     $widget_js->json_status = json_encode($status);

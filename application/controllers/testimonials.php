@@ -68,7 +68,7 @@ class Testimonials_Controller extends Controller {
  */
   private function get_testimonials($format=NULL)
   {
-    $limit = 2;
+    $limit = 10;
     $params = array(
       'site_id'  => $this->site_id,
       'page'     => $this->active_page,

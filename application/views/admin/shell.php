@@ -6,8 +6,8 @@
 
   <!--  REQUIRED FOR IE6 SUPPORT -->
   <style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
-  <link href="/static/admin/css/global.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="/static/js/jquery.js"></script>
+  <link href="/css/admin.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="/static/js/common/jquery.js"></script>
 
 </head>
 
@@ -70,7 +70,7 @@
   
 </div>
 
-<script type="text/javascript" src="/js/admin"></script>
+<script type="text/javascript" src="/js/admin.js"></script>
 </body>
 </html>
 

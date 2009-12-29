@@ -16,10 +16,8 @@
   }
 
 
-/*
- * update
- */
- public function index()
+
+ public function version_3()
  {
 		#db version 3
 		$sites = ORM::factory('site')->find_all();
