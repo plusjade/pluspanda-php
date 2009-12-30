@@ -7,7 +7,7 @@ $image  = (empty($testimonial->image))
 ?>
 
 <div class="admin-testimonial-wrapper">
-<form id="save-testimonial" action="/admin/testimonials/manage/save?id=<?php echo $testimonial->id?>" method="POST">
+<form id="save-testimonial" action="/admin/testimonials/manage/save?id=<?php echo $testimonial->id?>" enctype="multipart/form-data" method="POST">
   
   <button class="submit-button" type="submit">Save Changes</button>
 
@@ -18,15 +18,15 @@ $image  = (empty($testimonial->image))
   </div>
   
   
-  <fieldset class="panda-image">
+  <div class="panda-image">
     Upload new headshot or logo <input type="file" name="image" />
-  </fieldset>  
+  </div>  
     
   <div class="t-view">
     <div class="t-details">
       <a href="/admin/testimonials/manage/crop?image=<?php echo $testimonial->image?>" rel="facebox">Edit Image</a>
       
-      <div class="image" rel="<?php echo "$image_url/$testimonial->id"?>">
+      <div class="image" rel="<?php echo $image_url?>">
         <?php echo $image?>
       </div>
       

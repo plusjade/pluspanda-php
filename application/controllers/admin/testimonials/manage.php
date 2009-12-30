@@ -25,6 +25,9 @@ class Manage_Controller extends Admin_Template_Controller {
     $this->testimonial_id = (isset($_GET['id']))
       ? $_GET['id']
       : NULL;
+    
+    # prep the ajax response
+    $this->rsp = new Response;
   }
   
 /*
@@ -97,9 +100,51 @@ class Manage_Controller extends Admin_Template_Controller {
       ->where('site_id',$this->site_id)
       ->find($this->testimonial_id);
     if(!$testimonial->loaded)
-      die('invalid id');  
-    
+    {
+      $this->rsp->msg = 'Testimonial does not exist';
+      $this->rsp->send(); 
+    }
     return $testimonial;
+  }
+  
+
+/* 
+ * add a new testimonial profile.
+ * view and handler.
+ */  
+  public function add_new()
+  {
+    if(!$_POST)
+      die(View::factory('admin/testimonials/add'));
+    
+    # validate the form values.
+    $post = new Validation($_POST);
+    $post->pre_filter('trim');
+    $post->add_rules('name', 'required');
+    $post->add_rules('email', 'required');
+    
+    # on error! this should rarely happen due to client-side js validation...
+    if(!$post->validate())
+    {
+      $this->rsp->msg = 'Name and email are required.';
+      $this->rsp->send();
+    }
+    
+    $new_testimonial = ORM::factory('testimonial');
+    $new_testimonial->site_id           = $this->site_id;
+    $new_testimonial->patron->name      = $_POST['name'];
+    $new_testimonial->patron->email     = $_POST['email'];
+    $new_testimonial->patron->company   = $_POST['company'];
+    $new_testimonial->patron->location  = $_POST['location'];
+    $new_testimonial->save();
+    
+
+    $this->rsp->status   = 'success';
+    $this->rsp->msg      = 'New Testimonial Profile Created!';
+    $this->rsp->id       = $new_testimonial->id;
+    $this->rsp->image    = $new_testimonial->image;
+    $this->rsp->rowHtml  = t_build::admin_table_row($new_testimonial, $this->site->subdomain);
+    $this->rsp->send();
   }
   
   
@@ -123,64 +168,20 @@ class Manage_Controller extends Admin_Template_Controller {
     $view->image_url    = t_paths::image($this->site->apikey, 'url');
     die($view);
   }
-
- 
-/* 
- * add a new testimonial profile.
- */  
-  public function add_new()
-  {
-    if(!$_POST)
-    {
-      $view = new View('admin/testimonials/add');
-      die($view);
-
-    }
-    
-    # validate the form values.
-    $post = new Validation($_POST);
-    $post->pre_filter('trim');
-    $post->add_rules('name', 'required');
-    $post->add_rules('email', 'required');
-    
-    # on error! this should rarely happen due to client-side js validation...
-    if(!$post->validate())
-      die('Name and email required');
-
-    $new_testimonial = ORM::factory('testimonial');
-    $new_testimonial->site_id           = $this->site_id;
-    $new_testimonial->patron->name      = $_POST['name'];
-    $new_testimonial->patron->email     = $_POST['email'];
-    $new_testimonial->patron->company   = $_POST['company'];
-    $new_testimonial->patron->location  = $_POST['location'];
-    $new_testimonial->save();
-    die('New Testimonial Profile Created');  
-  }
   
-   
+  
 /* 
- * save a testimonial
+ * save a testimonial handler.
  */
   public function save()
   {
     if(!$_POST)
-      die('nothing sent');
-
-    # validate the form values.
-    $post = new Validation($_POST);
-    $post->pre_filter('trim');
-    $post->add_rules('name', 'required');
-
-    # on error! this should rarely happen due to client-side js validation...
-    if(!$post->validate())
-      die('invalid post');
-
-    $testimonial = $this->get_testimonial();
-
-    # save image if sent.
-    if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
-      $testimonial->save_image($this->site->apikey, $_FILES, $testimonial->id);
+    {
+      $this->rsp->msg = 'Nothing Sent';
+      $this->rsp->send();
+    }
     
+    $testimonial = $this->get_testimonial();
     $testimonial->patron->name     = $_POST['name'];
     $testimonial->patron->company  = $_POST['company'];
     $testimonial->patron->position = $_POST['position'];
@@ -195,20 +196,52 @@ class Manage_Controller extends Admin_Template_Controller {
       : 1;
     $testimonial->rating  = $_POST['rating'];      
     $testimonial->save();
-    
-    echo alerts::display(array('success'=>'Testimonial Saved!'));
-    die;
+
+    $this->rsp->status   = 'success';
+    $this->rsp->msg      = 'Testimonial Saved!';
+    $this->rsp->id       = $testimonial->id;
+    $this->rsp->image    = $testimonial->image;
+    $this->rsp->rowHtml  = t_build::admin_table_row($testimonial, $this->site->subdomain);
+    $this->rsp->send();
   }
 
+/* 
+ * save an uploaded image.
+ * we do this separately so we can insta-download it.
+ * also because the save form somehow corrupts the json response
+ * if i try to send a file ?? =(
+ */  
+  public function save_image()
+  {
+    if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
+    {
+      $testimonial = $this->get_testimonial();
+      $response = $testimonial
+        ->save_image(
+          $this->site->apikey,
+          $_FILES,
+          $testimonial->id
+        );
+      $this->rsp->status = key($response);
+      $this->rsp->msg    = current($response);
+      $this->rsp->image  = $testimonial->image;
+    }
+    else
+      $this->rsp->msg = 'Nothing sent.';
+    
+    $this->rsp->send();
+  }
+  
+  
 /* 
  * delete a testimonial.
  */  
   public function delete()
   {
     $this->get_testimonial()->delete();
-    die(alerts::display(
-      array('success'=>'Testimonial Deleted! =/')
-    ));
+    $this->rsp->status  = 'success';
+    $this->rsp->msg     = 'Testimonial Deleted!';
+    $this->rsp->send();
   }   
 
   

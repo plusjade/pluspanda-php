@@ -43,6 +43,7 @@ class Js_Controller {
     $files = array(
       'js/common/addon.js',
       'js/common/jquery.ui.js',
+      'js/common/json/json2.js',
       'js/common/facebox.js',
       'js/common/jcrop.js',
       'js/testimonials/bind.js',

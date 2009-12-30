@@ -1,7 +1,6 @@
 
 $(document).ready(function(){
     
-
   $('a[rel*=facebox]').live('click',function(){
     $.facebox({ ajax: this.href });
     return false;
@@ -23,16 +22,16 @@ $(document).ready(function(){
       });
       return false;
     },
+  // flag a review
     '.review-wrapper img' : function(e){
       var id = $(e.target).attr('rel');
       $('.flag-review.helper').remove();
       $('.flag-review input:first').val(id);
-
       $('.flag-review').clone().addClass('helper')
         .insertBefore($('table#review-'+ id));
     },
     
-   // Save page sort order
+  // Save page sort order
     '#save_order' : function(e){
       var order = $("#sortable").sortable("serialize");
       if(!order){alert("No items to sort");return false;}
@@ -43,7 +42,7 @@ $(document).ready(function(){
       })    
       return false;
     },
-   // save the cat params.
+  // save the cat params.
     // we cant use ajaxForm cuz i think we should be needing to delegate.
     '.cat-save button' : function(e){
       var catId = $(e.target).attr('rel');
@@ -56,7 +55,7 @@ $(document).ready(function(){
       });
       return false;
     },
-   // delete a category.
+  // delete a category.
     '.cat-delete a' : function(e){
       if(confirm('This cannot be undone!! Delete this category?')){
         $(document).trigger('submit.server');
@@ -68,64 +67,102 @@ $(document).ready(function(){
       return false;
     },
 
-    //testimonial page.
-    
-    // add a new testimonial profile.
+/*Testimonial Manager */
+  // add a new testimonial profile.
     '#add-testimonial button' : function(e){
       $('#add-testimonial').ajaxSubmit({
+        dataType : 'json',
         beforeSubmit : function(fields, form){
           if(!$("input", form[0]).jade_validate()) return false;
+          $(document).trigger('submit.server');
         },
-        success : function(data){
-          alert(data);
+        success : function(rsp){
+          // append new row html
+          $.facebox.close();
+          $(document).trigger('rsp.server', rsp);
+          $("table.t-data tr:first").after(rsp.rowHtml);
+          $("tr#tstml_" + rsp.id).effect("highlight", {}, 3000);
+          $('abbr.timeago').timeago();
+          return false;
         }
       });
       return false;
     },
-    
-    // load the edit view into the bottom container
+  // load the edit view into the bottom container
     '.admin-new-testimonials-list table td.name a' : function(e){  
       $('.edit-window').html('Loading...');
       $.get(e.target.href, function(data){
         $('.edit-window').html(data);
-        // if body is empty , append all question data.
-        if('' == $('.testimonial-body textarea').val()){
-          var content = '';
-          $('.questions-wrapper p').each(function(){
-            content += $.trim($(this).html()) + ' ';
+
+        // upload the image given in the file input.
+        $('.panda-image input').change(function(){
+          var file = $(this).val();
+          if(!file)return false;
+          var ext = file.substring(file.lastIndexOf('.')).toLowerCase();
+          var imgTypes = ['.jpg','.jpeg','.png','.gif','.tiff','.bmp'];
+          var valid = false;
+          $.each(imgTypes, function(){
+            if(this == ext){valid = true; return false;}
           });
-          $('.testimonial-body textarea').val(content);
-        }
-        // ajaxify the testimonial save form.
-        $('#save-testimonial').ajaxForm({   
-          beforeSubmit: function(fields, form){
-            $(document).trigger('submit.server');
-          },
-          success: function(rsp){
-            var val = $('.panda-image input').val();
-            $('.panda-image input').val('');
-            if(val){
-              var ext = val.substring(val.lastIndexOf('.'));
-              if(ext){
-                var imgUrl = $('.t-details .image').attr('rel') + ext + '?r=' + new Date().getTime();
+          if(!valid){alert('Filetype not supported'); return false};
+          
+          $(document).trigger('submit.server');
+          var url = $('#save-testimonial').attr('action').replace('save', 'save_image');
+          $('#save-testimonial').ajaxSubmit({
+            dataType: 'json',
+            type: 'post',
+            url : url,
+            success: function(rsp){
+              if('success' == rsp.status){
+                var imgUrl = $('.t-details .image').attr('rel') + '/' + rsp.image + '?r=' + new Date().getTime();
                 newImg = new Image(); 
                 newImg.src = imgUrl;
                 $('.t-details .image').html('<img src="'+ newImg.src +'">');
               }
+              $(document).trigger('rsp.server', rsp);
+              $('.panda-image input').val('');
             }
-            $(document).trigger('rsp.server', rsp);
-          }
+          });
+        });
+        // override the normal submit event
+        $('#save-testimonial').submit(function(){
+          $('#save-testimonial button').click();
+          return false;
         });
       });
       return false;
     },
-    
-    // delete a testimonial
+  // save the edit testimonial
+    '#save-testimonial button' : function(e){
+      $('#save-testimonial').ajaxSubmit({
+        dataType : 'json',
+        beforeSubmit: function(fields, form){
+          $(document).trigger('submit.server');
+          // json response acts up when we send a file =/
+          $('.panda-image input').attr('disabled','disabled');
+        },
+        success: function(rsp){
+          $('.panda-image input').removeAttr('disabled');
+          $(document).trigger('rsp.server', rsp);
+          if('success' == rsp.status){
+            //update the item row html
+            $("tr#tstml_" + rsp.id).replaceWith(rsp.rowHtml);
+            $("tr#tstml_" + rsp.id).effect("highlight", {}, 3000);
+            $('abbr.timeago').timeago();
+          }
+        }
+      });
+      return false;
+    },
+
+  // delete a testimonial
     '.t-data td.delete a' : function(e){
       if(confirm('This cannot be undone! Delete testimonial?')){
         $(document).trigger('submit.server');
         $.get(e.target.href, function(rsp){
-            $(document).trigger('rsp.server', rsp);
+          var rsp = JSON.parse(rsp);
+          $(document).trigger('rsp.server', rsp);
+          $(e.target).parent('td').parent('tr').remove();
         });
       }
       return false;

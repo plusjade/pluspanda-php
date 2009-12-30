@@ -36,25 +36,11 @@
     <th width="20px">del</th>
     
   </tr>  
-<?php foreach($testimonials as $testimonial):?>
-    <tr>
-      <td>
-        <input type="checkbox" name=""/>
-        <a href="<?php echo url::site("collect/testimonials/{$this->site->subdomain}?ctk={$testimonial->patron->token}&ttk=$testimonial->token")?>">link</a>
-      
-      </td>
-      <td class="name"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>"><?php echo $testimonial->patron->name?></a></td>
-      <td><?php echo $testimonial->patron->company?></td>
-      <td><?php echo $testimonial->tag->name?></td>
-      <td><?php echo (empty($testimonial->publish)) ? 'no' : 'yes'?></td>
-      
-      <td><?php if(!empty($testimonial->updated)) echo common_build::timeago($testimonial->updated)?></td>
-    
-      <td><?php echo common_build::timeago($testimonial->created)?></td>
-      <td class="delete"><a href="/admin/testimonials/manage/delete?id=<?php echo $testimonial->id ?>">[x]</a></td>
-    
-    </tr>
-<?php endforeach;?>
+<?php
+  foreach($testimonials as $testimonial)
+    echo t_build::admin_table_row($testimonial, $this->site->subdomain);
+?>
+
 </table>
 <!--
 <ul class="with-selected">

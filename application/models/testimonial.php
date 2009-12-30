@@ -167,16 +167,16 @@ class Testimonial_Model extends ORM {
     
     # was a file uploaded?
     if(!isset($files['image']['tmp_name']))
-      return FALSE;
+      return array('error' => 'No image sent');
     if(!is_uploaded_file($files['image']['tmp_name']))
-      return FALSE;
+      return array('error' => 'No image sent');
       
     # get extension
     $ext  = strtolower(strrchr($files['image']['name'], '.'));
     
     # is this an image?
     if(!array_key_exists($ext, $image_types))
-      return FALSE;
+      return array('error' => 'File is not a valid image type');
 
     # sanitize the filename.
     $filename  = "$id$ext";
@@ -200,6 +200,8 @@ class Testimonial_Model extends ORM {
     
     $this->image = $filename;
     $this->save();
+    
+    return array('success' =>'Image Uploaded!');
   }
     
   
@@ -231,4 +233,28 @@ class Testimonial_Model extends ORM {
   }
   
 
-} // End tag Model
+  
+  public function as_json()
+  {
+    $data = $this->as_array();
+    unset($data['body_edit']);
+    $data['name']     = $this->patron->name;
+    $data['position'] = $this->patron->position;
+    $data['company']  = $this->patron->company;
+    $data['location'] = $this->patron->location;
+    $data['url']      = $this->patron->url;
+    $data['tag_name'] = $this->tag->name;
+    return $data;
+    return json_encode($data);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+} // End testimonial Model
