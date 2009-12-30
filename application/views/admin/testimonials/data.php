@@ -33,6 +33,7 @@
     <th width="60px">Live</th>
     <th width="120px">Updated</th>
     <th width="120px">Created</th>
+    <th width="20px">del</th>
     
   </tr>  
 <?php foreach($testimonials as $testimonial):?>
@@ -50,6 +51,8 @@
       <td><?php if(!empty($testimonial->updated)) echo common_build::timeago($testimonial->updated)?></td>
     
       <td><?php echo common_build::timeago($testimonial->created)?></td>
+      <td class="delete"><a href="/admin/testimonials/manage/delete?id=<?php echo $testimonial->id ?>">[x]</a></td>
+    
     </tr>
 <?php endforeach;?>
 </table>

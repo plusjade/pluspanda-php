@@ -118,6 +118,17 @@ $(document).ready(function(){
         });
       });
       return false;
+    },
+    
+    // delete a testimonial
+    '.t-data td.delete a' : function(e){
+      if(confirm('This cannot be undone! Delete testimonial?')){
+        $(document).trigger('submit.server');
+        $.get(e.target.href, function(rsp){
+            $(document).trigger('rsp.server', rsp);
+        });
+      }
+      return false;
     }
     
   }));

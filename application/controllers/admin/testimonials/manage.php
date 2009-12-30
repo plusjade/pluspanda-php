@@ -206,7 +206,9 @@ class Manage_Controller extends Admin_Template_Controller {
   public function delete()
   {
     $this->get_testimonial()->delete();
-    die('Testimonal Deleted! =/');
+    die(alerts::display(
+      array('success'=>'Testimonial Deleted! =/')
+    ));
   }   
 
   
@@ -222,7 +224,7 @@ class Manage_Controller extends Admin_Template_Controller {
               $this->site->apikey,
               explode('|',$_POST['params'])
             );
-      die();
+      die;
     }
     
     # display the crop view.
