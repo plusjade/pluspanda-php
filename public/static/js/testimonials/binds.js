@@ -1,24 +1,5 @@
 
-
 /* custom event bindings to init our ajaxed environments */
-
-
-// show server response.
-$(document).bind('rsp.server', function(e, rsp){
-  $('#server_response .load').hide();
-  if(!rsp) return false;
-  $('<div></div>')
-    .addClass(rsp.status)
-    .html(rsp.msg)
-    .appendTo($('#server_response .rsp'));
-  setTimeout('$("#server_response span div").fadeOut(4000)', 1500);
-});
-// show submit icon
-$(document).bind('submit.server', function(e, data){
-  $('#server_response .rsp').empty();
-  $('#server_response div.load').show();
-});
-  
   
 /*
  * initialize singular testimonial edit interactions
@@ -44,11 +25,14 @@ $(document).bind('tstml.edit',function(e, data){
   );
   $('#panda-star-rating div').click(function(){
     var rating = $(this).attr('class').substr(1);  
-    $(this).parent().removeClass().addClass('_'+rating).attr({rel:rating});      
+    $(this).parent().removeClass().addClass('_'+rating).attr({rel:rating});
     $('.t-rating-wrapper input').val(rating);
     pandaUpdateText(rating);
   });
-  
+  // init the stored value
+  var orig = $('#panda-star-rating').attr('rel');
+  orig = ('undefined' == orig || 0 == orig) ? 4 : orig-1;
+  $('#panda-star-rating div:eq(' + orig + ')').click();
 });
 
 /*

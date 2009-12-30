@@ -45,6 +45,7 @@ class Css_Controller {
       '/css/common/buttons.css',
       '/css/common/facebox.css',
       '/css/common/jcrop.css',
+      '/css/common/response.css',
     );
     
     ob_start();
@@ -69,6 +70,7 @@ class Css_Controller {
       '/css/collect/global.css',
       '/css/testimonials/edit.css',
       '/css/common/facebox.css',
+      '/css/common/response.css',
     );
     
     ob_start();

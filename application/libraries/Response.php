@@ -10,6 +10,25 @@ class Response {
   public $status = 'error';
   public $msg = 'something went wrong';
 
+  /**
+   * Returns a singleton instance of Response.
+   *
+   * @return  object
+   */
+  public static function instance()
+  {
+    static $instance;
+
+    if ($instance == NULL)
+    {
+      // Initialize the URI instance
+      $instance = new Response;
+    }
+
+    return $instance;
+  }
+
+  
 /*
  * output the response in json
  */

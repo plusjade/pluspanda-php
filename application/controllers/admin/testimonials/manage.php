@@ -27,7 +27,7 @@ class Manage_Controller extends Admin_Template_Controller {
       : NULL;
     
     # prep the ajax response
-    $this->rsp = new Response;
+    $this->rsp = Response::instance();
   }
   
 /*

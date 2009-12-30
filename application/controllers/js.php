@@ -20,7 +20,7 @@ class Js_Controller {
       'js/common/facebox.js',
       'js/common/jcrop.js',
       'js/common/slider.js',
-      'js/testimonials/bind.js',
+      'js/testimonials/binds.js',
     );
     
     ob_start();
@@ -46,7 +46,8 @@ class Js_Controller {
       'js/common/json/json2.js',
       'js/common/facebox.js',
       'js/common/jcrop.js',
-      'js/testimonials/bind.js',
+      'js/common/binds.js',
+      'js/testimonials/binds.js',
       'js/admin/init.js',
     );
     
