@@ -78,3 +78,35 @@ $(document).bind('tstml.crop',function(e, data){
   });
 });
 
+
+$(document).bind('tstml.tags',function(e, data){
+  
+  $("ul#sortable").sortable({
+    handle  : '.cat-handle',
+    axis  : 'y',
+    update: function(e, ui) {
+      ui.item.hide().fadeIn(700);
+    }
+  });
+  
+  //override natural submit for save item
+  $('li.cat-item form').submit(function(){
+    $('button', this).click();
+    return false;
+  });
+  
+  //override natural submit for add
+  $('form#add-cat').submit(function(){
+    $('form#add-cat button').click();
+    return false;
+  });
+  
+});
+
+
+
+
+
+
+
+

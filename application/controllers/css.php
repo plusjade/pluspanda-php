@@ -39,10 +39,10 @@ class Css_Controller {
 
     $files = array(
       '/css/common/reset.css',
+      '/css/common/buttons.css',
       '/css/admin/global.css',
       '/css/admin/pages.css',
       '/css/testimonials/edit.css',
-      '/css/common/buttons.css',
       '/css/common/facebox.css',
       '/css/common/jcrop.css',
       '/css/common/response.css',

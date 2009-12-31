@@ -3,24 +3,27 @@
 /*
  * reviews stuff
  */
-ul.cat-list{list-style:none !important; margin:0 !important;padding:0 !important;}
+ul#sortable{
+  border:1px solid BLACK;
+list-style:none !important; margin:0 !important;padding:0 !important;}
 .cat-item{
   margin: 10px 0;
   padding:8px;
-  padding-left: 60px;
   font-size: 12px;
   font-weight: bold;
   line-height: 24px;
 }
+div.cat-handle{float:left;width:60px;height:50px; cursor:move;}
 .cat-sort{
-background:#FFFBCC url('../images/001_43.png') no-repeat 10px center;
+background:#FFFBCC url('/static/images/admin/move.png') no-repeat 10px center;
 border: 1px solid #FFF35E;
 color: #C69E00; 
 }
 .cat-add{
  border: 1px solid #97FF88;
- color: #009900; 
- background:#D5FFCF url('../images/accept.png') no-repeat 10px center;
+ color: #009900;
+ padding-left:60px; 
+ background:#D5FFCF url('/static/images/admin/accept.png') no-repeat 10px center;
 
 }
 
@@ -28,11 +31,20 @@ color: #C69E00;
 .cat-item input:focus{background:#ffffaa; border:1px solid orange}
 .cat-item input.cat-name{width:200px;}
 .cat-item input.cat-desc{width:300px;}
+
 .cat-item .cat-save,
 .cat-item .cat-delete
 {float:right;}
 .cat-item .cat-delete{}
 
+button.save-cat{
+  background:transparent url('/static/images/admin/accept.png') no-repeat 50% 50%;
+  width:30px;
+}
+a.del-cat{
+  background:transparent url('/static/images/admin/delete.png') no-repeat 50% 50%;
+  width:30px;
+}
 
 .panda-pagination{
 padding:5px;

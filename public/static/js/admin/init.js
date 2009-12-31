@@ -22,6 +22,7 @@ $(document).ready(function(){
       });
       return false;
     },
+    
   // flag a review
     '.review-wrapper img' : function(e){
       var id = $(e.target).attr('rel');
@@ -30,43 +31,71 @@ $(document).ready(function(){
       $('.flag-review').clone().addClass('helper')
         .insertBefore($('table#review-'+ id));
     },
+
     
-  // Save page sort order
-    '#save_order' : function(e){
-      var order = $("#sortable").sortable("serialize");
-      if(!order){alert("No items to sort");return false;}
-      
-      $(document).trigger('submit.server');
-      $.get("/admin/categories/order?"+order, function(data){
-        $(document).trigger('rsp.server', data);
-      })    
-      return false;
-    },
-  // save the cat params.
-    // we cant use ajaxForm cuz i think we should be needing to delegate.
-    '.cat-save button' : function(e){
-      var catId = $(e.target).attr('rel');
-      var url = $('#cat-'+catId+' form').attr('action');
-      if(! $("input, textarea", $('#cat-'+catId+' form')).jade_validate()) return false;
-      var params = $('#cat-'+catId+' form').formSerialize();
-      $(document).trigger('submit.server');
-      $.post(url, params, function(data){
-        $(document).trigger('rsp.server', data);
+    
+  // common add a category.
+    'form#add-cat button' :function(e){
+      $('form#add-cat').ajaxSubmit({
+        dataType: 'json',
+        beforeSubmit: function(fields, form){
+          if(! $("input, textarea", form[0]).jade_validate()) return false;
+          $('button', form).attr('disabled', 'disabled').html('Submitting...');
+          $(document).trigger('submit.server');
+        },
+        success: function(rsp) {
+          $(document).trigger('rsp.server', rsp);
+          $('form#add-cat button').removeAttr('disabled').html('Add Category');
+          $('form#add-cat').clearFields();
+          $('#primary_content').load('/admin/testimonials/tags', function(){
+              $('ul#sortable li:last').effect("highlight", {}, 5000);
+          });
+        }
       });
       return false;
     },
-  // delete a category.
+    
+  // common save category edits.
+    '.cat-save button' : function(e){
+      var $form = $(e.target).parent('div').parent('form');
+      $form.ajaxSubmit({
+        dataType : 'json',
+        beforeSubmit : function(fields, form){
+          if(!$("input", form[0]).jade_validate()) return false;
+          $(document).trigger('submit.server');
+        },
+        success : function(rsp){
+          $(document).trigger('rsp.server', rsp);
+          $form.parent('li').hide().fadeIn(600);
+        }
+      });
+      return false;
+    },
+    
+  // common delete a category.
     '.cat-delete a' : function(e){
       if(confirm('This cannot be undone!! Delete this category?')){
         $(document).trigger('submit.server');
         $.get(e.target.href, function(rsp){
-          $(e.target).parent('div').parent('form').parent('li').remove();
           $(document).trigger('rsp.server', rsp);
+          $(e.target).parent('div').parent('form').parent('li').remove();
         });
       }
       return false;
     },
 
+  // common save categories/tags sort order.
+    '#save_order' : function(e){
+      var order = $("#sortable").sortable("serialize");
+      if(!order){alert("No items to sort");return false;}
+      var url = $(e.target).attr('rel');
+      $(document).trigger('submit.server');
+      $.get(url, order, function(rsp){
+        $(document).trigger('rsp.server', rsp);
+      });    
+      return false;
+    },
+    
 /*Testimonial Manager */
   // add a new testimonial profile.
     '#add-testimonial button' : function(e){
@@ -160,19 +189,19 @@ $(document).ready(function(){
       if(confirm('This cannot be undone! Delete testimonial?')){
         $(document).trigger('submit.server');
         $.get(e.target.href, function(rsp){
-          var rsp = JSON.parse(rsp);
           $(document).trigger('rsp.server', rsp);
           $(e.target).parent('td').parent('tr').remove();
         });
       }
       return false;
     }
+
+
+    
     
   }));
 
-  
 
-  
   
   
   
