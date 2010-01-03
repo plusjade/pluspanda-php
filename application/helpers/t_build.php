@@ -8,8 +8,84 @@
  
 class t_build_Core {
 
+/*
+ * build the html that each testimonial gets displayed in.
+ */
+  public static function item_html($testimonial=NULL, $site_id=0)
+  {
+    # this is for the javascript callback =)
+    if(empty($testimonial)):
+    ob_start();
+    ?>
+<div class="t-wrapper">
+  <div class="t-details">
+    <div class="image"><img src="'+ this.image +'"/></div>
+    <div class="t-details-meta">
+      <div class="t-name">
+        <span>'+ this.name +'</span>
+      </div>
+      <div class="t-position">
+        <span>'+ this.position +'</span>
+      </div>  
+      <div class="t-company">
+        <span>'+ this.company +'</span>
+      </div>
+      <div class="t-location">
+        <span>'+ this.location +'</span>
+      </div>      
+      <div class="t-url">
+        <a href="#">'+ this.url +'</a>
+      </div>
+    </div>
+  </div>
+  <div class="t-content">
+    <div class="t-rating _' +this.rating+ '" title="Rating: '+this.rating+ ' stars">&#160;</div>
+    <div class="t-body">' +this.body+ '</div>
+    <div class="t-tag"><span>' +this.tag_name+ '</span></div>
+    <div class="t-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
+  </div>
+</div>    
+    <?php 
+      return ob_get_clean();
+      endif;
+      
+      $image = (empty($testimonial->image))
+        ? ''
+        : "<img src=\"/data/$site_id/tstml/img/$testimonial->image\"/>";
+    ?>
+<div class="t-wrapper">
+
+  <div class="t-details">
+    <div class="image"><?php echo $image?></div>
+    
+    <div class="t-name">
+      <span><?php echo $testimonial->patron->name?></span>
+    </div>
+    <div class="t-position">
+      <span><?php echo $testimonial->patron->position?></span>
+      , <span><?php echo $testimonial->patron->company?></span>
+    </div>
+    <div class="t-location">
+      <span><?php echo $testimonial->patron->location?></span>
+    </div>      
+    <div class="link">
+      <a href="#"><?php echo $testimonial->patron->url?></a>
+    </div>
+  </div>
+  
+  <div class="t-content">
+    <div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
+    <div class="t-body"><?php echo $testimonial->body?></div>
+    <div class="t-tag"><span><?php echo $testimonial->tag->name?></span></div>
+    <div class="t-date"><?php echo build::timeago($testimonial->created)?></div>
+  </div>
+</div>
+    <?php
+  }
+ 
 
 
+ 
   public static function admin_table_row($testimonial, $site_name)
   {
     ob_start();
@@ -35,80 +111,6 @@ class t_build_Core {
     return ob_get_clean();
   }
   
-  
-  
-/*
- * build the html that each testimonial gets displayed in.
- */
-  public static function item_html($testimonial=NULL, $site_id=0)
-  {
-    # this is for the javascript callback =)
-    if(empty($testimonial)):
-    ob_start();
-    ?>
-<div class="testimonial-wrapper">
-  <div class="testimonial-details">
-    <div class="image"><img src="'+ this.image +'"/></div>    
-    <div class="testimonial-name">
-      <span>'+ this.name +'</span>
-    </div>
-    <div class="testimonial-position">
-      <span>'+ this.position +'</span>
-    </div>  
-    <div class="testimonial-company">
-      <span>'+ this.company +'</span>
-    </div>
-    <div class="testimonial-location">
-      <span>'+ this.location +'</span>
-    </div>      
-    <div class="testimonial-url">
-      <a href="#">'+ this.url +'</a>
-    </div>
-  </div>
-  <div class="testimonial-content">
-    <div class="testimonial-rating _' +this.rating+ '" title="Rating: '+this.rating+ ' stars">&#160;</div>
-    <div class="testimonial-body">' +this.body+ '</div>
-    <div class="testimonial-tag"><span>' +this.tag_name+ '</span></div>
-    <div class="testimonial-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
-  </div>
-</div>    
-    <?php 
-      return ob_get_clean();
-      endif;
-      
-      $image = (empty($testimonial->image))
-        ? ''
-        : "<img src=\"/data/$site_id/tstml/img/$testimonial->image\"/>";
-    ?>
-<div class="testimonial-wrapper">
-
-  <div class="testimonial-details">
-    <div class="image"><?php echo $image?></div>
-    
-    <div class="testimonial-name">
-      <span><?php echo $testimonial->patron->name?></span>
-    </div>
-    <div class="testimonial-position">
-      <span><?php echo $testimonial->patron->position?></span>
-      , <span><?php echo $testimonial->patron->company?></span>
-    </div>
-    <div class="testimonial-location">
-      <span><?php echo $testimonial->patron->location?></span>
-    </div>      
-    <div class="link">
-      <a href="#">http://mycoolstore.com</a>
-    </div>
-  </div>
-  
-  <div class="testimonial-content">
-    <div class="testimonial-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
-    <div class="testimonial-body"><?php echo $testimonial->body?></div>
-    <div class="testimonial-tag"><span><?php echo $testimonial->tag->name?></span></div>
-    <div class="testimonial-date"><?php echo build::timeago($testimonial->created)?></div>
-  </div>
-</div>
-    <?php
-  }
   
   
 /*
