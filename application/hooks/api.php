@@ -38,7 +38,6 @@ function api()
   $site = ORM::factory('site')
     ->where('apikey',$_GET['apikey'])
     ->find();
-  # should we make this a 404 since its an api call?
   if(!$site->loaded)
     die('invalid api key');
   

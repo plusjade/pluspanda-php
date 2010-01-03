@@ -35,7 +35,7 @@
         
     # no need to load the shell if ajax.
     if(request::is_ajax())
-      return TRUE;
+      return;
 
     # Load the shell for non ajax only.
     $this->shell = new View($this->shell);
@@ -44,12 +44,9 @@
     $this->shell->menu_testimonials = array(
       array('dashboard', '/admin/testimonials/dashboard','Dashboard','ajax'),
       array('collect', '/admin/testimonials/collect','Collect','jax'),
-      
       array('testimonials', '/admin/testimonials/manage','Manage','jax'),
-      
       array('tags', '/admin/testimonials/tags','Categories','jax'),
-      
-      array('widget', '/admin/widget/testimonials','Display',''),    
+      array('display', '/admin/testimonials/display','Display',''),    
       array('install', '/admin/install/testimonials','Install','jax'),
     );
     

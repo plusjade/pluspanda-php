@@ -14,6 +14,7 @@ class Testimonials_Controller extends Controller {
   public $active_tag;
   public $active_sort;
   public $active_page;
+  public $limit;
   public $is_api = FALSE;
 
   
@@ -21,9 +22,9 @@ class Testimonials_Controller extends Controller {
   {
     parent::__construct();
   
-		if(NULL === $site)
-			Event::run('system.404');
-			
+    if(NULL === $site)
+      Event::run('system.404');
+      
     $this->site       = $site;
     $this->apikey     = $site->apikey;
     $this->site_name  = $site->subdomain;
@@ -64,80 +65,55 @@ class Testimonials_Controller extends Controller {
 /* ------------- modular methods (ajaxable) -------------  */
   
 /*
- * get the testimonials data depending on how we are asking for it.
+ * get the testimonials data.
+ * count omits limit to determine pagination scheme.
  */
-  private function get_testimonials($format=NULL)
+  private function get_testimonials($count=FALSE)
   {
-    $limit = 10;
+    $this->limit = 10;
     $params = array(
       'site_id'  => $this->site_id,
       'page'     => $this->active_page,
       'tag'      => $this->active_tag,
       'publish'  => 'yes',
       'created'  => $this->active_sort,
-      'limit'    => $limit
+      'limit'    => $this->limit
     );
-    $total_testimonials = ORM::factory('testimonial')
-      ->fetch($params, 'count');
-      
-    $testimonials = ORM::factory('testimonial')
-      ->fetch($params);
-
-    /*
-    # Return Standalone Ajax - 
-    # testimonials_data (sorters & pagination).
-    if(!$this->is_api AND 'ajax' == $format AND isset($_GET['sort']))
-    {
-      $view = new View('testimonials/testimonials_data');
-      $view->testimonials = $testimonials;
-      $view->pagination   = $pagination;
-      die($view);
-    }
-    */
-
-    # Return JSON to widget
-    if($this->is_api)
-    {
-      $testimonial_array = array();
-      foreach($testimonials as $testimonial)
-      {
-        $data = $testimonial->as_array();
-        $data['name']     = $testimonial->patron->name;
-        $data['position'] = $testimonial->patron->position;
-        $data['company']  = $testimonial->patron->company;
-        $data['location'] = $testimonial->patron->location;
-        $data['url']      = $testimonial->patron->url;
-        $data['tag_name'] = $testimonial->tag->name;
-        $testimonial_array[] = $data;
-      }
-
-      # should we specify a next page link?
-      $page_vars = '';
-      $offset = ($this->active_page*$limit) - $limit;
-      if($total_testimonials > $offset + $limit)
-      {
-        $next_page = $this->active_page+1;
-        $page_vars = "'$next_page', '$this->active_tag', '$this->active_sort'";
-      } 
-            
-      $json_testimonials = json_encode($testimonial_array);
-      #pagination html.
-      #$pagination = str_replace(array("\n","\r","\t"), '', $pagination);
-        
-      header('Cache-Control: no-cache, must-revalidate');
-      header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-      header('Content-type: application/json');
-      die("pandaDisplayTstmls($json_testimonials);pandaPages($page_vars);");
-    }
     
-    # Return New Tag ajax view.
-    # or standalone non-ajax.
-    $view = new View('testimonials/get_testimonials');
-    $view->testimonials = $testimonials;    
-    $view->pagination = $pagination;
-    $view->set_global('active_tag', $this->active_tag);
-    $view->set_global('active_sort', $this->active_sort);
-    return $view;
+    if($count)
+      return ORM::factory('testimonial')->fetch($params, 'count');
+      
+    return ORM::factory('testimonial')->fetch($params);
+  }
+
+  
+/*
+ * send data to an api call
+ */
+  private function send_api()
+  {
+    $testimonials = $this->get_testimonials();
+    $total = $this->get_testimonials(TRUE);
+    
+    $testimonial_array = array();
+    foreach($testimonials as $testimonial)
+      $testimonial_array[] = $testimonial->prep_api();
+
+    # should we specify a next page link?
+    $page_vars = '';
+    $offset = ($this->active_page*$this->limit) - $this->limit;
+    if($total > $offset + $this->limit)
+    {
+      $next_page = $this->active_page+1;
+      $page_vars = "'$next_page', '$this->active_tag', '$this->active_sort'";
+    } 
+
+    $json_testimonials = json_encode($testimonial_array);
+
+    header('Cache-Control: no-cache, must-revalidate');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Content-type: application/json');
+    die("pandaDisplayTstmls($json_testimonials);pandaPages($page_vars);");
   }
   
   
@@ -192,7 +168,7 @@ class Testimonials_Controller extends Controller {
 
     # get testimonials in json
     if(isset($_GET['tag']))
-      die($this->get_testimonials('ajax'));
+      die($this->send_api());
       
     die('invalid api parameters');
   }    

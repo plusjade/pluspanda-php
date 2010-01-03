@@ -46,7 +46,7 @@ class Testimonial_Model extends ORM {
       #TODO: delete the associated images.
     }
     
-    return parent::delete($id=NULL);
+    return parent::delete($id);
   }
 
 
@@ -233,11 +233,17 @@ class Testimonial_Model extends ORM {
   }
   
 
-  
-  public function as_json()
+/*
+ * squash the data into an array to be sent out
+ * via api calls.
+ */
+  public function prep_api()
   {
-    $data = $this->as_array();
-    unset($data['body_edit']);
+    $data = array();
+    $data['body']     = $this->body;
+    $data['rating']   = $this->rating;
+    $data['image']    = $this->image;
+    $data['created']  = $this->created;
     $data['name']     = $this->patron->name;
     $data['position'] = $this->patron->position;
     $data['company']  = $this->patron->company;
@@ -245,7 +251,6 @@ class Testimonial_Model extends ORM {
     $data['url']      = $this->patron->url;
     $data['tag_name'] = $this->tag->name;
     return $data;
-    return json_encode($data);
   }
   
   
