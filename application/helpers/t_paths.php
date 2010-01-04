@@ -1,12 +1,16 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
- * set directory paths so we don't repeat ourselves.
+ * set directory paths so we get delicious D.R.Y.
  */
  
 class t_paths_Core {
 
-  public static $folder = 'tstmls';
+  const service_dir = 'tstmls';
+  const image_dir   = 'img';
+  const css_dir     = 'css';
+  const js_dir      = 'js';
+  
   
 /*
  * return the path to the data directory
@@ -14,47 +18,74 @@ class t_paths_Core {
  */
   public static function data($apikey, $type='dir')
   {
-    if('url' == $type)
-      return url::site("/data/$apikey"); 
-    
     if(!is_dir(DOCROOT . "data/$apikey"))
       mkdir(DOCROOT . "data/$apikey");
       
+    if('url' == $type)
+      return url::site("/data/$apikey"); 
+
     return DOCROOT . "data/$apikey";
   }
 
+  
+/*
+ * return path to the service directory
+ * either url path or directory path.
+ */  
+  public static function service($apikey, $type='dir')
+  {
+    $service = self::data($apikey, $type) . '/'. self::service_dir;
+    
+    if('dir' == $type)
+      if(!is_dir($service))
+        mkdir($service);
+        
+    return $service;
+  }  
+  
 /*
  * return path to the image directory
  * either url path or directory path.
  */  
   public static function image($apikey, $type='dir')
   {
-    if('url' == $type)
-      return self::data($apikey, 'url') . '/'. self::$folder .'/img';
+    $image = self::service($apikey, $type) . '/'. self::image_dir;
     
-    $dir = self::data($apikey, 'dir');
-    $service_dir = $dir .'/'. self::$folder;
-    if(!is_dir($service_dir))
-      mkdir($service_dir);
-    if(!is_dir("$service_dir/img"))
-      mkdir("$service_dir/img");
-
-    return "$service_dir/img";
+    if('dir' == $image)
+      if(!is_dir($image))
+        mkdir($image);
+        
+    return $image;
   }  
   
-  
-  public static function js_cache($apikey)
+/*
+ * return path to the image directory
+ * either url path or directory path.
+ */  
+  public static function css($apikey, $type='dir')
   {
-    $dir = self::data($apikey, 'dir');
-    $service_dir = $dir .'/'. self::$folder;
+    $css = self::service($apikey, $type) . '/'. self::css_dir;
+    
+    if('dir' == $css)
+      if(!is_dir($css))
+        mkdir($css);
+        
+    return $css;
+  }  
+/*
+ * return path to the javascript actual js cache file.
+ */  
+  public static function js_cache($apikey, $type='dir')
+  {
+    $js = self::service($apikey, $type) . '/'. self::js_dir;
+    
+    if('dir' == $js)
+      if(!is_dir($js))
+        mkdir($js);
+        
+    return "$js/view.js";
+  }  
 
-    if(!is_dir($service_dir))
-      mkdir($service_dir);
-    if(!is_dir("$service_dir/js"))
-      mkdir("$service_dir/js");
-
-    return "$service_dir/js/view.js";
-  }
 
 
   

@@ -194,19 +194,23 @@ $(document).ready(function(){
         });
       }
       return false;
+    },
+    
+  // save display testimonial theme.
+    'button#save-theme' :function(e){
+      var theme = $('select.switch-theme option:selected').val();
+      $(document).trigger('submit.server');
+      $.get('/admin/testimonials/display/save',{theme:theme},function(rsp){
+        $(document).trigger('rsp.server', rsp);
+      });
     }
-
 
     
     
   }));
 
 
-  
-  
-  
-  
-  
+
 }); // end document ready
 
 

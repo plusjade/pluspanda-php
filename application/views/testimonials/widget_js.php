@@ -1,14 +1,11 @@
 
-
-
 var pandaTheme = '<?php echo $theme?>';
 var pandaApikey = '<?php echo $apikey?>';
 var pandaAssetUrl = '<?php echo $asset_url?>';
 var pandaHtml = <?php echo $json_html?>;
-
-
-
-
+function pandaItemHtml(item){
+  return '<?php echo $item_html?>';
+}
 
 // cache
 
@@ -16,7 +13,7 @@ var pandaHtml = <?php echo $json_html?>;
 jQuery.delegate = function(rules) {return function(e) { var target = $(e.target); for (var selector in rules) if (target.is(selector)) return rules[selector].apply(this, $.makeArray(arguments));}}
 
 /* For testimonial widget mode =P */
-$('head').append('<link type="text/css" href="<?php echo url::site()?>static/css/testimonials/widget/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
+$('head').append('<link type="text/css" id="pandaTheme" href="' + pandaAssetUrl + '/<?php echo t_paths::css_dir?>/' + pandaTheme + '.css" media="screen" rel="stylesheet" />');
 
 // attach event triggers.
 $('body').click($.delegate({
@@ -50,7 +47,6 @@ $('body').click($.delegate({
       : '.panda-testimonials-sorters a';
     var spltr = (-1 == is_sort) ? '?' : '#';
 
-    
     // get GET params from links TOD0: optimize this?
     var hash = e.target.href.split(spltr)[1].split('&');
     var params = {"tag":"all","sort":"newest","page":1};
@@ -61,9 +57,7 @@ $('body').click($.delegate({
     $(e.target).remove();
     pandaGetTstmls(params.tag, params.sort, params.page);
     return false;
-  },  
-  
-  
+  }
 }));
 
 // build the initial interface.
@@ -91,7 +85,6 @@ function buildIt() {
     pandaGetTstmls(tag,'newest',1);
     return false;  
   });
-  
   // init getting the data.
   $('#panda-select-tags ul a:first').click();
 }
@@ -104,7 +97,7 @@ function pandaGetTstmls(tag, sort, page){
     $.ajax({ 
         type:'GET', 
         url: '<?php echo url::site()?>', 
-        data:"apikey="+pandaApikey+"&service=testimonials&tag="+tag+"&sort="+sort+"&page="+page+"&jsoncallback=pandaLoadRev", 
+        data:"apikey="+pandaApikey+"&service=testimonials&tag="+tag+"&sort="+sort+"&page="+page+"&jsoncallback=pandaLoadTstml", 
         dataType:'jsonp'
     }); 
 }
@@ -115,22 +108,47 @@ function pandaGetTstmls(tag, sort, page){
 // callback to format and inject testimonials data.
 function pandaDisplayTstmls(tstmls){
   var content = '';
-  $(tstmls).each(function(){  
-    var date = new Date(this.created*1000);
-    this.image = pandaAssetUrl + '/' + this.image;
-    content  += '<?php echo $item_html?>';
+  $(tstmls).each(function(){
+    this.created = $.timeago(new Date(this.created*1000));
+    this.image = pandaAssetUrl + '/<?php echo t_paths::image_dir?>/' + this.image;
+    content  += pandaItemHtml(this);
   });
-  $('#plusPandaYes .panda-testimonials-list .ajax_loading').replaceWith(content); 
+  $('#plusPandaYes .panda-testimonials-list .ajax_loading')
+  .replaceWith(content);
+  pandaInteractions();
   pandaClean();
 }
 
 // callback to display the pagination html.
-function pandaPages(nextPage, tag, sort){
+function pandaShowMore(nextPage, tag, sort){
   if(!nextPage)
     return false;
     
   var link = '<a href="<?php echo url::site()?>?apikey='+pandaApikey+'&service=testimonials&tag='+tag+'&sort='+sort+'&page='+ nextPage +'" class="show-more">Show More</a>';
   $('.panda-testimonials-list').append(link);
+}
+
+
+/*
+ * utilities
+ */
+ 
+// bind/unbind javascript interactions based on theme.
+function pandaInteractions(){
+  $('div.t-details div.image img').unbind();
+  var theme = ('' == window.location.hash.substring(1))
+    ? pandaTheme
+    : window.location.hash.substring(1);
+    
+  if('gallery' == theme){
+    $('div.t-details div.image img').hover(function(){
+        $('div.t-content').hide();
+        $(this).parent().parent().next('.t-content').toggle();
+      },
+      function(){
+        $('div.t-content').hide();
+      });
+  }
 }
 
 // cleanup our jsonp scripts after execution.

@@ -19,30 +19,31 @@ class t_build_Core {
     ?>
 <div class="t-wrapper">
   <div class="t-details">
-    <div class="image"><img src="'+ this.image +'"/></div>
+    <div class="image"><img src="'+ item.image +'"/></div>
     <div class="t-details-meta">
       <div class="t-name">
-        <span>'+ this.name +'</span>
+        <span>'+ item.name +'</span>
       </div>
       <div class="t-position">
-        <span>'+ this.position +'</span>
+        <span>'+ item.position +'</span>
       </div>  
       <div class="t-company">
-        <span>'+ this.company +'</span>
+        <span>'+ item.company +'</span>
       </div>
       <div class="t-location">
-        <span>'+ this.location +'</span>
+        <span>'+ item.location +'</span>
       </div>      
       <div class="t-url">
-        <a href="#">'+ this.url +'</a>
+        <a href="#">'+ item.url +'</a>
       </div>
     </div>
   </div>
   <div class="t-content">
-    <div class="t-rating _' +this.rating+ '" title="Rating: '+this.rating+ ' stars">&#160;</div>
-    <div class="t-body">' +this.body+ '</div>
-    <div class="t-tag"><span>' +this.tag_name+ '</span></div>
-    <div class="t-date"><abbr class="timeago">' + $.timeago(date) +'</abbr></div>
+    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
+    <div class="t-body">' +item.body+ '</div>
+    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
+    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
+    
   </div>
 </div>    
     <?php 
@@ -76,16 +77,98 @@ class t_build_Core {
   <div class="t-content">
     <div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
     <div class="t-body"><?php echo $testimonial->body?></div>
-    <div class="t-tag"><span><?php echo $testimonial->tag->name?></span></div>
     <div class="t-date"><?php echo build::timeago($testimonial->created)?></div>
+    <div class="t-tag"><span><?php echo $testimonial->tag->name?></span></div>
+    
   </div>
 </div>
     <?php
   }
  
+/*
+ * build the html that each testimonial gets displayed in.
+ * this is for the javascript callback =)
+ */
+  public static function stock_item_html()
+  {
+    ob_start();
+    ?>
+<div class="t-wrapper">
+  <div class="t-details">
+    <div class="image"><img src="'+ item.image +'"/></div>
+    <div class="t-details-meta">
+      <div class="t-name">
+        <span>'+ item.name +'</span>
+      </div>
+      <div class="t-position">
+        <span>'+ item.position +'</span>
+      </div>  
+      <div class="t-company">
+        <span>'+ item.company +'</span>
+      </div>
+      <div class="t-location">
+        <span>'+ item.location +'</span>
+      </div>      
+      <div class="t-url">
+        <a href="#">'+ item.url +'</a>
+      </div>
+    </div>
+  </div>
+  <div class="t-content">
+    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
+    <div class="t-body">' +item.body+ '</div>
+    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
+    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
+  </div>
+</div>    
+    <?php 
+    return ob_get_clean();
+  }
 
-
- 
+/*
+ * build the html that each testimonial gets displayed in.
+ * this is for the javascript callback =)
+ */
+  public static function gallery_item_html()
+  {
+    ob_start();
+    ?>
+<div class="t-wrapper">
+  <div class="t-details">
+    <div class="image"><img src="'+ item.image +'"/></div>
+    <div class="t-details-meta">
+      <div class="t-name">
+        <span>'+ item.name +'</span>
+      </div>
+      <div class="t-position">
+        <span>'+ item.position +'</span>
+      </div>  
+      <div class="t-company">
+        <span>'+ item.company +'</span>
+      </div>
+      <div class="t-location">
+        <span>'+ item.location +'</span>
+      </div>      
+      <div class="t-url">
+        <a href="#">'+ item.url +'</a>
+      </div>
+    </div>
+  </div>
+  <div class="t-content">
+    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
+    <div class="t-body">' +item.body+ '</div>
+    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
+    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
+  </div>
+</div>    
+    <?php 
+    return ob_get_clean();
+  }
+  
+  
+  
+  
+  
   public static function admin_table_row($testimonial, $site_name)
   {
     ob_start();

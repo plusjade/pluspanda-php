@@ -9,6 +9,8 @@
   public function __construct()
   {
     parent::__construct();
+    
+    $this->rsp = Response::instance();
   }
   
   public function index()
@@ -26,8 +28,22 @@
     die($this->shell);
   
   }
+
   
   
+/*
+ * save the display settings
+ */
+  public function save()
+  {
+    $theme = (isset($_GET['theme'])) ? $_GET['theme'] : null;
+    $this->site->theme = $theme;
+    $this->site->save();
+  
+    $this->rsp->status = 'success';
+    $this->rsp->msg = 'Theme Saved!';
+    $this->rsp->send(); 
+  }
   
   
   public function reviews()

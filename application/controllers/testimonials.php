@@ -113,7 +113,7 @@ class Testimonials_Controller extends Controller {
     header('Cache-Control: no-cache, must-revalidate');
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     header('Content-type: application/json');
-    die("pandaDisplayTstmls($json_testimonials);pandaPages($page_vars);");
+    die("pandaDisplayTstmls($json_testimonials);pandaShowMore($page_vars);");
   }
   
   
@@ -128,7 +128,7 @@ class Testimonials_Controller extends Controller {
     # get all the html interfaces.    
     $tag_list   = t_build::tag_list($this->site->tags, $this->active_tag);
     $sorters    = t_build::sorters($this->active_tag, $this->active_sort, 'widget');    
-    $item_html  = t_build::item_html(NULL, $this->site_id);
+    $item_html  = t_build::stock_item_html();
       
     # build an object to hold the html.
     $html = new StdClass(); 
@@ -139,7 +139,7 @@ class Testimonials_Controller extends Controller {
     $widget_js = new View('testimonials/widget_js');
     $widget_js->theme     = $this->theme;
     $widget_js->apikey    = $this->apikey;
-    $widget_js->asset_url = t_paths::image($this->apikey, 'url');
+    $widget_js->asset_url = t_paths::service($this->apikey, 'url');
     $widget_js->json_html = json_encode($html);
     $widget_js->item_html = str_replace($keys, '', $item_html);
     
