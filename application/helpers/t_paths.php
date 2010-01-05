@@ -13,6 +13,14 @@ class t_paths_Core {
   
   
 /*
+ * Location if the widget init javascript cache file.
+ */
+  public static function init_cache()
+  {
+     return APPPATH . 'cache/testimonials/init.js';
+  }
+  
+/*
  * return the path to the data directory
  * either url path or directory path.
  */
@@ -83,7 +91,7 @@ class t_paths_Core {
       if(!is_dir($js))
         mkdir($js);
         
-    return "$js/view.js";
+    return "$js/settings.js";
   }  
 
 

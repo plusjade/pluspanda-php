@@ -1,13 +1,4 @@
 
-var pandaTheme = '<?php echo $theme?>';
-var pandaApikey = '<?php echo $apikey?>';
-var pandaAssetUrl = '<?php echo $asset_url?>';
-var pandaHtml = <?php echo $json_html?>;
-function pandaItemHtml(item){
-  return '<?php echo $item_html?>';
-}
-
-// cache
 
 /* Event delegation*/
 jQuery.delegate = function(rules) {return function(e) { var target = $(e.target); for (var selector in rules) if (target.is(selector)) return rules[selector].apply(this, $.makeArray(arguments));}}
@@ -157,7 +148,3 @@ function pandaClean(){
 }
 
 
-
-  
-  
-  

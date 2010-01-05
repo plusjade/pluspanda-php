@@ -29,7 +29,7 @@ class Testimonials_Controller extends Controller {
     $this->apikey     = $site->apikey;
     $this->site_name  = $site->subdomain;
     $this->site_id    = $site->id;
-    $this->theme      = (empty($site->theme)) ? 'gray' : $site->theme;
+    $this->theme      = (empty($site->theme)) ? 'left' : $site->theme;
 
     # setup active states.
     $this->active_tag   = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
@@ -88,7 +88,7 @@ class Testimonials_Controller extends Controller {
 
   
 /*
- * send data to an api call
+ * output testimonial json data to an api call
  */
   private function send_api()
   {
@@ -118,11 +118,30 @@ class Testimonials_Controller extends Controller {
   
   
 /*
- * build the embeddable widget javascript environment.
- * cache the result
+ * serve the widget javascript files.
+ * caches them if they don't exist.
  */
   private function widget()
-  {  
+  {
+    $settings_file = t_paths::js_cache($this->site->apikey);
+    $init_file     = t_paths::init_cache();
+    if(!file_exists($settings_file))
+      $this->cache_settings($settings_file);
+
+    if(!file_exists($init_file))
+      self::cache_init();
+
+    readfile($settings_file);
+    readfile($init_file);
+    die;
+  }
+
+  
+/*
+ * regenerates a fresh widget settings file cache.
+ */
+  private function cache_settings($file)
+  {
     $keys = array("\n","\r","\t");
     
     # get all the html interfaces.    
@@ -135,25 +154,34 @@ class Testimonials_Controller extends Controller {
     $html->tag_list = str_replace($keys, '', $tag_list);
     $html->sorters  = str_replace($keys, '', $sorters);
 
-    # load the widget_js view and place the html as json.
-    $widget_js = new View('testimonials/widget_js');
-    $widget_js->theme     = $this->theme;
-    $widget_js->apikey    = $this->apikey;
-    $widget_js->asset_url = t_paths::service($this->apikey, 'url');
-    $widget_js->json_html = json_encode($html);
-    $widget_js->item_html = str_replace($keys, '', $item_html);
-    
-    
-    # output the view then cache the result.    
-    ob_start();
-    echo $widget_js;
-    /*
+    # load the settings view and place the html as json.
+    $settings = new View('testimonials/widget_settings');
+    $settings->theme     = $this->theme;
+    $settings->apikey    = $this->apikey;
+    $settings->asset_url = t_paths::service($this->apikey, 'url');
+    $settings->json_html = json_encode($html);
+    $settings->item_html = str_replace($keys, '', $item_html);
+
     file_put_contents(
-      DOCROOT . "widget/js/$this->apikey.js",
-      ob_get_contents()."\n//cached ".date('m.d.y g:ia e')
+      $file,
+      $settings->render()."\n/*cached ".date('m.d.y g:ia e')."*/"
     );
-    */
+    
+    return TRUE;
   }
+  
+/*
+ * regenerates a fresh widget init file cache.
+ */
+  private static function cache_init()
+  {
+    file_put_contents(
+      t_paths::init_cache(),
+      View::factory('testimonials/widget_init')->render()."\n//cached ".date('m.d.y g:ia e')
+    );
+    return TRUE;
+  }
+  
   
   
 /*
