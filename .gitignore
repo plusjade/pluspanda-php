@@ -9,4 +9,5 @@
 
 
 application/logs/*
+application/cache/*
 public/data/*
