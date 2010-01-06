@@ -31,12 +31,12 @@
       
     $post = new Validation($_POST);
     $post->pre_filter('trim');
-    $post->add_rules('username', 'required', 'valid::alpha_numeric');
+    $post->add_rules('email', 'required', 'valid::email');
     $post->add_rules('password', 'required', 'valid::alpha_dash');
 
     # if Post is good, atttempt to log owner in.    
     if($post->validate())
-      if($this->owner->login($_POST['username'], $_POST['password'], 0))
+      if($this->owner->login($_POST['email'], $_POST['password'], 0))
       {  
         if(isset($_GET['ref']))
           url::redirect($_GET['ref']);
@@ -45,7 +45,7 @@
       }
       
     # error
-    $login_shell->content->alert = alerts::display(array('error'=>'Invalid Username or Password.'));
+    $login_shell->content->alert = alerts::display(array('error'=>'Invalid Email or Password.'));
     $login_shell->content->values = $_POST;
     die($login_shell);  
   }

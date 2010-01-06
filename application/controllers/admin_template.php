@@ -26,13 +26,11 @@
     $this->service = (isset($_GET['service']) AND 'reviews' == $_GET['service'])
       ? 'reviews'
       : 'testimonials';
-      
 
-    $owner = $this->owner->get_user();
-    $this->site = ORM::factory('site', $owner->username);
+    # Note:this will not work when users can access multiple sites.
+    $this->site = $this->owner->get_user()->sites->current();
     $this->site_id = $this->site->id;
 
-        
     # no need to load the shell if ajax.
     if(request::is_ajax())
       return;
@@ -42,7 +40,7 @@
     $this->shell->service = $this->service;
     
     $this->shell->menu_testimonials = array(
-      array('dashboard', '/admin/testimonials/dashboard','Dashboard','ajax'),
+      array('dashboard', '/admin/testimonials/dashboard','Dashboard','jax'),
       array('collect', '/admin/testimonials/collect','Collect','jax'),
       array('testimonials', '/admin/testimonials/manage','Manage','jax'),
       array('tags', '/admin/testimonials/tags','Categories','jax'),

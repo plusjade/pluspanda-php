@@ -23,7 +23,7 @@
     if(empty($page_name) OR 'home' == $page_name)
       $this->index();
 
-    $pages = array('start','demo','faq','contact');
+    $pages = array('start','cases','faq','contact');
     if(in_array($page_name, $pages))
       $this->$page_name();
     else
@@ -36,8 +36,8 @@
  */
  private function index()
  {
-    $this->shell->content = new View('marketing/home');    
-    $this->shell->title = 'Add and Manage Customer Reviews Instantly On Your Website';
+    $this->shell->content = new View('marketing/testimonials/home');    
+    $this->shell->title = 'Easily Collect, Manage, and Display Customer Testimonials On Your Website';
     die($this->shell);
  }
  
@@ -48,8 +48,8 @@
  */
  private function start()
  {
-    $this->shell->content = new View('marketing/start');
-    $this->shell->title = 'Get your free customer reviews system now';
+    $this->shell->content = new View('marketing/testimonials/start');
+    $this->shell->title = 'Get your free customer testimonials system now';
     
     if(empty($_POST))
       die($this->shell);
@@ -60,22 +60,14 @@
     $post = new Validation($_POST);
     $post->pre_filter('trim');
     $post->add_rules('email', 'required', 'valid::email'); 
-    $post->add_rules('username', 'required', 'valid::alpha_numeric');
     $post->add_rules('password', 'required', 'matches[password2]', 'valid::alpha_dash');  
     if(!$post->validate())
     {
       $this->shell->content->errors = $post->errors();
-      die($this->shell);    
+      die($this->shell);
     }
     
     $new_owner = ORM::factory('owner');
-
-    # unique username.
-    if(!$new_owner->username_available($_POST['username']))
-    {
-      $this->shell->content->errors = 'Username Already Exists!';
-      die($this->shell);      
-    }
     
     # unique email.
     if(!$new_owner->email_available($_POST['email']))
@@ -83,30 +75,28 @@
       $this->shell->content->errors = 'Email Already Exists!';
       die($this->shell);      
     }
-    
-    $new_owner->username  = $_POST['username'];
+
     $new_owner->email     = $_POST['email'];
     $new_owner->password  = $_POST['password'];
     $new_owner->save();
   
     # create the new site.
     $new_site = ORM::factory('site');
-    $new_site->subdomain = $new_owner->username;
     $new_site->add($new_owner);
     $new_site->save();
     
     # log the user in and take to admin
-    $this->owner->force_login($new_owner->username);
+    $this->owner->force_login($new_owner);
     url::redirect('/admin/login');
  }
  
 /*
  * display demo page.
  */
-  private function demo()
+  private function cases()
   {
-    $this->shell->content = new View('marketing/demo');
-    $this->shell->title = 'Customer reviews demo';
+    $this->shell->content = new View('marketing/testimonials/cases');
+    $this->shell->title = 'Tons of businesses use customer testimonials as a proven marketing strategy | PlusPanda';
     die($this->shell);
   }
 
@@ -115,8 +105,8 @@
  */
   private function faq()
   {
-    $this->shell->content = new View('marketing/faq');
-    $this->shell->title = 'Frequenty Asked Questions';
+    $this->shell->content = new View('marketing/testimonials/faq');
+    $this->shell->title = 'Frequenty Asked Questions | PlusPanda';
     die($this->shell);
   }
   
@@ -126,7 +116,7 @@
   private function contact()
   {
     $this->shell->content = new View('marketing/contact');
-    $this->shell->title = 'Contact me';
+    $this->shell->title = 'Contact me | PlusPanda';
     die($this->shell);
   }
   

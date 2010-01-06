@@ -9,12 +9,12 @@
   ?>
   
   <form action="/admin/login<?php if(isset($_GET['ref'])) echo '?ref='. $_GET['ref']?>" method="POST">
-    <p><label>Username</label>
-      <input name="username" type="text" class="input large" value="username" />
+    <p><label>Email</label>
+      <input name="email" type="text" class="input large" value="<?php if(isset($_POST['email'])) echo $_POST['email']?>" />
     </p>
     
     <p><label>Password</label>
-    <input name="password" type="password" class="input large" value="password" />
+    <input name="password" type="password" class="input large"/>
     </p>
     
     <p class="buttons" style="margin-top:15px;">
