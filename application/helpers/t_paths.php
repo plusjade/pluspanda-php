@@ -17,7 +17,7 @@ class t_paths_Core {
  */
   public static function init_cache()
   {
-     return APPPATH . 'cache/testimonials/init.js';
+     return APPPATH . 'cache/tstml_init.js';
   }
   
 /*
