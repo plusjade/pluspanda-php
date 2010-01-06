@@ -15,9 +15,8 @@
 <div id="outer">
   <div class="contentwidth main">  
     <a href="/admin/login" id="login-link"><?php echo $login_link?></a>  
-    <div class="logo">
-        <h1><a href="/">PlusPanda</a></h1>
-    </div>
+    <a href="/"><img src="/static/images/marketing/pluspanda-logo.png" class="logo" alt="pluspanda logo"></a>
+
     <div class="menu">
       <ul class="clearfix">
 <?php

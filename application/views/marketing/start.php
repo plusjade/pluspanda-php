@@ -13,10 +13,9 @@
     <form action="/start" method="POST">
       <?php
       $fields = array(
-        'username'  => array('Username','input','text_req','',''),
-        'email'      => array('Email','input','text_req','',''),
+        'email'     => array('Email','input','text_req','',''),
         'password'  => array('Password','password','text_req','',''),
-        'password2'  => array('Confirm Password','password','text_req','',''),
+        'password2' => array('Confirm Password','password','text_req','',''),
       );
       if(!isset($values)) $values = array();
       if(!isset($errors) OR !is_array($errors)) $errors = array();
@@ -27,8 +26,6 @@
       </fieldset>
     </form>
   </div>
-  <br/><br/>
-  <h2>All Plans Come With &#8594;</h2>
 </div>
 
 <div class="left-copy">

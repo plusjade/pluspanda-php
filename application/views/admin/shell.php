@@ -32,7 +32,7 @@
   <div id="header">
     <div>
     <?php
-      $services = array('testimonials', 'reviews');
+      $services = array('testimonials'); # add reviews here
       foreach($services as $link)
         if($service == $link)
           echo "<a href=\"/admin/$link/dashboard\" class=\"active\">$link</a> \n";

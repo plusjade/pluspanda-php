@@ -34,5 +34,4 @@ $themes = array('left','right','grid','gallery');
     $('head link#pandaTheme').attr('href', url + theme + '.css');
     $('#panda-select-tags ul a:first').click();
   });
-
 </script>

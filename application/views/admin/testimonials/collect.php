@@ -1,6 +1,6 @@
  
 
-<h2 class="head">Collect Testimonials</h2>
+<h2 class="head">Collect Testimonials (offline)</h2>
 
 <div class="dashboard-page">
 

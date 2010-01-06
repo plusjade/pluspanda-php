@@ -1,0 +1,129 @@
+    
+  /* home */
+  
+.home-intro{
+margin:10px 20px;
+padding-bottom:10px;
+overflow:auto;
+}
+.home-intro .pane-screenshot{
+width:460px;
+height:410px;
+float:right;
+ackground: transparent url('/static/images/marketing/screenshot.png') no-repeat 50% 50%;
+}
+.home-intro .pane-text{
+width:420px;
+float:left;
+text-align:center;
+}
+.home-intro .pane-text h4{
+color:#333;
+text-align:center;
+}
+.home-intro .pane-text div{
+  text-align:left;
+  padding:10px 25px;
+  padding-bottom:35px;
+  background: #fff url('/static/images/marketing/shadow-y.png') no-repeat 50% 100%;
+  }
+a#signup{
+  display:block;
+  width:231px;
+  height:63px;
+  margin:0 auto;
+  background: #fff url('/static/images/marketing/signup-button.jpg') no-repeat 0 0;
+}
+a#signup:hover{
+  background-position: 0 -63px;
+}
+a#demo{
+  display:block;
+  width:229px;
+  height:62px;
+  margin:0 auto;
+  background: #fff url('/static/images/marketing/demo-button.jpg') no-repeat 0 0;
+}
+a#demo:hover{
+  background-position: 0 -62px;
+}
+
+/* start page */
+
+.signup-wrapper{
+  float:left;
+  width: 40%;
+  margin-right:20px;
+}
+.signup-wrapper .hurry{
+  font-weight:bold;
+  text-align:center;
+}
+.signup-wrapper .hurry span{
+  background:#ffff99;
+  text-decoration:underline;
+}
+#signup-form {
+  margin-top:20px;
+  background:#ffff99;
+  border:2px solid #ffcc33;
+  padding: 20px;
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+}
+#signup-form h1   {font-size: 28px;padding-bottom: 10px;}
+#signup-form input {width:300px; border:1px solid #333; background:#fff;}
+#signup-form fieldset{padding:0 10px;}
+.left-copy{
+float:right;
+width:520px;
+}
+
+/* demo page */
+
+.demo-widget{
+float:left;
+width:60%;
+min-height:500px;
+}
+.demo-text{
+float:left;
+padding-left:20px;
+width:37%;
+}
+.demo-text h6{
+padding-left:20px;
+background:#fff url('/static/images/marketing/check.gif') no-repeat 0% 50%;
+}
+.demo-text div{margin-left:20px; margin-bottom:10px;}
+
+/* faq page */
+.faq-page{margin:0 70px;}
+.faq-page div{line-height:1.6em; margin:5px 30px;}
+
+/*contact page */
+#jade, #ben{width:750px; margin:0 auto; margin-bottom:80px; overflow:auto;}
+
+#jade div.contact-text{
+width:365px;
+height:260px; 
+text-align:right;
+background:#fff url('/static/images/marketing/tree.png') no-repeat bottom right;
+
+}
+#jade img{
+float:right;
+border:4px solid #eee;
+}
+
+#ben div.contact-text{
+width:365px;
+height:260px; 
+text-align:right;
+background:#fff url('/static/images/marketing/tree.png') no-repeat bottom right;
+}
+#ben img{
+float:right;
+border:4px solid #eee;
+margin-right:180px;
+}

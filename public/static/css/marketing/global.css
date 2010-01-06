@@ -128,26 +128,13 @@ text-decoration:none;
 #login-link:hover{
   background:#cc0000;
 }
-.logo {
+img.logo {
   position:absolute;
-  top:0; left:20px;
-  width:90px;
-  height:85px;
-  padding: 0px 0 20px 0;
-  background: #396033 url(/static/images/marketing/sm-panda.gif) no-repeat 50% 15%;
+  top:0; left:40px;
+  width:97px;
+  height:117px;
   }
-  .logo h1 {
-    margin: 0;
-    margin-top:75px;
-    padding: 0;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1em;
-   }
-    .logo h1 a {
-      color: #fff;}
-      .logo h1 a:hover {
-        color: #ccc; }
+
 
 .menu {
   padding: 40px 0 20px 0;

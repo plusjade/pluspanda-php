@@ -1,13 +1,33 @@
 
 <h2 class="header">Why Hello, There!</h2>
 
+<div id="twitter">
+  <a href="http://twitter.com/pluspanda"><img src="/static/images/marketing/followme.png" alt="follow me on twitter"></a>
+  
+  <div class="contact-text">
+    <h4>Via Twitter</h4>
+    See how pluspanda is evolving, suggest ideas, and get the latest promotions
+    by following pluspanda on Twitter.
+    <p>
+    <a href="http://twitter.com/pluspanda">@pluspanda</a>
+    </p>
+    Pluspanda is in beta so all Twitter followers get
+    <br/>a <em>free plus account for life</em> too - of course!
+  </div>
+</div>
+
+
+
 <div id="jade">
   <img src="/static/images/marketing/tapex.jpg" alt="self-pic" />
   <div class="contact-text">
     <br/>
+    <h4>Contact Jade</h4>
     My name is Jade.
-    <br/>I am the lead developer at Pluspanda.
+    <br/>I am the developer at Pluspanda.
     <br/>You can reach me at <a href="mailto:plusjade@gmail.com">plusjade@gmail.com</a>
+    <br/>and at <a href="http://github.com/plusjade">http://github.com/plusjade</a>
+    
     <br/><br/>
     I look forward to any questions, concerns, insights, ideas,
     and/or feedback you may have.
@@ -19,6 +39,7 @@
   <img src="/static/images/marketing/ben.jpg" alt="ben-pic" />
   <div class="contact-text">
     <br/>
+    <h4>Contact Ben</h4>
     My name is Ben.
     <br/>I am the business and marketing guy at Pluspanda.
     <br/>You can reach me at <a href="mailto:bnbien@gmail.com">bnbien@gmail.com</a>
@@ -28,3 +49,17 @@
     <div style="margin:40px 110px 0 0;">Let's Talk!</div>
   </div>
 </div>
+
+
+<div id="location">
+  <img src="/static/images/marketing/location.gif" alt="pluspanda is located in alhambra, ca" />
+  <div class="contact-text">
+    <br/>
+    <h4>In Real Life</h4>
+    We are currently in Alhambra, Ca - USA
+    <br/><br/>
+    If you are in the neighborhood, let us know!
+  </div>
+</div>
+
+

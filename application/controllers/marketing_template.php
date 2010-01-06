@@ -22,7 +22,7 @@
     $this->shell->links = array(
       'home'    => 'Home',
       'start'   => 'Get Started',
-      'demo'    => 'Demo',
+      'cases'    => 'Use-Cases',
       'faq'     => 'FAQ',
       #'forum'  => 'Forum',
       'contact' => 'Contact'
