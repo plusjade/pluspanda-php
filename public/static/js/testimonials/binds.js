@@ -26,7 +26,7 @@ $(document).bind('tstml.edit',function(e, data){
   $('#panda-star-rating div').click(function(){
     var rating = $(this).attr('class').substr(1);  
     $(this).parent().removeClass().addClass('_'+rating).attr({rel:rating});
-    $('.t-rating-wrapper input').val(rating);
+    $('div.t-content input').val(rating);
     pandaUpdateText(rating);
   });
   // init the stored value
