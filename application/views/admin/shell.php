@@ -8,7 +8,7 @@
   <style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
   <link href="/css/admin.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="/static/js/common/jquery.js"></script>
-
+  <script type="text/javascript" src="/js/admin.js"></script>
 </head>
 
 <body>
@@ -69,8 +69,6 @@
   </div>
   
 </div>
-
-<script type="text/javascript" src="/js/admin.js"></script>
 </body>
 </html>
 
