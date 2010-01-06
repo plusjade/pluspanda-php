@@ -40,10 +40,7 @@
     $this->site->theme = $theme;
     $this->site->save();
     
-    # refresh the settings cache
-    $settings = t_paths::js_cache($this->site->apikey);
-    if(file_exists($settings))
-      unlink($settings);
+    $this->update_settings_cache();
       
     $this->rsp->status = 'success';
     $this->rsp->msg = 'Theme Saved!';

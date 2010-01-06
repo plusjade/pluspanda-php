@@ -78,6 +78,8 @@
     $category->position = $max->highest+1;
     $category->save();
     
+    $this->update_settings_cache();
+    
     $this->rsp->status = 'success';
     $this->rsp->msg    = 'Categorgy Added!';
     $this->rsp->send();
@@ -90,6 +92,9 @@
   public function delete()
   {
     $this->get_tag()->delete();
+    
+    $this->update_settings_cache();
+    
     $this->rsp->status  = 'success';
     $this->rsp->msg     = 'Tag Deleted!';
     $this->rsp->send();
@@ -111,6 +116,8 @@
     $tag->desc = $_POST['desc'];
     $tag->save();
     
+    $this->update_settings_cache();
+    
     $this->rsp->status = 'success';
     $this->rsp->msg    = 'Tag Saved!';
     $this->rsp->send();
@@ -131,6 +138,8 @@
     foreach($_GET['cat'] as $position => $id)
       $db->update('tags', array('position' => "$position"), "id = '$id' AND site_id = '$this->site_id'");   
 
+    $this->update_settings_cache();
+    
     $this->rsp->status = 'success';
     $this->rsp->msg    = 'Order Saved!';
     $this->rsp->send();

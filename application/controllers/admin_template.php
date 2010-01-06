@@ -4,7 +4,7 @@
  * admin template  
  */
 
- abstract class Admin_Template_Controller extends Controller {
+abstract class Admin_Template_Controller extends Controller {
 
   // shell view name
   public $shell = 'admin/shell';
@@ -58,5 +58,18 @@
     );
   }
 
-
+/*
+ * refresh the settings cache
+ */
+  public function update_settings_cache()
+  {
+    $settings = t_paths::js_cache($this->site->apikey);
+    if(file_exists($settings))
+      unlink($settings);
+    return;
+  }
+  
+  
+  
+  
 } // End admin template controller
