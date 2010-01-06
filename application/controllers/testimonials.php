@@ -164,7 +164,7 @@ class Testimonials_Controller extends Controller {
 
     file_put_contents(
       $file,
-      $settings->render()."\n/*cached ".date('m.d.y g:ia e')."*/"
+      $settings->render()."\n/*".date('m.d.y g:ia')."*/"
     );
     
     return TRUE;
@@ -177,7 +177,7 @@ class Testimonials_Controller extends Controller {
   {
     file_put_contents(
       t_paths::init_cache(),
-      View::factory('testimonials/widget_init')->render()."\n//cached ".date('m.d.y g:ia e')
+      View::factory('testimonials/widget_init')->render()."\n//".date('m.d.y g:ia')
     );
     return TRUE;
   }
