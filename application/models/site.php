@@ -23,6 +23,11 @@ class Site_Model extends ORM {
 		{
 			$this->created = time();
 			$this->apikey = text::random('alnum', 8);
+      
+      # copy stock testimonial css to user data folder
+      $src  = DOCROOT .'static/css/testimonials/stock';
+      $dest = t_paths::css($this->apikey);
+      dir::copy($src, $dest);
 		}
 		return parent::save();
 	}
