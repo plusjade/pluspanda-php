@@ -44,9 +44,8 @@ class t_paths_Core {
   {
     $service = self::data($apikey, $type) . '/'. self::service_dir;
     
-    if('dir' == $type)
-      if(!is_dir($service))
-        mkdir($service);
+    if(!is_dir($service))
+      mkdir($service);
         
     return $service;
   }  
@@ -59,24 +58,22 @@ class t_paths_Core {
   {
     $image = self::service($apikey, $type) . '/'. self::image_dir;
     
-    if('dir' == $image)
-      if(!is_dir($image))
-        mkdir($image);
+    if(!is_dir($image))
+      mkdir($image);
         
     return $image;
   }  
   
 /*
- * return path to the image directory
+ * return path to the css directory
  * either url path or directory path.
  */  
   public static function css($apikey, $type='dir')
   {
     $css = self::service($apikey, $type) . '/'. self::css_dir;
     
-    if('dir' == $css)
-      if(!is_dir($css))
-        mkdir($css);
+    if(!is_dir($css))
+      mkdir($css);
         
     return $css;
   }  
@@ -87,9 +84,8 @@ class t_paths_Core {
   {
     $js = self::service($apikey, $type) . '/'. self::js_dir;
     
-    if('dir' == $js)
-      if(!is_dir($js))
-        mkdir($js);
+    if(!is_dir($js))
+      mkdir($js);
         
     return "$js/settings.js";
   }  
