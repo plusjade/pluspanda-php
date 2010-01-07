@@ -146,7 +146,8 @@ $(document).ready(function(){
                 var imgUrl = $('.t-details .image').attr('rel') + '/' + rsp.image + '?r=' + new Date().getTime();
                 newImg = new Image(); 
                 newImg.src = imgUrl;
-                $('.t-details .image').html('<img src="'+ newImg.src +'">');
+                $('div.t-details a:first').attr('href','/admin/testimonials/manage/crop?image='+rsp.image);
+                $('div.t-details .image').html('<img src="'+ newImg.src +'">');
               }
               $(document).trigger('rsp.server', rsp);
               $('.panda-image input').val('');
