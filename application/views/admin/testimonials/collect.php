@@ -49,7 +49,7 @@
 
 
     <br/>
-    <button type="submit">Send Emails</buttons>
+    <button type="submit">Send Emails</button>
   </div>
 
 
