@@ -226,7 +226,7 @@ class Testimonial_Model extends ORM {
     $image
       ->crop($params[0], $params[1], $params[2], $params[3])
       ->resize($size, $size)
-      ->sharpen(20)
+      #->sharpen(20)
       ->save($thumb_path);
     
     return 'Image saved!';  
