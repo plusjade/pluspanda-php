@@ -106,7 +106,7 @@ class Testimonials_Controller extends Collect_Template_Controller {
     # valid testimonial are required 
     # no validation so we can save anything coming in.
     $testimonial              = $this->get_testimonial();
-    $testimonial->body_edit   = json_encode($_POST['info']);
+    $testimonial->body_edit   = (isset($_POST['info'])) ? json_encode($_POST['info']) : '';
     $testimonial->body        = $_POST['body'];
     $testimonial->tag_id      = $_POST['tag'];
     $testimonial->rating      = $_POST['rating'];        

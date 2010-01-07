@@ -38,7 +38,7 @@
   </tr>  
 <?php
   foreach($testimonials as $testimonial)
-    echo t_build::admin_table_row($testimonial, $this->site->subdomain);
+    echo t_build::admin_table_row($testimonial, $this->site->apikey);
 ?>
 
 </table>

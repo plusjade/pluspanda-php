@@ -57,7 +57,7 @@ class Site_Model extends ORM {
 	{
 		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
 		{
-			return 'subdomain';
+			return 'apikey';
 		}
 
 		return parent::unique_key($id);
