@@ -27,7 +27,6 @@ class Testimonials_Controller extends Controller {
       
     $this->site       = $site;
     $this->apikey     = $site->apikey;
-    $this->site_name  = $site->subdomain;
     $this->site_id    = $site->id;
     $this->theme      = (empty($site->theme)) ? 'left' : $site->theme;
 
