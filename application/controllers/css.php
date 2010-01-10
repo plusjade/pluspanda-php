@@ -58,9 +58,9 @@ class Css_Controller {
   
   
 /*
- * css bundle for main marketing site. 
+ * css bundle for public testimonial interactions. 
  */
-  public static function t_collect()
+  public static function t_public()
   {
     header('Content-type: text/css');
     header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
@@ -71,6 +71,7 @@ class Css_Controller {
       '/css/testimonials/edit.css',
       '/css/common/facebox.css',
       '/css/common/response.css',
+      '/css/common/buttons.css',
     );
     
     ob_start();

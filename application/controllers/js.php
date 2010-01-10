@@ -8,9 +8,9 @@
 class Js_Controller {
 
 /*
- * javascript bundle for /collect/testimonials 
+ * javascript bundle for public testimonial interactions 
  */
-  public static function t_collect()
+  public static function t_public()
   {
     header('Content-type: text/javascript');
     header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
