@@ -56,7 +56,7 @@ dd     {
   cursor: pointer;
 }
 .even {background-color: #EAEAEA;}
-.indent{margin:15px;}
+.indent{margin:15px;line-height:1.5em;color:#444;}
 /* ----------------------------
     LAYOUT
 ------------------------------- */
@@ -121,41 +121,40 @@ overflow:auto;
 /* ----------------------------
     PRIMARY CONTENT
 ------------------------------- */
-#primary_content h1{ font-size: 28px;padding-bottom: 10px;}
+h1{ font-size: 28px;padding-bottom: 10px;}
 
-#primary_content h2{
+h2{
   font-size: 22px;
   margin: 5px 0 20px 0;
   padding:5px 0 10px 0;
 }
-#primary_content h2.head{
+h2.head{
   border-bottom:2px solid #d6d6d6;
 }
-#primary_content .sub-head{
+.sub-head{
   border-bottom:1px dashed #d6d6d6;
 }
-#primary_content h3{
+h3{
   font-size: 20px;
   font-weight: bold;
   margin: 10px 0;
   color: #222;
 }
-#primary_content h4{
+h4{
   font-size: 15px;
-  margin-bottom: 10px;
+  margin: 10px 0;
   text-transform: uppercase;
   color: #333333;
-  margin-top: 5px;
   padding: 0px;
 }
-#primary_content h5{
+h5{
   font-size: 15px;
-  margin-bottom: 15px;
+  margin: 10px 0;
   text-transform: uppercase;
   color: #999999;
   padding: 0px;
 }
-#primary_content h6 {
+h6 {
   font-size: 14px;
   margin-bottom: 15px;
   text-transform: uppercase;
@@ -267,98 +266,6 @@ td   {
 
 #primary_content tr:hover {
   background-color: #FFFFCC;
-}
-
-/* ----------------------------
-    FORMS
-------------------------------- */
-.small      { width: 15%;}
-.medium     { width: 35%;}
-.large      { width: 75%;}
-.full      {width: 98%;}
-
-
-form  label   {
-  font-weight: bold;
-  font-size: 13px;
-  margin-bottom: 12px;
-  display: block;
-  margin-top: 12px;
-}
-
-form p       {
-  padding: 0px;
-  margin: 0px;
-}
-
-form .input {
-  margin:0;
-  margin-right:10px;
-  border: 1px solid #ccc;
-  padding: 7px;
-  background-color: #F3F3F3;
-  
-  }
-form select {
-  padding: 0px;
-  margin: 0px;
-}
-
-
-form .checkbox {
-  padding: 0px;
-  height: 15px;
-  width: 18px;
-  margin-top: 0 5px;
-}
-form .select  {
-  width: 20%;
-  padding: 2px;
-  margin: 0px;
-}
-form .radio    {
-  height: 15px;
-  width: 15px;
-  padding: 0px;
-  margin: 0 5px;
-}
-.styled_textarea        {
-  border: 1px solid #d6d6d6;
-  padding: 3px;
-  margin-bottom: 10px;
-  background-color: #F3F3F3;
-}
-input:focus, textarea:focus    {
-  background-color: #FFFFCC;
-  border: 1px solid #999999;
-}
-
-
-
-.paginator {
-  list-style : none;
-  display : block;
-  width:100%;
-  margin:10px 0;
-  padding:0;
-  padding-top: 8px;
-} 
-
-.paginator li {
-  display : inline;
-} 
-
-.paginator li a {
-  padding:4px 7px;
-} 
-
-.paginator li a:hover {
-  background-color: #d6d6d6;
-
-} 
-
-.paginator li.current a {
-  background-color: #d6d6d6;
 }
 
 

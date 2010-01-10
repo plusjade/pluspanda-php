@@ -97,10 +97,27 @@ text-align:left;}
 /*
  * testimonials stuff
  */
+ 
+div.dashboard-page{
+
+
+}
+ div.dashboard-page h3{padding:5px; margin-top:25px; color:#333; background:#ffffcc}
+div.dashboard-page h4{
+padding-left:25px;
+margin:15px 0;
+background: url('/static/images/marketing/check.gif') no-repeat 0 50%;
+color:#555
+}
+div.dashboard-page .indent{margin-left:25px; color:#555;line-height:1.5em;}
+
+
 table.t-data{border-bottom:1px dashed #ccc;margin-bottom:20px;}
 .with-selected{list-style:none;margin:0;padding:0;}
 .with-selected li {display:inline; margin-right:10px;}
 
+.share-data{width:600px;height:300px; text-align:center}
+.share-data input{width:500px;font-size:1.2em;padding:5px;}
 
 .t-publish{
   float:right;
@@ -132,5 +149,20 @@ margin-bottom:20px;
 .questions-wrapper p{
   margin:5px;padding:5px;background:#eee;
 }
+
+/* public form */
+.public-link{margin-bottom:25px;}
+.public-link span, .public-link a{font-size:1.2em; font-weight:bold;}
+.public-link a:hover{color:green}
+.public-link input{display:block;margin-top:10px;}
+
+.public-form{padding:10px; background:#ffffcc;margin:10px 0;}
+.public-form fieldset{margin:5px 0;}
+.public-form label{font-weight:bold;}
+
+
+
+
+
 
 

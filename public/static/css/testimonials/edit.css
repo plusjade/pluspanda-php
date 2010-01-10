@@ -24,7 +24,6 @@ button.submit-button:hover{
 .panda-image{
   clear:both;
   padding:7px 15px;background:#555;color:#fff;
-  text-align:center;
   -moz-border-radius-topleft:10px;
   -moz-border-radius-topright:10px;
   -webkit-border-top-left-radius:10px;

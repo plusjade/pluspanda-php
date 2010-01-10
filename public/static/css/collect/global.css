@@ -1,7 +1,7 @@
 
 /*Change your font here */
 body {
-  background:#EAEAEA;
+  background: #EAEAEA;
   font-family: Arial, Helvetica, sans-serif;
 }
 h1,h2,h3,h4,h5,h6    { color: #333333;}
@@ -324,4 +324,61 @@ input:focus, textarea:focus    {
   -webkit-border-radius: 7px;
   border:1px solid #fff;
 }
+
+
+
+/* PAGES STUFF */
+.message-wrapper{
+width:500px;
+margin:10px auto;
+}
+#public-top{
+  width:315px;
+  padding:10px 20px;
+  margin:auto;
+  margin-top:60px;
+  background:#555;
+  text-align:center;
+  color:#fff;
+  -moz-border-radius-topleft:10px;
+  -moz-border-radius-topright:10px;
+  -webkit-border-top-left-radius:10px;
+  -webkit-border-top-right-radius:10px;
+  }
+#public-add{
+  width:315px;
+  margin:auto;
+  margin-bottom:60px;
+  padding:20px;
+  background:#f7f7f7;
+  -moz-border-radius-bottomleft:10px;
+  -moz-border-radius-bottomright:10px;
+  -webkit-border-bottom-left-radius:10px;
+  -webkit-border-bottom-right-radius:10px;
+  border-right:2px solid #ddd;
+  border-bottom:2px solid #ddd;
+}
+
+#public-add fieldset{
+margin-bottom:15px;
+}
+#public-add fieldset label{
+
+}
+#public-add fieldset input{
+width:300px;
+padding:5px;
+font-size:1.2em;
+}
+#public-add fieldset button{
+  margin:auto;
+}
+
+
+
+
+
+
+
+
 

@@ -86,7 +86,7 @@
     overflow: auto;
     margin:13px;
     width:46%;
-    height:230px;
+    height:250px;
     float:left;
     }
   #plusPandaYes .t-details {
@@ -140,7 +140,7 @@
       
   #plusPandaYes .t-body {
     clear: both;
-    height:100px;
+    height:125px;
     padding: 10px;
     background: #E6F5FC;
     margin: 2px 0;
