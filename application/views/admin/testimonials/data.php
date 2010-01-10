@@ -1,9 +1,4 @@
 
-<div class="buttons" style="float:right">
-  <a href="/admin/testimonials/manage/add_new" class="positive" rel="facebox">Add New</a>
-</div>
-<br/>
-
 <form action ="/admin/testimonials/manage" metho="GET">
   Publish <select name="publish">
     <option value="all">All</option>
@@ -24,18 +19,25 @@
 
 
 <?php echo $pagination?>
+
+<div id="create-new" class="buttons" style="text-align:center">
+  <a href="/admin/testimonials/manage/edit?id=0" class="positive">Create New</a>
+</div>
 <table class="t-data">
   <tr>
-    <th width="80px"></th>
+    <th width="25px"></th>
+    <th>Edit</th>
     <th width="150px">Name</th>
     <th width="150px">Company</th>
     <th width="150px">Category</th>
     <th width="60px">Live</th>
     <th width="120px">Updated</th>
     <th width="120px">Created</th>
+    <th width="60px">Share</th>
     <th width="20px">del</th>
     
-  </tr>  
+  </tr>
+
 <?php
   foreach($testimonials as $testimonial)
     echo t_build::admin_table_row($testimonial, $this->site->apikey);
@@ -53,5 +55,23 @@
 -->
 
 <div class="edit-window"></div>
+
+
+<div id="share-window" style="display:none">
+  <div class="share-data">
+  <h3>Public Testimonial Editing Link</h3>
+  
+  Share this link with the person you want to fill out this testimonial.
+  
+  
+  <input type="text" value="url">
+  
+  <br/><b>Note:</b> Anyone with this link will be able to edit the testimonial.
+  <br/>Be sure to lock the testimonial when you are satisfied with the edits.
+    
+</div>
+</div>
+
+
 
 

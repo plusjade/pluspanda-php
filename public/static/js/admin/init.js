@@ -5,10 +5,14 @@ $(document).ready(function(){
     $.facebox({ ajax: this.href });
     return false;
   });
-  //$('a[rel*=facebox]').facebox();
+  $('a.fb-div').live('click',function(){
+    $.facebox({ div: $(this).attr('rel') });
+    $('div.share-data input').val(this.href);
+    return false;
+  });
   $('abbr.timeago').timeago();      
-        
-        
+
+
   $('body').click($.delegate({
   //main panel links
     '#sidebar ul li.ajax a' : function(e){
@@ -97,28 +101,9 @@ $(document).ready(function(){
     },
     
 /*Testimonial Manager */
-  // add a new testimonial profile.
-    '#add-testimonial button' : function(e){
-      $('#add-testimonial').ajaxSubmit({
-        dataType : 'json',
-        beforeSubmit : function(fields, form){
-          if(!$("input", form[0]).jade_validate()) return false;
-          $(document).trigger('submit.server');
-        },
-        success : function(rsp){
-          // append new row html
-          $.facebox.close();
-          $(document).trigger('rsp.server', rsp);
-          $("table.t-data tr:first").after(rsp.rowHtml);
-          $("tr#tstml_" + rsp.id).effect("highlight", {}, 3000);
-          $('abbr.timeago').timeago();
-          return false;
-        }
-      });
-      return false;
-    },
+
   // load the edit view into the bottom container
-    '.admin-new-testimonials-list table td.name a' : function(e){  
+    '.admin-new-testimonials-list table td.edit a, div#create-new a' : function(e){  
       $('.edit-window').html('Loading...');
       $.get(e.target.href, function(data){
         $('.edit-window').html(data);
@@ -136,21 +121,24 @@ $(document).ready(function(){
           if(!valid){alert('Filetype not supported'); return false};
           
           $(document).trigger('submit.server');
-          var url = $('#save-testimonial').attr('action').replace('save', 'save_image');
+          //var url = $('#save-testimonial').attr('action').replace('save', 'save_image');
+          var id = $('#save-testimonial').attr('rel');
           $('#save-testimonial').ajaxSubmit({
             dataType: 'json',
             type: 'post',
-            url : url,
+            url : '/admin/testimonials/manage/save_image?id=' + id,
             success: function(rsp){
+              console.log(rsp);
+              $('.panda-image input').val('');
               if('success' == rsp.status){
                 var imgUrl = $('.t-details .image').attr('rel') + '/' + rsp.image + '?r=' + new Date().getTime();
                 newImg = new Image(); 
                 newImg.src = imgUrl;
+                $('#save-testimonial').attr('rel', rsp.id);
                 $('div.t-details a:first').attr('href','/admin/testimonials/manage/crop?image='+rsp.image);
                 $('div.t-details .image').html('<img src="'+ newImg.src +'">');
               }
               $(document).trigger('rsp.server', rsp);
-              $('.panda-image input').val('');
             }
           });
         });
@@ -164,22 +152,26 @@ $(document).ready(function(){
     },
   // save the edit testimonial
     '#save-testimonial button' : function(e){
+      //var url = $('#save-testimonial').attr('action');
+      var id = $('#save-testimonial').attr('rel');
       $('#save-testimonial').ajaxSubmit({
         dataType : 'json',
+        url : '/admin/testimonials/manage/save?id=' + id,
         beforeSubmit: function(fields, form){
           $(document).trigger('submit.server');
           // json response acts up when we send a file =/
           $('.panda-image input').attr('disabled','disabled');
         },
         success: function(rsp){
-          $('.panda-image input').removeAttr('disabled');
           $(document).trigger('rsp.server', rsp);
+          $('#save-testimonial').attr('rel', rsp.id);
           if('success' == rsp.status){
-            //update the item row html
-            $("tr#tstml_" + rsp.id).replaceWith(rsp.rowHtml);
+            if(rsp.exists) $("tr#tstml_" + rsp.id).replaceWith(rsp.rowHtml);
+            else $("table.t-data tr:first").after(rsp.rowHtml);
             $("tr#tstml_" + rsp.id).effect("highlight", {}, 3000);
             $('abbr.timeago').timeago();
           }
+          $('.panda-image input').removeAttr('disabled');
         }
       });
       return false;
@@ -204,10 +196,21 @@ $(document).ready(function(){
       $.get('/admin/testimonials/display/save',{theme:theme},function(rsp){
         $(document).trigger('rsp.server', rsp);
       });
+    },
+    
+  // common ajax form 
+    'form.common-ajax button' :function(e){
+      $('form.common-ajax').ajaxSubmit({
+        dataType : 'json',
+        beforeSubmit: function(fields, form){
+          $(document).trigger('submit.server');
+        },
+        success: function(rsp){
+          $(document).trigger('rsp.server', rsp);
+        }
+      });
+      return false;
     }
-
-    
-    
   }));
 
 

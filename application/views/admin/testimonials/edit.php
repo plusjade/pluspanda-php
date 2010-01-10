@@ -7,7 +7,7 @@ $image  = (empty($testimonial->image))
 ?>
 
 <div class="admin-testimonial-wrapper">
-<form id="save-testimonial" action="/admin/testimonials/manage/save?id=<?php echo $testimonial->id?>" enctype="multipart/form-data" method="POST">
+<form id="save-testimonial" action="/admin/testimonials/manage/save" rel="<?php echo $this->testimonial_id?>" enctype="multipart/form-data" method="POST">
   
   <button class="submit-button" type="submit">Save Changes</button>
 

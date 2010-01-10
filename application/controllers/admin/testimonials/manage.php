@@ -23,7 +23,7 @@ class Manage_Controller extends Admin_Template_Controller {
     $this->active_page    = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?   $_GET['page'] : 1;
     
     $this->testimonial_id = (isset($_GET['id']))
-      ? $_GET['id']
+      ? valid::id_key($_GET['id'])
       : NULL;
     
     # prep the ajax response
@@ -91,9 +91,17 @@ class Manage_Controller extends Admin_Template_Controller {
 
 /*
  * return valid, singleton testimonial
+ * return a blank testimonial object to create new
  */
   private function get_testimonial()
   {
+    if(0 == $this->testimonial_id)
+    {
+      $new = ORM::factory('testimonial');
+      $new->site_id = $this->site->id;
+      return $new;
+    }
+    
     valid::id_key($this->testimonial_id);
     
     $testimonial = ORM::factory('testimonial')
@@ -108,46 +116,6 @@ class Manage_Controller extends Admin_Template_Controller {
   }
   
 
-/* 
- * add a new testimonial profile.
- * view and handler.
- */  
-  public function add_new()
-  {
-    if(!$_POST)
-      die(View::factory('admin/testimonials/add'));
-    
-    # validate the form values.
-    $post = new Validation($_POST);
-    $post->pre_filter('trim');
-    $post->add_rules('name', 'required');
-    $post->add_rules('email', 'required');
-    
-    # on error! this should rarely happen due to client-side js validation...
-    if(!$post->validate())
-    {
-      $this->rsp->msg = 'Name and email are required.';
-      $this->rsp->send();
-    }
-    
-    $new_testimonial = ORM::factory('testimonial');
-    $new_testimonial->site_id           = $this->site_id;
-    $new_testimonial->patron->name      = $_POST['name'];
-    $new_testimonial->patron->email     = $_POST['email'];
-    $new_testimonial->patron->company   = $_POST['company'];
-    $new_testimonial->patron->location  = $_POST['location'];
-    $new_testimonial->save();
-    
-
-    $this->rsp->status   = 'success';
-    $this->rsp->msg      = 'New Testimonial Profile Created!';
-    $this->rsp->id       = $new_testimonial->id;
-    $this->rsp->image    = $new_testimonial->image;
-    $this->rsp->rowHtml  = t_build::admin_table_row($new_testimonial, $this->site->subdomain);
-    $this->rsp->send();
-  }
-  
-  
 /*
  * display view for editing a testimonial
  */ 
@@ -194,14 +162,15 @@ class Manage_Controller extends Admin_Template_Controller {
     $testimonial->publish = (empty($_POST['publish']))
       ? 0
       : 1;
-    $testimonial->rating  = $_POST['rating'];      
+    $testimonial->rating  = $_POST['rating'];
     $testimonial->save();
 
     $this->rsp->status   = 'success';
     $this->rsp->msg      = 'Testimonial Saved!';
     $this->rsp->id       = $testimonial->id;
+    $this->rsp->exists   = (0 < $this->testimonial_id) ? true : false;
     $this->rsp->image    = $testimonial->image;
-    $this->rsp->rowHtml  = t_build::admin_table_row($testimonial, $this->site->subdomain);
+    $this->rsp->rowHtml  = t_build::admin_table_row($testimonial, $this->site->apikey);
     $this->rsp->send();
   }
 
@@ -219,12 +188,13 @@ class Manage_Controller extends Admin_Template_Controller {
       $response = $testimonial
         ->save_image(
           $this->site->apikey,
-          $_FILES,
-          $testimonial->id
+          $_FILES
         );
-      $this->rsp->status = key($response);
-      $this->rsp->msg    = current($response);
-      $this->rsp->image  = $testimonial->image;
+      $this->rsp->status  = key($response);
+      $this->rsp->msg     = current($response);
+      $this->rsp->id      = $testimonial->id;
+      $this->rsp->image   = $testimonial->image;
+      $this->rsp->exists  = (0 < $this->testimonial_id) ? true : false;
     }
     else
       $this->rsp->msg = 'Nothing sent.';
