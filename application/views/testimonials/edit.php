@@ -12,6 +12,7 @@
 
 <div class="top-message">
   Hello, <?php echo $testimonial->patron->name?>, Thanks for your help!
+  <br/>Be sure to save the link to this page so you can edit your testimonial anytime!
 </div>
 
 <div class="client-add-wrapper">

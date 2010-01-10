@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
- * public collecting of testimonials data for clients.
+ * Testimonials public editing interface.
  */
 
-class Testimonials_Controller extends Collect_Template_Controller {
+class Save_Controller extends Testimonials_Template_Controller {
   
   public function __construct()
   {
@@ -12,16 +12,16 @@ class Testimonials_Controller extends Collect_Template_Controller {
     
     # verify testimonial token is sent.
     if(empty($_GET['ttk']))
-      $this->render(View::factory('collect/blank'));
+      $this->render(View::factory('testimonials/public/blank'));
     $this->testimonial_token = $_GET['ttk'];
 
     # make sure the customer token is sent:
     if(empty($_GET['ctk']))
-      $this->render(View::factory('collect/blank'));
+      $this->render(View::factory('testimonials/public/blank'));
     $this->patron_token = $_GET['ctk'];
     
     # define the form action url 
-    $this->form_url = url::site("/collect/testimonials/{$this->site->subdomain}?ctk=$this->patron_token&ttk=$this->testimonial_token");
+    $this->form_url = url::site("/testimonials/save/{$this->site->apikey}?ctk=$this->patron_token&ttk=$this->testimonial_token");
         
     # route to method here for better urls =p
     $allowed  = array('crop');

@@ -21,11 +21,12 @@
     With Pluspanda you can:
     <ol>
       <li><b>Collect:</b>
-      <br/>Mass email your customers their very own, personalized,
-      testimonial builder.
+      <br/>Link your customers to their own personalized testmonial builder,
+      or encourage customers to freely add their own.
+      <br/><a href="<?php echo url::site('testimonials/add') .'/'. Kohana::config('core.apikey')?>?key=0_o&name=Brad%20Pitt&email=sample@email.com&meta=00142">Example Public Testimonial Builder</a>
       </li>
       <li><b>Manage:</b>
-      <br/>Quickly and easily sort, edit, and publish incoming testimonials
+      <br/>Quickly and easily add, edit, sort and publish testimonials
       all from one centralized dashboard.
       </li>
       <li><b>Display:</b>

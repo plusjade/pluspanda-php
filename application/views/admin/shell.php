@@ -69,6 +69,10 @@
   </div>
   
 </div>
+<?php
+if(file_exists(DOCROOT . 'tracker.html'))
+  include_once(DOCROOT . 'tracker.html');
+?>
 </body>
 </html>
 

@@ -2,6 +2,12 @@
 
 <h2 class="header">Great Companies Understand the Power of Testimonials.</h2>
 
+<div style="width:750px; margin:auto; line-height:1.5em;">
+  Highlighted below are major companies who have invested resources into custom building an internal testimonial system.
+  If testimonials are that important to these guys, they should be to you too!
+  <br/><small>(None of these sites are affiliated with or currently run pluspanda software, and all content is wholly owned by the respective companies.)</small>
+</div>
+
 <h3 class="cases-head">Web-based Companies</h3>
 <div class="indent">
   <div style="text-align:center;font-weight:bold;">
@@ -172,13 +178,6 @@
   </div>
   
 </div>
-
-<div style="width:500px; margin:auto; margin-top:50px;">
-Companies of all shapes, sizes and industries utilize customer testimonials because they work!
-Whether it is a subtle psychological boost that sparks your customers to trust you more, or how
-they can relate exactly to customer use-cases, you and your customers both win!
-</div>
-
 
 
 

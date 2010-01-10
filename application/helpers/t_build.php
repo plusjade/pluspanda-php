@@ -176,10 +176,10 @@ class t_build_Core {
     <tr id="tstml_<?php echo $testimonial->id?>">
       <td>
         <input type="checkbox" name=""/>
-        <a href="<?php echo url::site("collect/testimonials/$apikey?ctk={$testimonial->patron->token}&ttk=$testimonial->token")?>">link</a>
-      
       </td>
-      <td class="name"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>"><?php echo $testimonial->patron->name?></a></td>
+      <td class="edit"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>">edit</a></td>
+      <td class="name"><?php echo $testimonial->patron->name?></td>
+      
       <td><?php echo $testimonial->patron->company?></td>
       <td><?php echo $testimonial->tag->name?></td>
       <td><?php echo (empty($testimonial->publish)) ? 'no' : 'yes'?></td>
@@ -187,6 +187,7 @@ class t_build_Core {
       <td><?php if(!empty($testimonial->updated)) echo common_build::timeago($testimonial->updated)?></td>
     
       <td><?php echo common_build::timeago($testimonial->created)?></td>
+      <td><a href="<?php echo url::site("testimonials/save/$apikey?ctk={$testimonial->patron->token}&ttk=$testimonial->token")?>" class="fb-div" rel="#share-window">share</a></td>
       <td class="delete"><a href="/admin/testimonials/manage/delete?id=<?php echo $testimonial->id ?>">[x]</a></td>
     
     </tr>

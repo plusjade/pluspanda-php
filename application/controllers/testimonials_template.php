@@ -1,11 +1,11 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
 /**
- * public client collect template 
+ * public testimonials interaction interface. 
  */
- abstract class Collect_Template_Controller extends Controller {
+abstract class Testimonials_Template_Controller extends Controller {
 
-	public $shell;
+  public $shell;
   public $site;
   public $patron_token;
   
@@ -16,7 +16,7 @@
   {
     parent::__construct();
 
-    $this->shell = new View('collect/shell');
+    $this->shell = new View('testimonials/public/shell');
     
     # get the clients name from url.
     $url_array = $this->uri->segment_array();
@@ -27,7 +27,7 @@
     # is the site valid?
     $this->site = ORM::factory('site', $client);
     if(!$this->site->loaded)
-      $this->render(View::factory('collect/no_site'));
+      $this->render(View::factory('testimonials/public/no_site'));
   }
 
   

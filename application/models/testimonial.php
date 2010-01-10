@@ -152,7 +152,7 @@ class Testimonial_Model extends ORM {
 /*
  * handle uploaded file as image
  */
-  public function save_image($apikey, $files, $id)
+  public function save_image($apikey, $files, $id=NULL)
   {
     #echo kohana::debug($files); die();
     $image_types = array(
@@ -178,8 +178,13 @@ class Testimonial_Model extends ORM {
     if(!array_key_exists($ext, $image_types))
       return array('error' => 'File is not a valid image type');
 
-    # sanitize the filename.
-    $filename  = "$id$ext";
+    #FIX this later, easier to just not save ids...
+    if(!$this->loaded)
+      $this->save();
+
+    # the passed $id could be a custom filename.
+    # for now we just save id.
+    $filename  = "$this->id$ext";
 
     $image  = new Image($files['image']['tmp_name']);      
     $width  = $image->__get('width');
