@@ -13,9 +13,10 @@ overflow:auto;
 .home-intro .pane-screenshot{
 width:460px;
 float:right;
-ackground: transparent url('/static/images/marketing/screenshot.png') no-repeat 50% 50%;
+line-height:1.5em;
 }
-.home-intro .pane-screenshot ol li{
+.home-intro .pane-screenshot ul{margin:0;}
+.home-intro .pane-screenshot ul li{
 margin-bottom:6px;
 }
 .home-intro .pane-text{
@@ -131,14 +132,16 @@ padding:20px;
 overflow:auto;
 }
 
+.demo-text{
+width:40%;
+line-height:1.5em;
+}
 .demo-text.left{
 float:left;
-width:40%;
 margin-left:60px;
 }
 .demo-text.right{
 float:right;
-width:40%;
 margin-right:60px;
 }
 .demo-text h6{

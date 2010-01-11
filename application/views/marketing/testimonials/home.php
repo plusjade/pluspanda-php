@@ -10,31 +10,33 @@
       
       <br/><br/>
       Utilizing customer testimonials is a proven marketing strategy.
-      <a href="/cases">Tons of major websites display testimonials.</a>
-      <br/>Now you can too!
+      <a href="/cases">Highly profitable websites display testimonials</a>,
+      <br/>now you can too!
     </div>
     
+    As of <?php echo date("d M, Y")?> Pluspanda is in public beta.
+    <br/>All beta users get a plus account valued at $100, <b>free for life</b>.
+    <br/><br/>
     <a href="/start" id="signup"></a>
   </div>
 
   <div class="pane-screenshot">
-    With Pluspanda you can:
-    <ol>
-      <li><b>Collect:</b>
+    <ul>
+      <li><b>Quickly Collect Testimonials:</b>
       <br/>Link your customers to their own personalized testmonial builder,
       or encourage customers to freely add their own.
       <br/><a href="<?php echo url::site('testimonials/add') .'/'. Kohana::config('core.apikey')?>?key=0_o&name=Brad%20Pitt&email=sample@email.com&meta=00142">Example Public Testimonial Builder</a>
       </li>
-      <li><b>Manage:</b>
+      <li><b>Conveniently Manage Testimonials:</b>
       <br/>Quickly and easily add, edit, sort and publish testimonials
       all from one centralized dashboard.
       </li>
-      <li><b>Display:</b>
+      <li><b>Professionally Display Testimonials:</b>
       <br/>Chose and customize a variety of layouts and install our widget
       on your website in 20 seconds. Once published, updates are seen instantly,
       so your testimonials are always fresh!
       </li>
-    </ol>
+    </ul>
       
      
   </div>

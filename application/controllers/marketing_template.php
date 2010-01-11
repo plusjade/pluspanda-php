@@ -21,7 +21,7 @@
       : 'Login';
     $this->shell->links = array(
       'home'    => 'Home',
-      'start'   => 'Get Started',
+      'start'   => 'Pricing',
       'cases'    => 'Use-Cases',
       'faq'     => 'FAQ',
       #'forum'  => 'Forum',
