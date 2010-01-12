@@ -3,13 +3,6 @@
 
 <div class="dashboard-page">
 
-<?php if(0 == $categories->count()):?>
-  <div class="attention">
-    &#160; &#160; &#160; &#160; &#160; &#160;
-    Create Your First Category by clicking the <a href="/admin/testimonials/categories">Categories</a> tab!
-  </div>
-<?php endif;?>
-
 <h3>1. Creating and Editing Testimonials.</h3>
 <div class="indent">
 
