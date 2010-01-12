@@ -15,6 +15,10 @@
   <br/>Be sure to save the link to this page so you can edit your testimonial anytime!
 </div>
 
+<?php if($locked):?>
+  <div class="attention" style="width:400px; margin:20px auto">This testimonial is <b>Locked</b> and can no longer be updated!</div>
+<?php endif;?>
+
 <div class="client-add-wrapper">
 <form action="" enctype="multipart/form-data" method="POST">
   <button class="submit-button" type="submit">Save Changes</button>

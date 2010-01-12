@@ -59,7 +59,9 @@ class Save_Controller extends Testimonials_Template_Controller {
     if($_POST)
     {
       $testimonial = $this->get_testimonial();
-
+      if(1 == $testimonial->lock)
+        die('This testimonial is locked and can no longer be edited.');
+        
       die($testimonial->save_crop(
             $this->site->apikey,
             explode('|',$_POST['params'])
@@ -81,7 +83,7 @@ class Save_Controller extends Testimonials_Template_Controller {
     # does the testimonial belong to the patron?
     if($this->patron_token !== $testimonial->patron->token)
       $this->render('invalid patron token');  
-
+  
     # get form questions
     $questions = ORM::factory('question')
       ->where('site_id',$this->site->id)
@@ -89,6 +91,7 @@ class Save_Controller extends Testimonials_Template_Controller {
       
     $form = new View('testimonials/edit');
     $form->questions    = $questions;
+    $form->locked       = (1 == $testimonial->lock) ? true : false;
     $form->tags         = $this->site->tags;
     $form->info         = json_decode($testimonial->body_edit, TRUE);
     $form->testimonial  = $testimonial;
@@ -103,9 +106,16 @@ class Save_Controller extends Testimonials_Template_Controller {
  */
   private function handle_submit()
   {
-    # valid testimonial are required 
-    # no validation so we can save anything coming in.
-    $testimonial              = $this->get_testimonial();
+    $testimonial = $this->get_testimonial();
+    $view = new View('common/status');
+    
+    if(1 == $testimonial->lock)
+    {
+      $view->success = FALSE;
+      $view->type = 'testimonial';
+      return $view;
+    }
+    
     $testimonial->body_edit   = (isset($_POST['info'])) ? json_encode($_POST['info']) : '';
     $testimonial->body        = $_POST['body'];
     $testimonial->tag_id      = $_POST['tag'];
@@ -122,7 +132,6 @@ class Save_Controller extends Testimonials_Template_Controller {
     if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
       $testimonial->save_image($this->site->apikey, $_FILES, $testimonial->id);
     
-    $view = new View('common/status');
     $view->success = TRUE;
     $view->type = 'testimonial';
     return $view;

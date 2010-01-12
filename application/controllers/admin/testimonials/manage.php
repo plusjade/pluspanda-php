@@ -162,6 +162,9 @@ class Manage_Controller extends Admin_Template_Controller {
     $testimonial->publish = (empty($_POST['publish']))
       ? 0
       : 1;
+    $testimonial->lock    = (empty($_POST['lock']))
+      ? 0
+      : 1;
     $testimonial->rating  = $_POST['rating'];
     $testimonial->save();
 

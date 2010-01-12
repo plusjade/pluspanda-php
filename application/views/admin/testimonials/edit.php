@@ -84,7 +84,8 @@ $image  = (empty($testimonial->image))
       
     </div>
   </div>
-  
+  Lock Testimonial? (yes) <input type="checkbox" name="lock" <?php if(1 == $testimonial->lock) echo 'CHECKED'?>/>
+  <br/><small>Locking a testimonial will disallow any further updates from the public testimonial builder.</small>
 </form>
 </div>
 
