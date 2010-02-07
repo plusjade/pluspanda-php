@@ -1,13 +1,8 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Renders the testimonials patron testimonials Engine.
- * 3 types of data output formats:
-    1. Standalone js-disabled Mode.
-        if no javascript, functions as normal, outputs complete views.
-    2. Standalone Ajax Mode.
-        updates via ajax, only outputs data view.
-    3. Widget Ajax via JSONP.
-        called externally outputs raw json to be formatted other end.
+    Widget Ajax via JSONP.
+      called externally outputs raw json to be formatted other end.
  */
 class Testimonials_Controller extends Controller {
 
@@ -29,7 +24,12 @@ class Testimonials_Controller extends Controller {
     $this->apikey     = $site->apikey;
     $this->site_id    = $site->id;
     $this->theme      = (empty($site->theme)) ? 'left' : $site->theme;
-
+    $this->sort       = (empty($this->site->sort))
+      ? 'created'
+      : $this->site->sort;
+    $this->limit      = (empty($this->site->per_page))
+      ? 10
+      : $this->site->per_page;
     # setup active states.
     $this->active_tag   = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
     $this->active_sort  = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
@@ -43,38 +43,34 @@ class Testimonials_Controller extends Controller {
   }
 
 /* 
- * The index is only a wrapper for Standalone js-disabled mode mode.
- * any ajax or widget functionality will not use this at all.
+ * gets the testimonials as an html view.
  */
-  public function index()
+  public function get_html()
   {    
     $content = new View('testimonials/wrapper');
-    $content->site = $this->site;
-    $content->set_global('active_tag', $this->active_tag);
-    $content->set_global('active_sort', $this->active_sort);
+    $content->tag_list = t_build::tag_list($this->site->tags, $this->active_tag);
     $content->get_testimonials = $this->get_testimonials();
-
+    return $content; 
+    
     # setup the shell
     $shell = new View('testimonials/shell');    
     $shell->content = $content;
     echo $shell->render();
   }
 
-  
-/* ------------- modular methods (ajaxable) -------------  */
-  
+
 /*
  * get the testimonials data.
  * count omits limit to determine pagination scheme.
  */
   private function get_testimonials($count=FALSE)
   {
-    $this->limit = 10;
     $params = array(
       'site_id'  => $this->site_id,
       'page'     => $this->active_page,
       'tag'      => $this->active_tag,
       'publish'  => 'yes',
+      'sort'     => $this->sort,
       'created'  => $this->active_sort,
       'limit'    => $this->limit
     );
@@ -166,7 +162,7 @@ class Testimonials_Controller extends Controller {
       $settings->render()."\n/*".date('m.d.y g:ia')."*/"
     );
     
-    return TRUE;
+    return;
   }
   
 /*
@@ -178,7 +174,7 @@ class Testimonials_Controller extends Controller {
       t_paths::init_cache(),
       View::factory('testimonials/widget_init')->render()."\n//".date('m.d.y g:ia')
     );
-    return TRUE;
+    return;
   }
   
   
@@ -198,7 +194,7 @@ class Testimonials_Controller extends Controller {
       die($this->send_api());
       
     die('invalid api parameters');
-  }    
+  }
   
   
 } // End testimonials Controller
