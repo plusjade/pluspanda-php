@@ -66,17 +66,14 @@ class Testimonial_Model extends ORM {
       'publish' => '',
       'rating'  => '',
       'range'   => '',
+      'sort'    => 'created',
       'created' => '',
       'updated' => '',
-      'requests'=> FALSE,
-      'limit'   => 10
+      'limit'   => NULL
     );
     foreach($new_params as $key => $value)
       $params[$key] = $value;
-    
-    #die(kohana::debug($params));
-    
-    $sort   = array('created' => 'desc');
+
     $where  = array();
     
     # filter by publish
@@ -120,23 +117,35 @@ class Testimonial_Model extends ORM {
         break;
     }  
 
-    # filter by requests:
-    if(FALSE !== $params['requests'])
-      $where['requests'] = $params['requests'];
-      
-    #--sorters--
-    switch($params['created'])
-    {
-      case 'newest':
-        $sort = array('created' => 'desc');
-        break;
-      case 'oldest':
-        $sort = array('created' => 'asc');
-        break;
-    }
-
     if($get_count)
       return $this->where($where)->count_all();
+      
+      
+    #--sorters--
+    $sort = array('created' => 'desc');
+    switch($params['sort'])
+    {
+      case 'created':
+        switch($params['created'])
+        {
+          case 'newest':
+            $sort = array('created' => 'desc');
+            break;
+          case 'oldest':
+            $sort = array('created' => 'asc');
+            break;
+        }
+        break;
+      case 'name':
+        $sort = array('name' => 'asc');
+        break;
+      case 'company':
+        $sort = array('company' => 'asc');
+        break;
+      case 'position':
+        $sort = array('position' => 'asc');
+        break;
+    }
     
     # determine the offset and limits.
     $offset = ($params['page']*$params['limit']) - $params['limit'];
@@ -245,6 +254,7 @@ class Testimonial_Model extends ORM {
   public function prep_api()
   {
     $data = array();
+    $data['id']       = $this->id;
     $data['body']     = $this->body;
     $data['rating']   = $this->rating;
     $data['image']    = $this->image;
