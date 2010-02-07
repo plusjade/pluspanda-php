@@ -1,5 +1,3 @@
- 
-<h2 class="head">Getting Started</h2>
 
 <div class="dashboard-page">
 

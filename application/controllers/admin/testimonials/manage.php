@@ -57,11 +57,13 @@ class Manage_Controller extends Admin_Template_Controller {
  */
   private function get_testimonials()
   {
+    $limit = 25;
     $params = array(
       'site_id' => $this->site_id,
       'page'    => $this->active_page,
       'tag'     => $this->active_tag,
       'publish' => $this->publish,
+      'limit'   => $limit,
     );
     
     $total_testimonials = ORM::factory('testimonial')
@@ -75,8 +77,8 @@ class Manage_Controller extends Admin_Template_Controller {
       'base_url'       => "/admin/testimonials/manage?tag=$this->active_tag&rating=$this->active_rating&range=$this->active_range&page=",
       'current_page'   => $this->active_page, 
       'total_items'    => $total_testimonials,
-      'style'          => 'testimonials',
-      'items_per_page' => 10
+      'style'          => 'tabs',
+      'items_per_page' => $limit
     ));
     
 
@@ -217,7 +219,25 @@ class Manage_Controller extends Admin_Template_Controller {
     $this->rsp->send();
   }   
 
-  
+/* 
+ * save testimonial position order
+ */  
+  public function positions()
+  {
+    if(empty($_GET['tstml']))
+    {
+      $this->rsp->msg    = 'Nothing to Save.';
+      $this->rsp->send();
+    }
+    
+    $db = Database::Instance();
+    foreach($_GET['tstml'] as $position => $id)
+      $db->update('testimonials', array('position' => "$position"), "id = '$id' AND site_id = '$this->site_id'");
+
+    $this->rsp->status = 'success';
+    $this->rsp->msg    = 'Order Saved!';
+    $this->rsp->send();
+  }   
 /*
  * view and handler
  * for saving a thumbnail image of the original image

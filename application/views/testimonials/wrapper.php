@@ -1,22 +1,14 @@
 
-  
-<h2 class="aligncenter">
-  People Just Like You Are Using Pluspanda.
-</h2>
-<div style="margin:10px auto; width:700px; margin-bottom:20px;">
-Don't take our word for it. Read real-life customer testimonials 
-to find out just how exactly pluspanda can help <em><u>your</u></em> company.
-<br/>
-Our customers are backing us up with their reputations. No anonymous claims here!
-</div>
-  
-  
-<div id="plusPandaYes">
-    
-  <?php echo t_build::tag_list($site->tags, $active_tag)?>
-  
+<div id="plusPandaYes">  
+  <?php echo $tag_list?>
   <div class="panda-tag-scope">
-    <?php echo $get_testimonials?>
+    <div class="panda-testimonials-list">
+<?php
+  $i = 0;
+  foreach($get_testimonials as $testimonial)
+    echo t_build::item_html($testimonial, $this->site->apikey, ++$i);
+?>
+    </div>
   </div>
   
   <div class="panda-powered">

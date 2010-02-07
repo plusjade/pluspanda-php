@@ -5,7 +5,6 @@ textarea {width:100%; height:100px; margin-bottom:10px;}
 .install-page .info {margin-bottom:10px; background:#ffffcc;}
 </style>
 
-<h2>Install PlusPanda</h2>
 <div class="install-page">
 	<div class="info">
 		Place the install code in the exact place on your page where you want your widget to be displayed.

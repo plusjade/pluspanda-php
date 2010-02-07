@@ -5,8 +5,7 @@ $image  = (empty($testimonial->image))
   ? ''
   : "<img src=\"$image_url/$testimonial->image?r=$rand\"/>";
 ?>
-
-<div class="admin-testimonial-wrapper">
+<div class="admin-testimonial-wrapper t-builder-wrapper">
 <form id="save-testimonial" action="/admin/testimonials/manage/save" rel="<?php echo $this->testimonial_id?>" enctype="multipart/form-data" method="POST">
   
   <button class="submit-button" type="submit">Save Changes</button>
@@ -83,13 +82,15 @@ $image  = (empty($testimonial->image))
       </div>
       
     </div>
+    <br style="clear:both"/>
+    <br/>Lock Testimonial? (yes) <input type="checkbox" name="lock" <?php if(1 == $testimonial->lock) echo 'CHECKED'?>/>
+    <br/><small>Locking a testimonial will disallow any further updates from the public testimonial builder.</small>
   </div>
-  Lock Testimonial? (yes) <input type="checkbox" name="lock" <?php if(1 == $testimonial->lock) echo 'CHECKED'?>/>
-  <br/><small>Locking a testimonial will disallow any further updates from the public testimonial builder.</small>
+
 </form>
 </div>
 
-
+<!--
 <h2>Survey Questions</h2>
 <div class="questions-wrapper">
 <?php foreach($questions as $question):?>
@@ -99,6 +100,7 @@ $image  = (empty($testimonial->image))
   </p>
 <?php endforeach;?>
 </div>
+-->
 
 <script type="text/javascript">
   $(document).ready(function(){

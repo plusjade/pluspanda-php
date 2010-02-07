@@ -11,51 +11,17 @@ class t_build_Core {
 /*
  * build the html that each testimonial gets displayed in.
  */
-  public static function item_html($testimonial=NULL, $site_id=0)
+  public static function item_html($testimonial, $apikey=0, $alt)
   {
-    # this is for the javascript callback =)
-    if(empty($testimonial)):
-    ob_start();
-    ?>
-<div class="t-wrapper">
-  <div class="t-details">
-    <div class="image"><img src="'+ item.image +'"/></div>
-    <div class="t-details-meta">
-      <div class="t-name">
-        <span>'+ item.name +'</span>
-      </div>
-      <div class="t-position">
-        <span>'+ item.position +'</span>
-      </div>  
-      <div class="t-company">
-        <span>'+ item.company +'</span>
-      </div>
-      <div class="t-location">
-        <span>'+ item.location +'</span>
-      </div>      
-      <div class="t-url">
-        <a href="#">'+ item.url +'</a>
-      </div>
-    </div>
-  </div>
-  <div class="t-content">
-    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
-    <div class="t-body">' +item.body+ '</div>
-    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
-    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
-    
-  </div>
-</div>    
-    <?php 
-      return ob_get_clean();
-      endif;
-      
+      $asset_url = t_paths::service($apikey, 'url');
       $image = (empty($testimonial->image))
         ? ''
-        : "<img src=\"/data/$site_id/tstml/img/$testimonial->image\"/>";
+        : "<img src=\"$asset_url/". t_paths::image_dir . "/$testimonial->image\"/>";
+      $url = (empty($testimonial->patron->url))
+        ? ''
+        : 'http://' . $testimonial->patron->url;
     ?>
-<div class="t-wrapper">
-
+<div id="t-<?php echo $testimonial->id?>" class="t-wrapper <?php echo (0 == $alt % 2) ? 'even' : 'odd'?>">
   <div class="t-details">
     <div class="image"><?php echo $image?></div>
     
@@ -70,16 +36,15 @@ class t_build_Core {
       <span><?php echo $testimonial->patron->location?></span>
     </div>      
     <div class="link">
-      <a href="#"><?php echo $testimonial->patron->url?></a>
+      <a href="<?php echo $url?>"><?php echo $url?></a>
     </div>
   </div>
   
   <div class="t-content">
     <div class="t-rating _<?php echo $testimonial->rating?>" title="Rating: <?php echo $testimonial->rating?> stars">&#160;</div>
     <div class="t-body"><?php echo $testimonial->body?></div>
-    <div class="t-date"><?php echo build::timeago($testimonial->created)?></div>
+    <div class="t-date"><?php echo common_build::timeago($testimonial->created)?></div>
     <div class="t-tag"><span><?php echo $testimonial->tag->name?></span></div>
-    
   </div>
 </div>
     <?php
@@ -89,11 +54,11 @@ class t_build_Core {
  * build the html that each testimonial gets displayed in.
  * this is for the javascript callback =)
  */
-  public static function stock_item_html()
+  public static function stock_item_html($pos=0)
   {
     ob_start();
     ?>
-<div class="t-wrapper">
+<div id="t-' + item.id + '" class="t-wrapper '+ item.alt +'">
   <div class="t-details">
     <div class="image"><img src="'+ item.image +'"/></div>
     <div class="t-details-meta">
@@ -110,7 +75,7 @@ class t_build_Core {
         <span>'+ item.location +'</span>
       </div>      
       <div class="t-url">
-        <a href="#">'+ item.url +'</a>
+        <a href="'+ item.url +'">'+ item.url +'</a>
       </div>
     </div>
   </div>
@@ -120,8 +85,8 @@ class t_build_Core {
     <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
     <div class="t-tag"><span>' +item.tag_name+ '</span></div>
   </div>
-</div>    
-    <?php 
+</div>
+    <?php
     return ob_get_clean();
   }
 
@@ -171,22 +136,23 @@ class t_build_Core {
   
   public static function admin_table_row($testimonial, $apikey)
   {
+    $off = (0 == $testimonial->publish) ? 'class="off"' : '';
     ob_start();
     ?>
-    <tr id="tstml_<?php echo $testimonial->id?>">
-      <td>
-        <input type="checkbox" name=""/>
-      </td>
-      <td class="edit"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>">edit</a></td>
+    <tr id="tstml_<?php echo $testimonial->id?>" <?php echo $off?>>
+      <td class="move"><img src="/static/images/admin/move.png" style="width:18px;height:18px;margin-top:2px;"/></td>
+      <td><input type="checkbox" name=""/></td>
+      <td><?php echo $testimonial->position?></td>
       <td class="name"><?php echo $testimonial->patron->name?></td>
       
-      <td><?php echo $testimonial->patron->company?></td>
-      <td><?php echo $testimonial->tag->name?></td>
+      <td class="company"><?php echo $testimonial->patron->company?></td>
+      <td class="category"><?php echo $testimonial->tag->name?></td>
       <td><?php echo (empty($testimonial->publish)) ? 'no' : 'yes'?></td>
       
       <td><?php if(!empty($testimonial->updated)) echo common_build::timeago($testimonial->updated)?></td>
     
       <td><?php echo common_build::timeago($testimonial->created)?></td>
+      <td class="edit"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>">edit</a></td>
       <td><a href="<?php echo url::site("testimonials/save/$apikey?ctk={$testimonial->patron->token}&ttk=$testimonial->token")?>" class="fb-div" rel="#share-window">share</a></td>
       <td class="delete"><a href="/admin/testimonials/manage/delete?id=<?php echo $testimonial->id ?>">[x]</a></td>
     

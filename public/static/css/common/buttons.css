@@ -1,5 +1,5 @@
 /* --- FORM BUTTONS --- */
-.buttons{margin-bottom:10px; overflow:auto;}
+.buttons{overflow:auto;}
 button{cursor:hand; cursor:pointer;}
 .buttons a, .buttons button{
 display:block; border:0; background:transparent; font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif; font-size:1em; line-height:130%; text-decoration:none; font-weight:bold; cursor:pointer; padding:5px 10px 6px 7px; /* Links */}

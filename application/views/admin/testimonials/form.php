@@ -1,40 +1,39 @@
 
 
-
-<h2 class="head">Allowing Testimonials Via Public Form</h2>
-
 <div class="public-link">
   <span>Your Public Form Link:</span> <a href="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>"><?php echo url::site("testimonials/add/{$this->site->apikey}")?></a>
   <input type="text" style="width:450px;padding:5px;" value="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>"/>
 </div>
 
-<h3>Configure Form Settings.</h3>
-<form class="public-form common-ajax" action="/admin/testimonials/form/save" method="POST">
-  <fieldset class="buttons" style="float:right">
+
+<form class="common-ajax" action="/admin/testimonials/form/save" method="POST">
+  <div class="round-box-tabs buttons">
     <button type="submit" class="positive">Save Settings</button>
-  </fieldset>
+  </div>
+  <div class="round-box-top">Configure Form Settings.</div>
+  <div class="round-box-body">
+    <fieldset>
+      <label>Custom Header Message.</label>
+      <br/><textarea name="tstml_msg" style="width:100%;height:100px"><?php echo $this->site->tstml_msg?></textarea>
+    </fieldset>
+    
+    <br/>A customer's full name is always required. You can optionally require 3 more fields:
 
-  <fieldset>
-    <label>Custom Header Message.</label>
-    <br/><textarea name="tstml_msg" style="width:400px;height:100px"><?php echo $this->site->tstml_msg?></textarea>
-  </fieldset>
-  
-  <br/>A customer's full name is always required. You can optionally require 3 more fields:
-
-  <fieldset>
-    <label>Access Key</label>
-    <input type="text" name="key" value="<?php echo $settings->require_key?>" />
-  </fieldset>
-  
-  <fieldset>
-    <label>Require Email (Yes)</label>
-    <input type="checkbox" name="email" <?php if($settings->email) echo 'CHECKED'?>/>
-  </fieldset>
-  
-  <fieldset>
-    <label>Define Meta Data Name</label>
-    <input type="text" name="meta" value="<?php echo $settings->meta?>" />
-  </fieldset> 
+    <fieldset>
+      <label>Access Key</label>
+      <input type="text" name="key" value="<?php echo $settings->require_key?>" />
+    </fieldset>
+    
+    <fieldset>
+      <label>Require Email (Yes)</label>
+      <input type="checkbox" name="email" <?php if($settings->email) echo 'CHECKED'?>/>
+    </fieldset>
+    
+    <fieldset>
+      <label>Define Meta Data Name</label>
+      <input type="text" name="meta" value="<?php echo $settings->meta?>" />
+    </fieldset> 
+  </div>
 </form>
 
 <div class="indent">

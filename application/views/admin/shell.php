@@ -16,7 +16,6 @@
   <div id="top">
     <ul>
       <li><a href="/">Return Home</a></li>
-      <li><a href="/forum">Go To Forum</a></li>
       <li><a href="/admin/account">Account</a></li>
       <li><a href="/admin/login/logout">Logout</a></li>
     

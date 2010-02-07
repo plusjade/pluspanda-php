@@ -103,10 +103,10 @@ $(document).ready(function(){
 /*Testimonial Manager */
 
   // load the edit view into the bottom container
-    '.admin-new-testimonials-list table td.edit a, div#create-new a' : function(e){  
-      $('.edit-window').html('Loading...');
+    '.admin-new-testimonials-list table td.edit a, div#manage-buttons a' : function(e){  
+      $('.edit-window').html('<div class="ajax-loading">Loading...</div>');
       $.get(e.target.href, function(data){
-        $('.edit-window').html(data);
+        $('.edit-window').hide().html(data).slideDown('slow');
 
         // upload the image given in the file input.
         $('.panda-image input').change(function(){
@@ -188,16 +188,7 @@ $(document).ready(function(){
       }
       return false;
     },
-    
-  // save display testimonial theme.
-    'button#save-theme' :function(e){
-      var theme = $('select.switch-theme option:selected').val();
-      $(document).trigger('submit.server');
-      $.get('/admin/testimonials/display/save',{theme:theme},function(rsp){
-        $(document).trigger('rsp.server', rsp);
-      });
-    },
-    
+
   // common ajax form 
     'form.common-ajax button' :function(e){
       $('form.common-ajax').ajaxSubmit({

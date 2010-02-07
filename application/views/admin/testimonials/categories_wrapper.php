@@ -1,7 +1,5 @@
 
 
-<h2 class="head">My Categories</h2>
-
 <?php if(isset($response))echo $response?>
 
 

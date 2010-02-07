@@ -1,4 +1,7 @@
 
+<div class="edit-window"></div>
+
+<!--
 <form action ="/admin/testimonials/manage" metho="GET">
   Publish <select name="publish">
     <option value="all">All</option>
@@ -14,35 +17,40 @@
     );
   ?>
    <button type="submit">Submit Query</button>
-   <!--<br/>Sort by : Name, Company, Created, Updated,-->
+   <br/>Sort by : Name, Company, Created, Updated,
 </form>
+-->
 
-
-<?php echo $pagination?>
-
-<div id="create-new" class="buttons" style="text-align:center">
+<div id="manage-buttons" class="buttons">
+  <button class="positive">Save Positions</button>
   <a href="/admin/testimonials/manage/edit?id=0" class="positive">Create New</a>
 </div>
-<table class="t-data">
-  <tr>
-    <th width="25px"></th>
-    <th>Edit</th>
-    <th width="150px">Name</th>
-    <th width="150px">Company</th>
-    <th width="150px">Category</th>
-    <th width="60px">Live</th>
-    <th width="120px">Updated</th>
-    <th width="120px">Created</th>
-    <th width="60px">Share</th>
-    <th width="20px">del</th>
-    
-  </tr>
 
+<?php #echo $pagination?>
+
+<table class="t-data">
+  <thead>
+    <tr>
+      <th width="25px"></th>
+      <th width="25px"></th>
+      <th width="60px">Pos</th>
+      <th width="150px">Name</th>
+      <th width="150px">Company</th>
+      <th width="150px">Category</th>
+      <th width="75px">Live</th>
+      <th width="120px">Updated</th>
+      <th width="120px">Created</th>
+      <th width="25px"></th>
+      <th width="60px"></th>
+      <th width="20px"></th>
+    </tr>
+  </thead>
+  <tbody>
 <?php
   foreach($testimonials as $testimonial)
     echo t_build::admin_table_row($testimonial, $this->site->apikey);
 ?>
-
+  </body>
 </table>
 <!--
 <ul class="with-selected">
@@ -54,24 +62,44 @@
 </ul>
 -->
 
-<div class="edit-window"></div>
-
-
 <div id="share-window" style="display:none">
   <div class="share-data">
-  <h3>Public Testimonial Editing Link</h3>
-  
-  Share this link with the person you want to fill out this testimonial.
-  
-  
-  <input type="text" value="url">
-  
-  <br/><b>Note:</b> Anyone with this link will be able to edit the testimonial.
-  <br/>Be sure to lock the testimonial when you are satisfied with the edits.
+    <h3>Public Testimonial Editing Link</h3>
     
-</div>
+    Share this link with the person you want to fill out this testimonial.
+    <input type="text" value="url"/>
+    
+    <br/><b>Note:</b> Anyone with this link will be able to edit the testimonial.
+    <br/>Be sure to lock the testimonial when you are satisfied with the edits. 
+  </div>
 </div>
 
-
+<script type="text/javascript">
+  $("table.t-data").tablesorter({
+    headers:{
+      0:{sorter:false},
+      1:{sorter:false},
+      9:{sorter:false},
+      10:{sorter:false},
+      11:{sorter:false}
+    }
+  }); 
+  $('table.t-data').sortable({
+    items:'tr',
+    handle:'td.move',
+    axis: 'y',
+    helper: 'clone'
+  });
+  
+  $('#manage-buttons button').click(function(){
+      var order = $("table.t-data").sortable("serialize");
+      if(!order){alert("No items to sort");return false;}
+      $(document).trigger('submit.server');
+      $.get('/admin/testimonials/manage/positions', order, function(rsp){
+        $(document).trigger('rsp.server', rsp);
+      });    
+      return false;
+  });
+</script>
 
 

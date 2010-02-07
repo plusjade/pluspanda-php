@@ -41,20 +41,21 @@ class Js_Controller {
     header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
 
     $files = array(
-      'js/common/addon.js',
-      'js/common/jquery.ui.js',
-      'js/common/json/json2.js',
-      'js/common/facebox.js',
-      'js/common/jcrop.js',
-      'js/common/binds.js',
-      'js/testimonials/binds.js',
-      'js/admin/init.js',
+      'common/addon.js',
+      'common/jquery.ui.js',
+      'common/json/json2.js',
+      'common/facebox.js',
+      'common/jquery.tablesorter.min.js',
+      'common/jcrop.js',
+      'common/binds.js',
+      'testimonials/binds.js',
+      'admin/init.js',
     );
     
     ob_start();
     foreach($files as $file)
-      if(file_exists(DOCROOT . "static/$file"))
-        readfile(DOCROOT . "static/$file");
+      if(file_exists(DOCROOT . "static/js/$file"))
+        readfile(DOCROOT . "static/js/$file");
 
     die;
   }
