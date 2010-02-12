@@ -267,6 +267,11 @@ margin-bottom:20px;
 
 
 
+/* install page */
+
+.install-page div{padding:5px; margin-bottom:5px; font-size:0.9em;}
+.install-page .info {margin-bottom:10px; background:#ffffcc;}
+.install-page textarea {width:100%; height:100px; margin-bottom:10px;}
 
 
 

@@ -2,35 +2,6 @@
 <div class="home-intro">
   <h2 class="home-header">Add Customer Testimonials to Your Website, <span>Fast.</span></h2>
 
-
-  <h6 class="home-main-text">
-    "Pluspanda lets you quickly build a professionally designed 'customer testimonials'
-    <br/>web page for your marketing website.  It's as simple as 1 - 2 - 3"
-  </h6>
-  
-  
-  <div class="main-steps">
-    <h3 class="active">Step 1 - Choose Your Layout.</h3>
-    <div class="active">
-      Customize colors and styles with full CSS access.
-    </div>
-    
-    <h3>Step 2 - Add/Collect Testimonials.</h3>
-    <div>
-      Have existing testimonials? Easily upload and organize them
-      <br/>or use our public testimonial collection form to collect testimonials.
-    </div>
-    
-    <h3>Step 3 - Install On Your Website.</h3>
-    <div>
-      Fully export the finished code to place into your website
-      <br/>or use our javascript widget to add automatically.
-    </div>
-    
-  </div>
-  
-  
-<!--
   <div class="pane-text">
     <div>
       <b>Hello!</b>
@@ -66,9 +37,13 @@
       so your testimonials are always fresh!
       </li>
     </ul>
+      
+     
   </div>
-  -->
+  
 </div>
+
+<h2 class="home-header">Try Our Live Demo</h2>
 
 
 <div class="demo-switcher">

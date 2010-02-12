@@ -50,11 +50,11 @@
         foreach(${"menu_$service"} as $data)
         {
           list($name, $link, $text, $class) = $data;
-          $class = (empty($class)) ? '' : "class=\"$class\"";
+          $class = (empty($class)) ? '' : $class;
           if($name == $active)
-            echo "<li $class><a href=\"$link\" class=\"active\">$text</a></li>\n";
+            echo "<li class=\"$class $name\"><a href=\"$link\" class=\"active\">$text</a></li>\n";
           else
-            echo "<li $class><a href=\"$link\">$text</a></li>\n";
+            echo "<li class=\"$class $name\"><a href=\"$link\">$text</a></li>\n";
         }
       ?>
       </ul> 

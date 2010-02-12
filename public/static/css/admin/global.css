@@ -241,6 +241,9 @@ ul.normal-list {
     border: 1px dashed #0099ff;
     color: #ff7676;
   }
+  #sidebar li.tags{ margin-left:25px;}
+  #sidebar li.form{ margin-left:25px;}
+  
 
 /* ----------------------------
     FOOTER

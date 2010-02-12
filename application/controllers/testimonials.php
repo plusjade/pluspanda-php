@@ -49,6 +49,7 @@ class Testimonials_Controller extends Controller {
   {    
     $content = new View('testimonials/wrapper');
     $content->tag_list = t_build::tag_list($this->site->tags, $this->active_tag);
+    $content->limit = $this->limit;
     $content->get_testimonials = $this->get_testimonials();
     return $content; 
     
@@ -58,7 +59,24 @@ class Testimonials_Controller extends Controller {
     echo $shell->render();
   }
 
-
+/* 
+ * export all testimonials as html view
+ */
+  public function export_html()
+  {    
+    $content = new View('testimonials/wrapper');
+    $content->tag_list = t_build::tag_list($this->site->tags, $this->active_tag);
+    $content->limit = $this->limit;
+    
+    $this->limit = 100;
+    $content->get_testimonials = $this->get_testimonials();
+    return $content; 
+    
+    # setup the shell
+    $shell = new View('testimonials/shell');    
+    $shell->content = $content;
+    echo $shell->render();
+  }
 /*
  * get the testimonials data.
  * count omits limit to determine pagination scheme.

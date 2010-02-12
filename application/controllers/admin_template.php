@@ -40,15 +40,14 @@ abstract class Admin_Template_Controller extends Controller {
     $this->shell->service = $this->service;
     
     $this->shell->menu_testimonials = array(
-      array('dashboard', '/admin/testimonials/dashboard','Getting Started','jax'),
-      array('testimonials', '/admin/testimonials/manage','Manager','jax'),
-      array('display', '/admin/testimonials/display','Displayer',''),    
-      
-      array('form', '/admin/testimonials/form','Public Form','jax'),
-      
+      array('display', '/admin/testimonials/display','1. Choose Layout',''),    
       array('tags', '/admin/testimonials/tags','Categories','jax'),
       
-      array('install', '/admin/install/testimonials','Install','jax'),
+      array('testimonials', '/admin/testimonials/manage','2. Add Testimonials','jax'),
+      array('form', '/admin/testimonials/form','Collect Form','jax'),
+      array('install', '/admin/install/testimonials','3. Install','jax'),
+      array('dashboard', '/admin/testimonials/dashboard','(Help)','jax'),
+      
     );
     
     $this->shell->menu_reviews = array(

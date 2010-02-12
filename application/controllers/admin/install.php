@@ -48,6 +48,17 @@
     if($action)
       $content->response = alerts::display($this->$action());
   
+  
+  
+  
+    $tstmls = new Testimonials_Controller($this->site);
+    $content->html = $tstmls->export_html();
+
+    $stylesheet = t_paths::css($this->site->apikey) .'/'. $this->site->theme . '.css'; 
+    $content->css  = (file_exists($stylesheet))
+      ? file_get_contents($stylesheet)
+      : '/* no custom file */';
+      
     if(request::is_ajax())
       die($content);
     

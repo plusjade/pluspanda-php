@@ -21,7 +21,7 @@ class t_build_Core {
         ? ''
         : 'http://' . $testimonial->patron->url;
     ?>
-<div id="t-<?php echo $testimonial->id?>" class="t-wrapper <?php echo (0 == $alt % 2) ? 'even' : 'odd'?>">
+<div id="t-<?php echo $testimonial->id?>" class="t-wrapper tag-<?php echo $testimonial->tag_id?> <?php echo (0 == $alt % 2) ? 'even' : 'odd'?>">
   <div class="t-details">
     <div class="image"><?php echo $image?></div>
     
