@@ -15,7 +15,7 @@
   
   public function index()
   {
-    $settings = json_decode($this->site->tstml);
+    $settings = json_decode($this->owner->tconfig->form);
     if(NULL === $settings)
     {
       $settings = new StdClass;
@@ -53,9 +53,9 @@
     $settings->meta        = (empty($meta)) ? false : $meta;
     
     
-    $this->site->tstml = json_encode($settings);
-    $this->site->tstml_msg = $_POST['tstml_msg'];
-    $this->site->save();
+    $this->owner->tconfig->form = json_encode($settings);
+    $this->owner->tconfig->msg = $_POST['msg'];
+    $this->owner->tconfig->save();
     
     $this->rsp->status = 'success';
     $this->rsp->msg = 'Form Settings Saved!';

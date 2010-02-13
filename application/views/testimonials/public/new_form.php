@@ -1,7 +1,7 @@
 
 
 <div class="message-wrapper">
-  <?php echo $this->site->tstml_msg?>
+  <?php echo $this->owner->tconfig->msg?>
 </div>
 
 <?php if(isset($errors)) echo val_form::show_error_box($errors);?>

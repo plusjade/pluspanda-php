@@ -21,7 +21,7 @@ class Save_Controller extends Testimonials_Template_Controller {
     $this->patron_token = $_GET['ctk'];
     
     # define the form action url 
-    $this->form_url = url::site("/testimonials/save/{$this->site->apikey}?ctk=$this->patron_token&ttk=$this->testimonial_token");
+    $this->form_url = url::site("/testimonials/save/{$this->owner->apikey}?ctk=$this->patron_token&ttk=$this->testimonial_token");
         
     # route to method here for better urls =p
     $allowed  = array('crop');
@@ -63,13 +63,13 @@ class Save_Controller extends Testimonials_Template_Controller {
         die('This testimonial is locked and can no longer be edited.');
         
       die($testimonial->save_crop(
-            $this->site->apikey,
+            $this->owner->apikey,
             explode('|',$_POST['params'])
       ));
     }
     
     # display the crop view.
-    die(t_build::crop_view($this->site->apikey, $this->form_url . "&a=crop"));
+    die(t_build::crop_view($this->owner->apikey, $this->form_url . "&a=crop"));
   }
 
   
@@ -86,16 +86,18 @@ class Save_Controller extends Testimonials_Template_Controller {
   
     # get form questions
     $questions = ORM::factory('question')
-      ->where('site_id',$this->site->id)
+      ->where('owner_id',$this->owner->id)
       ->find_all();
       
     $form = new View('testimonials/edit');
     $form->questions    = $questions;
     $form->locked       = (1 == $testimonial->lock) ? true : false;
-    $form->tags         = $this->site->tags;
+    $form->tags         = ORM::factory('tag')
+      ->where('owner_id', $this->owner->id)
+      ->find_all();
     $form->info         = json_decode($testimonial->body_edit, TRUE);
     $form->testimonial  = $testimonial;
-    $form->image_url    = t_paths::image($this->site->apikey, 'url');
+    $form->image_url    = t_paths::image($this->owner->apikey, 'url');
     $form->url          = $this->form_url;
     return $form;
   }
@@ -130,7 +132,7 @@ class Save_Controller extends Testimonials_Template_Controller {
     $testimonial->patron->save();
     # save image if sent.
     if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
-      $testimonial->save_image($this->site->apikey, $_FILES, $testimonial->id);
+      $testimonial->save_image($this->owner->apikey, $_FILES, $testimonial->id);
     
     $view->success = TRUE;
     $view->type = 'testimonial';
@@ -145,8 +147,8 @@ class Save_Controller extends Testimonials_Template_Controller {
   {
     $testimonial = ORM::factory('testimonial')
       ->where(array(
-        'site_id'  => $this->site->id,
-        'token'    => $this->testimonial_token
+        'owner_id'  => $this->owner->id,
+        'token'     => $this->testimonial_token
       ))
       ->find();
     if(!$testimonial->loaded)

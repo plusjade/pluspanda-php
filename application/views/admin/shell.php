@@ -33,7 +33,7 @@
     <?php
       $services = array('testimonials'); # add reviews here
       foreach($services as $link)
-        if($service == $link)
+        if($this->service == $link)
           echo "<a href=\"/admin/$link/dashboard\" class=\"active\">$link</a> \n";
         else
           echo "<a href=\"/admin/$link/dashboard\">$link</a> \n";
@@ -47,7 +47,7 @@
       <?php 
         if(empty($active))
           $active = 'dashboard';
-        foreach(${"menu_$service"} as $data)
+        foreach(${"menu_$this->service"} as $data)
         {
           list($name, $link, $text, $class) = $data;
           $class = (empty($class)) ? '' : $class;

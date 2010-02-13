@@ -6,7 +6,7 @@
 abstract class Testimonials_Template_Controller extends Controller {
 
   public $shell;
-  public $site;
+  public $owner;
   public $patron_token;
   
 /**
@@ -18,15 +18,15 @@ abstract class Testimonials_Template_Controller extends Controller {
 
     $this->shell = new View('testimonials/public/shell');
     
-    # get the clients name from url.
+    # get the clients apikey from url.
     $url_array = $this->uri->segment_array();
     $client = (empty($url_array['3'])) 
       ? NULL
       : mysql_real_escape_string($url_array['3']);
       
-    # is the site valid?
-    $this->site = ORM::factory('site', $client);
-    if(!$this->site->loaded)
+    # is the owner valid?
+    $this->owner = ORM::factory('owner', $client);
+    if(!$this->owner->loaded)
       $this->render(View::factory('testimonials/public/no_site'));
   }
 

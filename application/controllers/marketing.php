@@ -80,13 +80,13 @@
     $new_owner->password  = $_POST['password'];
     $new_owner->save();
   
-    # create the new site.
-    $new_site = ORM::factory('site');
-    $new_site->add($new_owner);
-    $new_site->save();
+    # create the new tconfig.
+    $new_tconfig = ORM::factory('tconfig');
+    $new_tconfig->owner_id = $new_owner->id;
+    $new_tconfig->save();
     
     # log the user in and take to admin
-    $this->owner->force_login($new_owner);
+    $this->auth->force_login($new_owner);
     url::redirect('/admin/login');
  }
  

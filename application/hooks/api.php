@@ -31,26 +31,26 @@ function api()
   }
   
   # get the account.    
-  $site = ORM::factory('site')
+  $owner = ORM::factory('owner')
     ->where('apikey',$_GET['apikey'])
     ->find();
-  if(!$site->loaded)
+  if(!$owner->loaded)
     die('invalid api key');
   
   # send to api controller to build/cache js. bye bye!
   if($fetch)
     if('reviews' == $_GET['fetch'])
-      new Reviews_Controller($site, NULL, 'api');
+      new Reviews_Controller($owner, NULL, 'api');
     else
-      new Testimonials_Controller($site, 'api');
+      new Testimonials_Controller($owner, 'api');
 
 
   # do some work with the appropriate service api
   if(isset($_GET['service']))
     if('reviews' == $_GET['service'])
-      new Reviews_Controller($site, NULL, 'api');
+      new Reviews_Controller($owner, NULL, 'api');
     elseif('testimonials' == $_GET['service'])
-      new Testimonials_Controller($site, 'api');
+      new Testimonials_Controller($owner, 'api');
     
   die;
   /** default controller is "home" **/

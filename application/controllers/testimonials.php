@@ -13,28 +13,31 @@ class Testimonials_Controller extends Controller {
   public $is_api = FALSE;
 
   
-  public function __construct($site=NULL, $type=FALSE)
+  public function __construct($owner=NULL, $type=FALSE)
   {
     parent::__construct();
   
-    if(NULL === $site)
+    if(NULL === $owner)
       Event::run('system.404');
       
-    $this->site       = $site;
-    $this->apikey     = $site->apikey;
-    $this->site_id    = $site->id;
-    $this->theme      = (empty($site->theme)) ? 'left' : $site->theme;
-    $this->sort       = (empty($this->site->sort))
+    $this->owner      = $owner;
+    $this->apikey     = $owner->apikey;
+    $this->theme      = (empty($owner->tconfig->theme)) ? 'left' : $owner->tconfig->theme;
+    $this->sort       = (empty($owner->tconfig->sort))
       ? 'created'
-      : $this->site->sort;
-    $this->limit      = (empty($this->site->per_page))
+      : $owner->tconfig->sort;
+    $this->limit      = (empty($owner->tconfig->per_page))
       ? 10
-      : $this->site->per_page;
-    # setup active states.
+      : $owner->tconfig->per_page;
+
     $this->active_tag   = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
     $this->active_sort  = (isset($_GET['sort'])) ? strtolower($_GET['sort']) : 'newest';
     $this->active_page  = (isset($_GET['page']) AND is_numeric($_GET['page'])) ?   $_GET['page'] : 1;  
     
+    $this->tags  = ORM::factory('tag')
+      ->where('owner_id', $this->owner->id)
+      ->find_all();
+      
     if('api' == $type)
     {
       $this->is_api = TRUE;
@@ -48,7 +51,7 @@ class Testimonials_Controller extends Controller {
   public function get_html()
   {    
     $content = new View('testimonials/wrapper');
-    $content->tag_list = t_build::tag_list($this->site->tags, $this->active_tag);
+    $content->tag_list = t_build::tag_list($this->tags, $this->active_tag);
     $content->limit = $this->limit;
     $content->get_testimonials = $this->get_testimonials();
     return $content; 
@@ -65,7 +68,7 @@ class Testimonials_Controller extends Controller {
   public function export_html()
   {    
     $content = new View('testimonials/wrapper');
-    $content->tag_list = t_build::tag_list($this->site->tags, $this->active_tag);
+    $content->tag_list = t_build::tag_list($this->tags, $this->active_tag);
     $content->limit = $this->limit;
     
     $this->limit = 100;
@@ -84,7 +87,7 @@ class Testimonials_Controller extends Controller {
   private function get_testimonials($count=FALSE)
   {
     $params = array(
-      'site_id'  => $this->site_id,
+      'owner_id' => $this->owner->id,
       'page'     => $this->active_page,
       'tag'      => $this->active_tag,
       'publish'  => 'yes',
@@ -136,7 +139,7 @@ class Testimonials_Controller extends Controller {
  */
   private function widget()
   {
-    $settings_file = t_paths::js_cache($this->site->apikey);
+    $settings_file = t_paths::js_cache($this->apikey);
     $init_file     = t_paths::init_cache();
     if(!file_exists($settings_file))
       $this->cache_settings($settings_file);
@@ -158,7 +161,7 @@ class Testimonials_Controller extends Controller {
     $keys = array("\n","\r","\t");
     
     # get all the html interfaces.    
-    $tag_list   = t_build::tag_list($this->site->tags, $this->active_tag);
+    $tag_list   = t_build::tag_list($this->tags, $this->active_tag);
     $sorters    = t_build::sorters($this->active_tag, $this->active_sort, 'widget');    
     $item_html  = t_build::stock_item_html();
       

@@ -23,7 +23,7 @@
     if($action)
       $content->response = alerts::display($this->$action());
   
-    $content->owner = $this->owner->get_user();
+    $content->owner = $this->owner;
 
     if(request::is_ajax())
       die($content);

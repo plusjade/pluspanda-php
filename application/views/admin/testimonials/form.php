@@ -1,8 +1,8 @@
 
 
 <div class="public-link">
-  <span>Your Public Form Link:</span> <a href="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>"><?php echo url::site("testimonials/add/{$this->site->apikey}")?></a>
-  <input type="text" style="width:450px;padding:5px;" value="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>"/>
+  <span>Your Public Form Link:</span> <a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>"><?php echo url::site("testimonials/add/{$this->owner->apikey}")?></a>
+  <input type="text" style="width:450px;padding:5px;" value="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>"/>
 </div>
 
 
@@ -14,7 +14,7 @@
   <div class="round-box-body">
     <fieldset>
       <label>Custom Header Message.</label>
-      <br/><textarea name="tstml_msg" style="width:100%;height:100px"><?php echo $this->site->tstml_msg?></textarea>
+      <br/><textarea name="msg" style="width:100%;height:100px"><?php echo $this->owner->tconfig->msg?></textarea>
     </fieldset>
     
     <br/>A customer's full name is always required. You can optionally require 3 more fields:
@@ -67,8 +67,8 @@
   <h4>Pre-populating The Public Form.</h4>
   <div class="indent">
     You can easily pre-populate known fields by passing them in the url string.
-    <br/><input style="margin:7px 0; padding:5px; width:100%" type="text" value="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>?name=your_customers_name&key=you_private_key&email=customer_email&meta=custom_meta_data" />
-    <br/><b>See it in action:</b> <a href="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>?name=your_customers_name&key=you_private_key&email=customer_email&meta=custom_meta_data">View your pre-populated public form</a>
+    <br/><input style="margin:7px 0; padding:5px; width:100%" type="text" value="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>?name=your_customers_name&key=you_private_key&email=customer_email&meta=custom_meta_data" />
+    <br/><b>See it in action:</b> <a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>?name=your_customers_name&key=you_private_key&email=customer_email&meta=custom_meta_data">View your pre-populated public form</a>
   </div>
 </div>
 

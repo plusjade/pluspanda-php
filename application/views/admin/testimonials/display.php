@@ -11,19 +11,19 @@
     <?php 
     $themes = array('left','right','grid','gallery');
     foreach($themes as $theme)
-      if($theme == $this->site->theme)
+      if($theme == $this->owner->tconfig->theme)
         echo "<option value=\"$theme\" selected=\"selected\">$theme</option>";
       else
          echo "<option value=\"$theme\">$theme</option>";
     ?>
     </select>
-     || <strong>Testimonials per page: #</strong> <input type="text" name="per_page" value="<?php echo $this->site->per_page?>" maxlength="2" style="width:25px"/>
+     || <strong>Testimonials per page: #</strong> <input type="text" name="per_page" value="<?php echo $this->owner->tconfig->per_page?>" maxlength="2" style="width:25px"/>
      || <strong>Order Testimonials by:</strong> 
       <select name="sort">
       <?php
         $sorters = array('created'=>'Creation Date', 'position'=>'Custom Positions');
         foreach($sorters as $val => $text)
-          if($val == $this->site->sort)
+          if($val == $this->owner->tconfig->sort)
             echo "<option value=\"$val\" selected=\"selected\">$text</option>";
           else
              echo "<option value=\"$val\">$text</option>";

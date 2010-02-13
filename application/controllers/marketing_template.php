@@ -7,22 +7,22 @@
  abstract class Marketing_Template_Controller extends Controller {
 
   public $shell;
-  public $owner;
+  public $auth;
 
   public function __construct()
   {
     parent::__construct();
 
-    $this->owner = Auth::instance();  
+    $this->auth = Auth::instance();  
 
     $this->shell = new View('marketing/shell');
-    $this->shell->login_link = ($this->owner->logged_in())
+    $this->shell->login_link = ($this->auth->logged_in())
       ? 'Admin'
       : 'Login';
     $this->shell->links = array(
       'home'    => 'Home',
       'start'   => 'Pricing',
-      'cases'    => 'Use-Cases',
+      'cases'   => 'Use-Cases',
       'faq'     => 'FAQ',
       #'forum'  => 'Forum',
       'contact' => 'Contact'

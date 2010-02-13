@@ -60,7 +60,7 @@ class Testimonial_Model extends ORM {
   public function fetch($new_params, $get_count=FALSE)
   {
     $params = array(
-      'site_id' => '',
+      'owner_id'=> '',
       'page'    => 1,
       'tag'     => '',
       'publish' => '',
@@ -87,7 +87,7 @@ class Testimonial_Model extends ORM {
     if(is_numeric($params['tag']))
       $where['tag_id'] = $params['tag'];
     else
-      $where['site_id'] = $params['site_id'];
+      $where['owner_id'] = $params['owner_id'];
         
     /*    
     # filter by rating

@@ -16,17 +16,17 @@
   public function index()
   {
     $content = new View("admin/testimonials/display");
-    $content->embed_code = t_build::embed_code($this->site->apikey, NULL, FALSE);
+    $content->embed_code = t_build::embed_code($this->owner->apikey, NULL, FALSE);
     
-    $tstmls = new Testimonials_Controller($this->site);
+    $tstmls = new Testimonials_Controller($this->owner);
     $content->testimonials_html = $tstmls->get_html();
 
-    $stylesheet = t_paths::css($this->site->apikey) .'/'. $this->site->theme . '.css'; 
+    $stylesheet = t_paths::css($this->owner->apikey) .'/'. $this->owner->tconfig->theme . '.css'; 
     $content->stylesheet  = (file_exists($stylesheet))
       ? file_get_contents($stylesheet)
       : '/* no custom file */';
-    $content->stock  = (file_exists(DOCROOT .'static/css/testimonials/stock/' . $this->site->theme . '.css'))
-      ? file_get_contents(DOCROOT .'static/css/testimonials/stock/' . $this->site->theme . '.css')
+    $content->stock  = (file_exists(DOCROOT .'static/css/testimonials/stock/' . $this->owner->tconfig->theme . '.css'))
+      ? file_get_contents(DOCROOT .'static/css/testimonials/stock/' . $this->owner->tconfig->theme . '.css')
       : '/* no stock file */';
     
     if(request::is_ajax())
@@ -47,11 +47,11 @@
   {
     $testimonials = ORM::factory('testimonial') 
       ->where(array(
-        'site_id' => $this->site_id,
-        'publish' => 1
+        'owner_id' => $this->owner->id,
+        'publish'  => 1
       ))
       ->orderby(array(
-        'tag_id' => 'asc',
+        'tag_id'  => 'asc',
         'created' => 'desc'
       ))
       ->find_all();
@@ -60,7 +60,7 @@
     
     $this->limit = 10;
     $params = array(
-      'site_id'  => $this->site_id,
+      'owner_id' => $this->owner->id,
       'page'     => $this->active_page,
       'tag'      => $this->active_tag,
       'publish'  => 'yes',
@@ -85,11 +85,11 @@
     if(!$_POST)
       die;
       
-    $this->site->theme    = (isset($_POST['theme'])) ? $_POST['theme'] : null;
-    $this->site->sort     = (isset($_POST['sort'])) ? $_POST['sort'] : 'created';
-    $this->site->per_page = (isset($_POST['per_page'])) ? $_POST['per_page'] : 10;
+    $this->owner->tconfig->theme    = (isset($_POST['theme'])) ? $_POST['theme'] : null;
+    $this->owner->tconfig->sort     = (isset($_POST['sort'])) ? $_POST['sort'] : 'created';
+    $this->owner->tconfig->per_page = (isset($_POST['per_page'])) ? $_POST['per_page'] : 10;
     
-    $this->site->save();
+    $this->owner->tconfig->save();
     
     $this->update_settings_cache();
       
@@ -106,7 +106,7 @@
     if(empty($_POST['css']))
       die;
 
-    $stylesheet = t_paths::css($this->site->apikey) .'/'. $this->site->theme . '.css'; 
+    $stylesheet = t_paths::css($this->owner->apikey) .'/'. $this->owner->tconfig->theme . '.css'; 
     file_put_contents($stylesheet, $_POST['css']);
     
     $this->rsp->status = 'success';

@@ -7,9 +7,8 @@
 abstract class Admin_Template_Controller extends Controller {
 
   // shell view name
-  public $shell = 'admin/shell';
-  public $site_id = NULL;
-  public $service;
+  public $shell   = 'admin/shell';
+  public $service = 'testimonials';
   
 /**
  * shell loading and setup routine.
@@ -18,36 +17,29 @@ abstract class Admin_Template_Controller extends Controller {
   {
     parent::__construct();
 
-    $this->owner = Auth::instance();  
-    if(!$this->owner->logged_in())
+    $this->auth = Auth::instance();  
+    if(!$this->auth->logged_in())
       url::redirect('/admin/login');
 
-    # which service are we using?
-    $this->service = (isset($_GET['service']) AND 'reviews' == $_GET['service'])
-      ? 'reviews'
-      : 'testimonials';
-
-    # Note:this will not work when users can access multiple sites.
-    $this->site = $this->owner->get_user()->sites->current();
-    $this->site_id = $this->site->id;
-
+    $this->owner = $this->auth->get_user();
+    $this->tags  = ORM::factory('tag')
+      ->where('owner_id', $this->owner->id)
+      ->find_all();
+      
     # no need to load the shell if ajax.
     if(request::is_ajax())
       return;
 
     # Load the shell for non ajax only.
     $this->shell = new View($this->shell);
-    $this->shell->service = $this->service;
-    
+
     $this->shell->menu_testimonials = array(
       array('display', '/admin/testimonials/display','1. Choose Layout',''),    
       array('tags', '/admin/testimonials/tags','Categories','jax'),
-      
       array('testimonials', '/admin/testimonials/manage','2. Add Testimonials','jax'),
       array('form', '/admin/testimonials/form','Collect Form','jax'),
-      array('install', '/admin/install/testimonials','3. Install','jax'),
+      array('install', '/admin/testimonials/install','3. Install','jax'),
       array('dashboard', '/admin/testimonials/dashboard','(Help)','jax'),
-      
     );
     
     $this->shell->menu_reviews = array(
@@ -65,7 +57,7 @@ abstract class Admin_Template_Controller extends Controller {
  */
   public function update_settings_cache()
   {
-    $settings = t_paths::js_cache($this->site->apikey);
+    $settings = t_paths::js_cache($this->owner->apikey);
     if(file_exists($settings))
       unlink($settings);
     return;

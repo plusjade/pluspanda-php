@@ -29,7 +29,7 @@
   
   <h4>Using Your Public "Add Testimonial" Form.</h4>
   <div class="indent">
-    Your public "add testimonial" form can be seen here: <a href="<?php echo url::site("testimonials/add/{$this->site->apikey}")?>"><?php echo url::site("testimonials/add/{$this->site->apikey}")?></a>
+    Your public "add testimonial" form can be seen here: <a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>"><?php echo url::site("testimonials/add/{$this->owner->apikey}")?></a>
     <br/>You can share this link with all of your customers. Once a customer gives the required identifer information,
     his editable testimonial will be generated for him to fill out.
     <br/>Configure your form in the <a href="/admin/testimonials/form">Public Form Tab</a>.
@@ -44,7 +44,7 @@
     from you by revealing your pluspanda link on the "order confirmation" page or "thank you" email.
     You can then pass identifier data into the url to pre-populate the fields.
     The pluspanda link would look something like this: 
-    <br/><a href="<?php echo url::site("testimonials/add/{$this->site->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?>"><?php echo url::site("testimonials/add/{$this->site->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?></a>
+    <br/><a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?>"><?php echo url::site("testimonials/add/{$this->owner->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?></a>
     
     <br/>Configure your form in the <a href="/admin/testimonials/form">Public Form Tab</a>.
   </div>

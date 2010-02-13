@@ -18,7 +18,7 @@ class Add_Controller extends Testimonials_Template_Controller {
  */ 
   public function index()
   {
-    $settings = json_decode($this->site->tstml);
+    $settings = json_decode($this->owner->tconfig->form);
     if(NULL === $settings)
     {
       $settings = new StdClass;
@@ -53,13 +53,13 @@ class Add_Controller extends Testimonials_Template_Controller {
       }
 
       $new = ORM::factory('testimonial');
-      $new->site_id = $this->site->id;
+      $new->owner_id = $this->owner->id;
       $new->patron->name = $_POST['name'];
       if($settings->meta)
         $new->patron->meta = $_POST['meta'];
       $new->save();
       
-      $editor_url = url::site("testimonials/save/{$this->site->apikey}?ctk={$new->patron->token}&ttk={$new->token}");
+      $editor_url = url::site("testimonials/save/{$this->owner->apikey}?ctk={$new->patron->token}&ttk={$new->token}");
       url::redirect($editor_url);
     }
     

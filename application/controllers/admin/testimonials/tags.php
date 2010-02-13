@@ -24,7 +24,7 @@
   public function index()
   {  
     $content = new View('admin/testimonials/categories_wrapper');
-    $content->categories = $this->site->tags;
+    $content->categories = $this->tags;
     
     if(request::is_ajax())
       die($content);
@@ -44,7 +44,7 @@
     valid::id_key($this->tag_id);
     
     $tag = ORM::factory('tag')
-      ->where('site_id',$this->site_id)
+      ->where('owner_id',$this->owner->id)
       ->find($this->tag_id);
     if(!$tag->loaded)
     {
@@ -68,11 +68,11 @@
     
     $max = ORM::factory('tag')
       ->select('MAX(position) as highest')
-      ->where('site_id', $this->site_id)
+      ->where('owner_id', $this->owner->id)
       ->find();    
       
     $category = ORM::factory('tag');
-    $category->site_id  = $this->site_id;
+    $category->owner_id  = $this->owner->id;
     $category->name     = $_POST['name'];
     $category->desc     = $_POST['desc'];
     $category->position = $max->highest+1;
@@ -136,7 +136,7 @@
     
     $db = Database::Instance();
     foreach($_GET['cat'] as $position => $id)
-      $db->update('tags', array('position' => "$position"), "id = '$id' AND site_id = '$this->site_id'");   
+      $db->update('tags', array('position' => "$position"), "id = '$id' AND owner_id = '{$this->owner->id}'");   
 
     $this->update_settings_cache();
     
