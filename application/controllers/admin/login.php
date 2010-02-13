@@ -21,7 +21,7 @@
   public function index()
   {
     if($this->owner->logged_in())
-      url::redirect('/admin/testimonials/dashboard');
+      url::redirect('/admin/testimonials/display');
 
     $login_shell = new View('admin/login_shell');
     $login_shell->content = new View('admin/login');

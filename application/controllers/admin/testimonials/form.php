@@ -32,7 +32,7 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->active  = 'form';
+    $this->active  = 'form';
     die($this->shell);
   
   }

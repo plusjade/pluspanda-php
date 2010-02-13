@@ -33,8 +33,8 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->active  = 'display';
-    $this->shell->service = 'testimonials';
+    $this->active  = 'display';
+    $this->service = 'testimonials';
     die($this->shell);
   
   }

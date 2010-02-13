@@ -45,13 +45,11 @@
     <div id="sidebar">  
       <ul>
       <?php 
-        if(empty($active))
-          $active = 'dashboard';
         foreach(${"menu_$this->service"} as $data)
         {
           list($name, $link, $text, $class) = $data;
           $class = (empty($class)) ? '' : $class;
-          if($name == $active)
+          if($name == $this->active)
             echo "<li class=\"$class $name\"><a href=\"$link\" class=\"active\">$text</a></li>\n";
           else
             echo "<li class=\"$class $name\"><a href=\"$link\">$text</a></li>\n";

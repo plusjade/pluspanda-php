@@ -46,8 +46,8 @@ class Manage_Controller extends Admin_Template_Controller {
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->service = 'testimonials';
-    $this->shell->active  = 'testimonials';
+    $this->service = 'testimonials';
+    $this->active  = 'testimonials';
     die($this->shell);
   }
 

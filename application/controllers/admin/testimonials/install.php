@@ -32,8 +32,8 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->active = 'install';
-    $this->shell->service = 'testimonials';
+    $this->active = 'install';
+    $this->service = 'testimonials';
     die($this->shell);
   }
   
