@@ -54,12 +54,12 @@ class Add_Controller extends Testimonials_Template_Controller {
 
       $new = ORM::factory('testimonial');
       $new->owner_id = $this->owner->id;
-      $new->patron->name = $_POST['name'];
+      $new->name = $_POST['name'];
       if($settings->meta)
-        $new->patron->meta = $_POST['meta'];
+        $new->meta = $_POST['meta'];
       $new->save();
       
-      $editor_url = url::site("testimonials/save/{$this->owner->apikey}?ctk={$new->patron->token}&ttk={$new->token}");
+      $editor_url = url::site("testimonials/save/{$this->owner->apikey}?ttk={$new->token}");
       url::redirect($editor_url);
     }
     

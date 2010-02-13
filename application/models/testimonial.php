@@ -3,7 +3,6 @@
 class Testimonial_Model extends ORM {
   
   // Relationships
-  #protected $has_and_belongs_to_many = array('account_users');
   protected $has_one = array('patron', 'tag');
 
   public function __set($key, $value)
@@ -22,10 +21,6 @@ class Testimonial_Model extends ORM {
     {
       $this->created = time();
       $this->token   = text::random('alnum', 6);
-      
-      # save the patron data.
-      $this->patron->save();
-      $this->patron_id = $this->patron->id;
     }
     else
       $this->updated = time();
@@ -35,14 +30,13 @@ class Testimonial_Model extends ORM {
   }
   
   /**
-   * Overload delete to also delete the associated patron
+   * Overload delete to include assets
    * when the object is deleted.
    */
   public function delete($id=NULL)
   {
     if ($id === NULL AND $this->loaded)
     {
-      $this->patron->delete();
       #TODO: delete the associated images.
     }
     
@@ -259,11 +253,11 @@ class Testimonial_Model extends ORM {
     $data['rating']   = $this->rating;
     $data['image']    = $this->image;
     $data['created']  = $this->created;
-    $data['name']     = $this->patron->name;
-    $data['position'] = $this->patron->position;
-    $data['company']  = $this->patron->company;
-    $data['location'] = $this->patron->location;
-    $data['url']      = $this->patron->url;
+    $data['name']     = $this->name;
+    $data['position'] = $this->c_position;
+    $data['company']  = $this->company;
+    $data['location'] = $this->location;
+    $data['url']      = $this->url;
     $data['tag_name'] = $this->tag->name;
     return $data;
   }

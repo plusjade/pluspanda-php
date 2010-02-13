@@ -17,23 +17,23 @@ class t_build_Core {
       $image = (empty($testimonial->image))
         ? ''
         : "<img src=\"$asset_url/". t_paths::image_dir . "/$testimonial->image\"/>";
-      $url = (empty($testimonial->patron->url))
+      $url = (empty($testimonial->url))
         ? ''
-        : 'http://' . $testimonial->patron->url;
+        : 'http://' . $testimonial->url;
     ?>
 <div id="t-<?php echo $testimonial->id?>" class="t-wrapper tag-<?php echo $testimonial->tag_id?> <?php echo (0 == $alt % 2) ? 'even' : 'odd'?>">
   <div class="t-details">
     <div class="image"><?php echo $image?></div>
     
     <div class="t-name">
-      <span><?php echo $testimonial->patron->name?></span>
+      <span><?php echo $testimonial->name?></span>
     </div>
     <div class="t-position">
-      <span><?php echo $testimonial->patron->position?></span>
-      , <span><?php echo $testimonial->patron->company?></span>
+      <span><?php echo $testimonial->c_position?></span>
+      , <span><?php echo $testimonial->company?></span>
     </div>
     <div class="t-location">
-      <span><?php echo $testimonial->patron->location?></span>
+      <span><?php echo $testimonial->location?></span>
     </div>      
     <div class="link">
       <a href="<?php echo $url?>"><?php echo $url?></a>
@@ -143,9 +143,9 @@ class t_build_Core {
       <td class="move"><img src="/static/images/admin/move.png" style="width:18px;height:18px;margin-top:2px;"/></td>
       <td><input type="checkbox" name=""/></td>
       <td><?php echo $testimonial->position?></td>
-      <td class="name"><?php echo $testimonial->patron->name?></td>
+      <td class="name"><?php echo $testimonial->name?></td>
       
-      <td class="company"><?php echo $testimonial->patron->company?></td>
+      <td class="company"><?php echo $testimonial->company?></td>
       <td class="category"><?php echo $testimonial->tag->name?></td>
       <td><?php echo (empty($testimonial->publish)) ? 'no' : 'yes'?></td>
       
@@ -153,7 +153,7 @@ class t_build_Core {
     
       <td><?php echo common_build::timeago($testimonial->created)?></td>
       <td class="edit"><a href="/admin/testimonials/manage/edit?id=<?php echo $testimonial->id?>">edit</a></td>
-      <td><a href="<?php echo url::site("testimonials/save/$apikey?ctk={$testimonial->patron->token}&ttk=$testimonial->token")?>" class="fb-div" rel="#share-window">share</a></td>
+      <td><a href="<?php echo url::site("testimonials/save/$apikey?ttk=$testimonial->token")?>" class="fb-div" rel="#share-window">share</a></td>
       <td class="delete"><a href="/admin/testimonials/manage/delete?id=<?php echo $testimonial->id ?>">[x]</a></td>
     
     </tr>

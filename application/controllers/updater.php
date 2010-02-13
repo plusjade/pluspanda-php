@@ -17,6 +17,22 @@
 
   public function version_7()
   {
+    $testimonials = ORM::factory('testimonial')->find_all();
+    foreach($testimonials as $testimonial)
+    {
+      $testimonial->name       = $testimonial->patron->name;
+      $testimonial->company    = $testimonial->patron->company;
+      $testimonial->c_position = $testimonial->patron->position;
+      $testimonial->location   = $testimonial->patron->location;
+      $testimonial->url        = $testimonial->patron->url;
+      $testimonial->meta       = $testimonial->patron->meta;
+      $testimonial->email      = $testimonial->patron->email;
+      $testimonial->save();
+    }
+  
+    die('merge testimonials was good');
+    
+    
     $owners = ORM::factory('owner')->find_all();
     foreach($owners as $owner)
     {

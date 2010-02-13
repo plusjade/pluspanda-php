@@ -15,13 +15,8 @@ class Save_Controller extends Testimonials_Template_Controller {
       $this->render(View::factory('testimonials/public/blank'));
     $this->testimonial_token = $_GET['ttk'];
 
-    # make sure the customer token is sent:
-    if(empty($_GET['ctk']))
-      $this->render(View::factory('testimonials/public/blank'));
-    $this->patron_token = $_GET['ctk'];
-    
     # define the form action url 
-    $this->form_url = url::site("/testimonials/save/{$this->owner->apikey}?ctk=$this->patron_token&ttk=$this->testimonial_token");
+    $this->form_url = url::site("/testimonials/save/{$this->owner->apikey}?ttk=$this->testimonial_token");
         
     # route to method here for better urls =p
     $allowed  = array('crop');
@@ -80,10 +75,6 @@ class Save_Controller extends Testimonials_Template_Controller {
   {
     $testimonial = $this->get_testimonial();
 
-    # does the testimonial belong to the patron?
-    if($this->patron_token !== $testimonial->patron->token)
-      $this->render('invalid patron token');  
-  
     # get form questions
     $questions = ORM::factory('question')
       ->where('owner_id',$this->owner->id)
@@ -117,19 +108,17 @@ class Save_Controller extends Testimonials_Template_Controller {
       $view->type = 'testimonial';
       return $view;
     }
-    
-    $testimonial->body_edit   = (isset($_POST['info'])) ? json_encode($_POST['info']) : '';
-    $testimonial->body        = $_POST['body'];
-    $testimonial->tag_id      = $_POST['tag'];
-    $testimonial->rating      = $_POST['rating'];        
+    #die(kohana::debug($_POST));
+    $testimonial->body_edit  = (isset($_POST['info'])) ? json_encode($_POST['info']) : '';
+    $testimonial->body       = $_POST['body'];
+    $testimonial->tag_id     = $_POST['tag'];
+    $testimonial->rating     = $_POST['rating'];
+    $testimonial->name       = $_POST['name'];
+    $testimonial->company    = $_POST['company'];
+    $testimonial->c_position = $_POST['position'];
+    $testimonial->location   = $_POST['location'];
+    $testimonial->url        = $_POST['url'];
     $testimonial->save();
-    
-    $testimonial->patron->name      = $_POST['name'];
-    $testimonial->patron->company   = $_POST['company'];
-    $testimonial->patron->position  = $_POST['position'];
-    $testimonial->patron->location  = $_POST['location'];
-    $testimonial->patron->url       = $_POST['url'];
-    $testimonial->patron->save();
     # save image if sent.
     if(isset($_FILES) AND !empty($_FILES['image']['tmp_name']))
       $testimonial->save_image($this->owner->apikey, $_FILES, $testimonial->id);
@@ -152,7 +141,7 @@ class Save_Controller extends Testimonials_Template_Controller {
       ))
       ->find();
     if(!$testimonial->loaded)
-      $this->render('Invalid patron token');  
+      $this->render('Invalid testimonial token');  
   
     return $testimonial;
   }

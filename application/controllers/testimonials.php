@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
- * Renders the testimonials patron testimonials Engine.
+ * Renders the testimonials Engine.
     Widget Ajax via JSONP.
       called externally outputs raw json to be formatted other end.
  */

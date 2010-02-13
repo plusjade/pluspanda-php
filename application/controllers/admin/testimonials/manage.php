@@ -60,10 +60,10 @@ class Manage_Controller extends Admin_Template_Controller {
     $limit = 25;
     $params = array(
       'owner_id' => $this->owner->id,
-      'page'    => $this->active_page,
-      'tag'     => $this->active_tag,
-      'publish' => $this->publish,
-      'limit'   => $limit,
+      'page'     => $this->active_page,
+      'tag'      => $this->active_tag,
+      'publish'  => $this->publish,
+      'limit'    => $limit,
     );
     
     $total_testimonials = ORM::factory('testimonial')
@@ -152,12 +152,12 @@ class Manage_Controller extends Admin_Template_Controller {
     }
     
     $testimonial = $this->get_testimonial();
-    $testimonial->patron->name     = $_POST['name'];
-    $testimonial->patron->company  = $_POST['company'];
-    $testimonial->patron->position = $_POST['position'];
-    $testimonial->patron->url      = $_POST['url'];
-    $testimonial->patron->location = $_POST['location'];
-    $testimonial->patron->save();
+    $testimonial->name       = $_POST['name'];
+    $testimonial->company    = $_POST['company'];
+    $testimonial->c_position = $_POST['position'];
+    $testimonial->url        = $_POST['url'];
+    $testimonial->location   = $_POST['location'];
+    $testimonial->save();
 
     $testimonial->body    = $_POST['body'];  
     $testimonial->tag_id  = $_POST['tag'];

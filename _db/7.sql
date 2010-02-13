@@ -26,7 +26,19 @@ ALTER TABLE  `tconfigs` DROP  `created`;
 ALTER TABLE  `tconfigs` CHANGE  `tstml_msg`  `msg` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE  `tconfigs` CHANGE  `tstml`  `form` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
+ALTER TABLE  `testimonials` DROP  `featured`;
 
+
+-- merge patrons into testimonial table
+
+ALTER TABLE  `testimonials` ADD  `name` VARCHAR( 255 ) NOT NULL AFTER  `token` ,
+ADD  `company` VARCHAR( 255 ) NOT NULL AFTER  `name` ,
+ADD  `c_position` VARCHAR( 255 ) NOT NULL AFTER  `company` ,
+ADD  `location` VARCHAR( 255 ) NOT NULL AFTER  `c_position` ,
+ADD  `url` VARCHAR( 255 ) NOT NULL AFTER  `location`;
+
+ALTER TABLE  `testimonials` ADD  `email` VARCHAR( 255 ) NOT NULL ,
+ADD  `meta` VARCHAR( 255 ) NOT NULL;
 
 
 UPDATE `version` SET  `at` =7;

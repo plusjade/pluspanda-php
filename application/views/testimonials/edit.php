@@ -11,7 +11,7 @@
 
 
 <div class="top-message">
-  Hello, <?php echo $testimonial->patron->name?>, Thanks for your help!
+  Hello, <?php echo $testimonial->name?>, Thanks for your help!
   <br/>Be sure to save the link to this page so you can edit your testimonial anytime!
 </div>
 
@@ -37,27 +37,27 @@
       
       <span class="label">Full Name</span>
       <span class="t-name">
-        <input name="name" value="<?php echo $testimonial->patron->name?>" />
+        <input name="name" value="<?php echo $testimonial->name?>" />
       </span>
       
       <span class="label">Position at Company</span>
       <span class="t-position">
-        <input name="position" value="<?php echo $testimonial->patron->position?>" />
+        <input name="position" value="<?php echo $testimonial->c_position?>" />
       </span>
       
       <span class="label">Company</span>
       <span class="t-company">
-        <input name="company" value="<?php echo $testimonial->patron->company?>" />
+        <input name="company" value="<?php echo $testimonial->company?>" />
       </span>
       
       <span class="label">Location</span>
       <span class="t-location">
-        <input name="location" value="<?php echo $testimonial->patron->location?>" />
+        <input name="location" value="<?php echo $testimonial->location?>" />
       </span>
       
       <span class="label">Website</span>
       <span class="t-url">
-        http://<input name="url" value="<?php echo $testimonial->patron->url?>" />
+        http://<input name="url" value="<?php echo $testimonial->url?>" />
       </span>
     </div>
     
