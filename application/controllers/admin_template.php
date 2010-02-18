@@ -10,6 +10,7 @@ abstract class Admin_Template_Controller extends Controller {
   public $shell   = 'admin/shell';
   public $service = 'testimonials';
   public $active  = 'display';
+  public $sub_active  = 'main';
   
 /**
  * shell loading and setup routine.
@@ -36,11 +37,8 @@ abstract class Admin_Template_Controller extends Controller {
 
     $this->shell->menu_testimonials = array(
       array('display', '/admin/testimonials/display','1. Choose Layout',''),    
-      array('tags', '/admin/testimonials/tags','Categories','jax'),
-      array('testimonials', '/admin/testimonials/manage','2. Add Testimonials','jax'),
-      array('form', '/admin/testimonials/form','Collect Form','jax'),
+      array('manage', '/admin/testimonials/manage','2. Add Testimonials','jax'),
       array('install', '/admin/testimonials/install','3. Install','jax'),
-      array('help', '/admin/testimonials/help','(Help)','jax'),
     );
     
     $this->shell->menu_reviews = array(

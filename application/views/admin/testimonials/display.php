@@ -1,9 +1,28 @@
 
+
+<form id="theme-css-wrapper" action="/admin/testimonials/display/save_css" class="common-ajax" method="POST">
+  <div class="round-box-top">
+    <a href="#close" class="close">[X]</a>
+    Customize CSS
+  </div>
+  <div class="round-box-body">
+    <a href="#" class="update-css">update view</a>
+     -- <a href="#" class="load-stock">load stock</a>
+    <textarea name="css" style="width:99%; height:200px"><?php echo $stylesheet?></textarea>
+    <div class="stock-css" style="display:none"><?php echo $stock?></div>
+  
+    <br/><br/><a href="#" class="toggle-html">Toggle HTML View</a> - <small>(use as reference for css customizations)</small>
+    <br/><textarea name="html" style="display:none;width:99%;height:200px;"><?php echo $testimonials_html?></textarea>
+    
+    <div class="round-box-tabs buttons">
+      <button type="submit" class="positive">Save CSS</button>
+    </div> 
+  </div>
+</form>
+
+
 <form id="display-settings" action="/admin/testimonials/display/save" method="POST">
-  <div class="round-box-tabs buttons" style="float:right">
-    <button type="submit" class="positive">Update Settings</button>
-  </div> 
-   
+
   <div class="round-box-top">Configure Theme Settings</div>
   <div id="display-settings" class="round-box-body">
     <strong>Choose a Theme</strong> 
@@ -30,22 +49,9 @@
       ?>
       </select>
       <div style="display:block;text-align:center;margin-top:5px;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Manager Tab</a></div>
-  </div>
-</form>
-
-<form id="theme-css-wrapper" action="/admin/testimonials/display/save_css" class="common-ajax" method="POST">
-  <div class="round-box-tabs buttons" style="float:right">
-    <button type="submit" class="positive">Save CSS</button>
-  </div> 
-  <div class="round-box-top">Customize CSS</div>
-  <div class="round-box-body">
-    <a href="#" class="update-css">update view</a>
-     -- <a href="#" class="load-stock">load stock</a>
-    <textarea name="css" style="width:99%; height:200px"><?php echo $stylesheet?></textarea>
-    <div class="stock-css" style="display:none"><?php echo $stock?></div>
-  
-    <br/><br/><a href="#" class="toggle-html">Toggle HTML View</a> - <small>(use as reference for css customizations)</small>
-    <br/><textarea name="html" style="display:none;width:99%;height:200px;"><?php echo $testimonials_html?></textarea>
+    <div class="round-box-tabs buttons" style="float:right">
+      <button type="submit" class="positive">Update Settings</button>
+    </div> 
   </div>
 </form>
 
@@ -72,6 +78,13 @@
     return false;
   });
   
+  $('form#theme-css-wrapper').hide();
+  $('a.show-css').click(function(){
+    $('form#theme-css-wrapper').slideDown('fast');
+    $(this).addClass('active');
+    return false;
+  });
+  
   $('#display-settings').ajaxForm({
     dataType : 'json',
     beforeSubmit: function(fields, form){
@@ -85,6 +98,8 @@
       });
     }
   });
+  
+  
 </script>
 
 

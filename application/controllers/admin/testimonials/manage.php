@@ -46,8 +46,13 @@ class Manage_Controller extends Admin_Template_Controller {
       die($content);
     
     $this->shell->content = $content;
+    $this->shell->sub_menu = array(
+      array('main', '/admin/testimonials/manage','Main Panel',''),    
+      array('collect', '/admin/testimonials/form','Collect Form',''),
+      array('help', '#help','(help)',''),
+    );
     $this->service = 'testimonials';
-    $this->active  = 'testimonials';
+    $this->active  = 'manage';
     die($this->shell);
   }
 

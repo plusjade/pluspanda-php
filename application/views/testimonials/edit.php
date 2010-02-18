@@ -21,8 +21,6 @@
 
 <div class="client-add-wrapper t-builder-wrapper">
 <form action="" enctype="multipart/form-data" method="POST">
-  <button class="submit-button" type="submit">Save Changes</button>
-
   <fieldset class="panda-image">
     Upload new headshot or logo <input type="file" name="image" />
   </fieldset>  
@@ -57,7 +55,7 @@
       
       <span class="label">Website</span>
       <span class="t-url">
-        http://<input name="url" value="<?php echo $testimonial->url?>" />
+        <input name="url" value="http://<?php echo $testimonial->url?>" />
       </span>
     </div>
     
@@ -89,6 +87,9 @@
         ?>
       </div>
       
+    </div>
+    <div class="clear:both;padding:10px;">
+      <button class="submit-button" type="submit">Save Changes</button>
     </div>
   </div>    
       

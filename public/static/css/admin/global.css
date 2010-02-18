@@ -84,27 +84,36 @@ overflow:auto;
 }
   
   #header div {
-    margin-top: 60px;
+    margin-top: 50px;
     margin-left:225px;
-    padding:9px 0;
+    padding:15px 0;
   }
   #header div a{
-    padding:10px 15px;
+    position:relative;
+    top:6px;
+    padding:10px 17px;
+    margin-right:5px;
     -moz-border-radius-topleft:5px;
     -moz-border-radius-topright:5px;
     -webkit-border-top-left-radius:5px;
     -webkit-border-top-right-radius:5px;
     background:#eee;
-    text-decoration:none;
+    color: #666666;
+    font-size:13px;
+    text-decoration: none;
+    font-weight:bold;
   }
   #header div a:hover,
   #header div a.active{
+    padding:12px 17px;
     background:#fff;
-    font-weight:bold;
+    
     border:1px dashed #0099ff;
     border-bottom:0;
     color:#ff7676;
+    text-decoration:none;
   }
+  #header div a.help{float:right;}
 #wrapper{
     background: #fff url('/static/images/marketing/footer.png') repeat-x bottom left;
     overflow:auto;
@@ -217,7 +226,7 @@ ul.normal-list {
   #sidebar li   { margin: 0px;padding: 0px;}
   
   #sidebar a {
-    padding: 10px;
+    padding: 13px 10px;
     display: block;
     height:100%;
     border-top:1px solid #eee;
@@ -241,9 +250,6 @@ ul.normal-list {
     border: 1px dashed #0099ff;
     color: #ff7676;
   }
-  #sidebar li.tags{ margin-left:25px;}
-  #sidebar li.form{ margin-left:25px;}
-  
 
 /* ----------------------------
     FOOTER

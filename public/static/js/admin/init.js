@@ -201,6 +201,11 @@ $(document).ready(function(){
         }
       });
       return false;
+    },
+  // hide the round boxes
+    '.round-box-top a.close, .panda-image a.close' : function(e){
+      $(e.target).parent().parent().hide();
+      return false;
     }
   }));
 

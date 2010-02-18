@@ -1,9 +1,12 @@
 
 <div class="home-intro">
-  <h2 class="home-header">Add Customer Testimonials to Your Website, <span>Fast.</span></h2>
+  <h2 class="home-header">
+    Add Great Looking Customer Testimonials
+    <br/> to Your Website, <span>Fast and Easily.</span>
+  </h2>
 
 
-  <h6 class="home-main-text">
+  <h6 class="home-main-text" style="display:none;">
     "Pluspanda lets you quickly build a professionally designed 'customer testimonials'
     <br/>web page for your marketing website.  It's as simple as 1 - 2 - 3"
   </h6>

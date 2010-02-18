@@ -41,7 +41,7 @@
         if(isset($_GET['ref']))
           url::redirect($_GET['ref']);
         
-        url::redirect('/admin/testimonials/dashboard');
+        url::redirect('/admin/testimonials/display');
       }
       
     # error

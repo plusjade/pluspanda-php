@@ -1,26 +1,6 @@
 
 
-button.submit-button{
-  float:right;
-  padding:6px 10px;
-  margin:0;
-  margin-right:25px;
-  border:1px solid #bde99c;
-  border-bottom:0;
-  background:#d1f0b9;
-  font-weight:bold;
-  font-size:1.1em;
-  -moz-border-radius-topleft:7px;
-  -moz-border-radius-topright:7px;
-  -webkit-border-top-left-radius:7px;
-  -webkit-border-top-right-radius:7px;
-}
-button.submit-button:hover{
-  cursor:cursor;
-  cursor:pointer;
-  background:#a7db80;
-  color:#fff;
-}
+
 div.t-builder-wrapper .panda-image{
   clear:both;
   padding:7px 15px;background:#555;color:#fff;
@@ -58,7 +38,7 @@ div.t-builder-wrapper .t-view{
   }
    div.t-builder-wrapper .t-content {
     width:510px;
-    float:left;
+    float:right;
     overflow:auto;
   }  
   div.t-builder-wrapper .t-rating-wrapper{
@@ -80,8 +60,7 @@ div.t-builder-wrapper .t-body {
 div.t-builder-wrapper .t-body textarea{  
 width:99%;
 height:200px;
-background:transparent;
-border:0  
+
 }
 div.t-builder-wrapper .t-date{float:right;}
 
@@ -93,6 +72,7 @@ div.t-builder-wrapper .t-date{float:right;}
  div.t-builder-wrapper .t-details input{
   border:0;
   border:1px solid #ccc;
+  width:150px !important;
 }  
  div.t-builder-wrapper .t-details input.hide,
  div.t-builder-wrapper .testimonial-wrapper select.hide {

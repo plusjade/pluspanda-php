@@ -7,9 +7,6 @@
 
 
 <form class="common-ajax" action="/admin/testimonials/form/save" method="POST">
-  <div class="round-box-tabs buttons">
-    <button type="submit" class="positive">Save Settings</button>
-  </div>
   <div class="round-box-top">Configure Form Settings.</div>
   <div class="round-box-body">
     <fieldset>
@@ -32,7 +29,11 @@
     <fieldset>
       <label>Define Meta Data Name</label>
       <input type="text" name="meta" value="<?php echo $settings->meta?>" />
-    </fieldset> 
+    </fieldset>
+
+    <div class="round-box-tabs buttons">
+      <button type="submit" class="positive">Save Settings</button>
+    </div>
   </div>
 </form>
 

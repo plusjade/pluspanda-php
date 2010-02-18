@@ -32,6 +32,10 @@
       die($content);
     
     $this->shell->content = $content;
+    $this->shell->sub_menu = array(
+      array('main', '/admin/testimonials/install','Main Panel',''),    
+      array('help', '/admin/testimonials/help','(help)',''),
+    );
     $this->active = 'install';
     $this->service = 'testimonials';
     die($this->shell);

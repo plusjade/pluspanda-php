@@ -183,19 +183,16 @@ background-color: #555;
 /* display settings page */
 form.theme-css-wrapper{margin:10px 0; }
 
-.round-box-tabs button{
+.round-box-tabs{margin-top:10px;}
+.round-box-tabs button, .round-box-tabs a {
   float:right;
-  padding:6px 10px;
+  padding:7px 10px !important;
   margin:0;
-  margin-right:25px;
   border:1px solid #bde99c;
-  border-bottom:0;
   font-weight:bold;
-  font-size:1.1em;
-  -moz-border-radius-topleft:7px;
-  -moz-border-radius-topright:7px;
-  -webkit-border-top-left-radius:7px;
-  -webkit-border-top-right-radius:7px;
+  font-size:16px;
+  -moz-border-radius:7px;
+  -webkit-border-radius:7px;
 }
 .round-box-top{
   clear:both;
@@ -205,6 +202,11 @@ form.theme-css-wrapper{margin:10px 0; }
   -webkit-border-top-left-radius:10px;
   -webkit-border-top-right-radius:10px;
   }
+.round-box-top a.close,
+.panda-image a.close{float:right;color:#fff;text-decoration:none;}
+.round-box-top a.close:hover,
+.panda-image a.close:hover{text-decoration:underline;}
+
 .round-box-body{
   clear:both;
   overflow:auto;
@@ -225,20 +227,14 @@ form.theme-css-wrapper{margin:10px 0; }
 .share-data{width:600px;height:300px; text-align:center}
 .share-data input{width:500px;font-size:1.2em;padding:5px;}
 
+.admin-extra{clear:both;margin-top:10px;}
 .t-publish{
-  float:right;
-  padding:7px 10px;
-  margin:0;
-  margin-right:25px;
+  width:170px;
+  padding:5px 8px;
+  margin:5px 0;
   border:1px solid #ffff99;
-  border-bottom:0;
   background:#ffffcc;
   font-weight:bold;
-  font-size:1.1em;
-  -moz-border-radius-topleft:7px;
-  -moz-border-radius-topright:7px;
-  -webkit-border-top-left-radius:7px;
-  -webkit-border-top-right-radius:7px;
 }
 
 .admin-testimonial-wrapper {

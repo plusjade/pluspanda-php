@@ -30,7 +30,14 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->active  = 'tags';
+    $this->shell->sub_menu = array(
+      array('main', '/admin/testimonials/display','Main Panel',''),    
+      array('css', '#css','Edit CSS','show-css'),
+      array('tags', '/admin/testimonials/tags','Edit Categories',''),
+      array('help', '/admin/testimonials/help','Help',''),
+    );
+    $this->active  = 'display';
+    $this->sub_active  = 'tags';
     $this->service = 'testimonials';
     die($this->shell);
   }
