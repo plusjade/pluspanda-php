@@ -3,7 +3,6 @@
 class Owner_Model extends ORM {
 
   // Relationships
-  protected $has_many = array('owner_tokens');
   protected $has_one = array('tconfig');
   #protected $load_with = array('tconfig');
   
@@ -32,35 +31,76 @@ class Owner_Model extends ORM {
       $this->created = time();
       $this->apikey  = text::random('alnum', 8);
       $this->token   = $this->create_token();
+      parent::save();
+      
+      # auto create a new tconfig.
+      $new_tconfig = ORM::factory('tconfig');
+      $new_tconfig->owner_id = $this->id;
+      $new_tconfig->save();
+      
+      # add 3 sample testimonials to get the party started.
+      $testimonial = ORM::factory('testimonial');
+      $testimonial->owner_id   = $this->id;
+      $testimonial->name       = 'Stephanie Lo';
+      $testimonial->company    = 'World United';
+      $testimonial->c_position = 'Founder';
+      $testimonial->url        = 'worldunited.com';
+      $testimonial->location   = 'Berkeley, CA';
+      $testimonial->rating     = 5;
+      $testimonial->body       = 'The interface is simple and directed. I have a super busy schedule and did not want to waste any time learning yet another website. Pluspanda values my time. Thanks!';  
+      $testimonial->publish    = 1;
+      $testimonial->save();
+      
+      $testimonial->clear();
+      $testimonial->owner_id   = $this->id;
+      $testimonial->name       = 'John Doe';
+      $testimonial->company    = 'Super Company!';
+      $testimonial->c_position = 'President';
+      $testimonial->url        = 'supercompany.com';
+      $testimonial->location   = 'Atlanta, Georgia';
+      $testimonial->rating     = 5;
+      $testimonial->body       = 'This is a sample testimonial for all to see.';  
+      $testimonial->publish    = 1;
+      $testimonial->save();
+      
+      $testimonial->clear();
+      $testimonial->owner_id   = $this->id;
+      $testimonial->name       = 'Jane Smith';
+      $testimonial->company    = 'Widgets R Us';
+      $testimonial->c_position = 'Sales Manager';
+      $testimonial->url        = 'widgetsrus.com';
+      $testimonial->location   = 'Los Angeles, CA';
+      $testimonial->rating     = 5;
+      $testimonial->body       = 'Pluspanda makes our testimonials look great! Our widget sales our up 200% Thanks Pluspanda!';  
+      $testimonial->publish    = 1;
+      $testimonial->save();
       
       # copy stock testimonial css to user data folder
       $src  = DOCROOT .'static/css/testimonials/stock';
       $dest = t_paths::css($this->apikey);
       dir::copy($src, $dest);
+      
+      return;
     }
     return parent::save();
   }
   
-  /**
-   * Validates and optionally saves a new user record from an array.
-   *
-   * @param  array    values to check
-   * @param  boolean  save the record when validation succeeds
-   * @return boolean
-   */
-  /*
-  public function validate(array & $array, $save = FALSE)
-  {
-    $array = Validation::factory($array)
-      ->pre_filter('trim')
-      ->add_rules('email', 'required', 'length[4,127]', 'valid::email', array($this, 'email_available'))
-      ->add_rules('username', 'required', 'length[4,32]', 'chars[a-zA-Z0-9_.]', array($this, 'username_available'))
-      ->add_rules('password', 'required', 'length[5,42]')
-      ->add_rules('password_confirm', 'matches[password]');
 
-    return parent::validate($array, $save);
+  /**
+   * Overload delete to include assets
+   * when the object is deleted.
+   */
+  public function delete($id=NULL)
+  {
+    if ($id === NULL AND $this->loaded)
+    {
+      #TODO: delete the associated everything!
+    }
+    
+    return parent::delete($id);
   }
-  */
+  
+  
   
   /**
    * Validates login information from an array, and optionally redirects
@@ -187,9 +227,9 @@ class Owner_Model extends ORM {
       ->count_records($this->table_name);
   }
 
-  /**
-   * Allows a model to be loaded by apikey or email address.
-   */
+/**
+ * Allows a model to be loaded by apikey or email address.
+ */
   public function unique_key($id)
   {
     if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id))
