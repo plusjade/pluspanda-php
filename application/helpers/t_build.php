@@ -75,7 +75,7 @@ class t_build_Core {
         <span>'+ item.location +'</span>
       </div>      
       <div class="t-url">
-        <a href="'+ item.url +'">'+ item.url +'</a>
+        <a href="'+ item.url +'" target="_blank">'+ item.url +'</a>
       </div>
     </div>
   </div>
