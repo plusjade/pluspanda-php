@@ -5,6 +5,10 @@ $(document).ready(function(){
     $.facebox({ ajax: this.href });
     return false;
   });
+  $('a.fb-help').click(function(){
+    $.facebox({ div: this.href });
+    return false;
+  });
   $('a.fb-div').live('click',function(){
     $.facebox({ div: $(this).attr('rel') });
     $('div.share-data input').val(this.href);
@@ -194,6 +198,7 @@ $(document).ready(function(){
       $('form.common-ajax').ajaxSubmit({
         dataType : 'json',
         beforeSubmit: function(fields, form){
+          if(!$("input", form[0]).jade_validate()) return false;
           $(document).trigger('submit.server');
         },
         success: function(rsp){
@@ -209,8 +214,16 @@ $(document).ready(function(){
     }
   }));
 
-
-
+/*
+var emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if(! val.match(emailRegex) ){
+          $(this).addClass("input_error");
+          $(this).parent('fieldset').addClass("jade_error");
+          $(this).after(' <span class="error_msg">Invalid email</span>');
+          errors = true;
+        }
+        */
+        
 }); // end document ready
 
 

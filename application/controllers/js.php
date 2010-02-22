@@ -47,6 +47,7 @@ class Js_Controller {
       'common/facebox.js',
       'common/jquery.tablesorter.min.js',
       'common/jcrop.js',
+      'common/validate.js',
       'common/binds.js',
       'testimonials/binds.js',
       'admin/init.js',
