@@ -20,10 +20,18 @@ abstract class Admin_Template_Controller extends Controller {
     parent::__construct();
 
     $this->auth = Auth::instance();  
-    if(!$this->auth->logged_in())
-      url::redirect('/admin/login');
+    if($this->auth->logged_in())
+    {
+      $this->owner = $this->auth->get_user(); 
+    }
+    else
+    {
+      #url::redirect('/admin/login');
+      $this->owner = ORM::factory('owner');
+      $this->owner->save();
+      $this->auth->force_login($this->owner);
+    }
 
-    $this->owner = $this->auth->get_user();
     $this->tags  = ORM::factory('tag')
       ->where('owner_id', $this->owner->id)
       ->find_all();

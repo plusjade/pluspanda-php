@@ -18,8 +18,23 @@
       <li><a href="/">Return Home</a></li>
       <li><a href="/admin/account">Account</a></li>
       <li><a href="/admin/login/logout">Logout</a></li>
-    
     </ul>
+    <?php if(empty($this->owner->email)):?>
+    <div class="user-status guest">
+      <b>This Guest account will expire in 24 hours...</b>
+      <br/>Would You Like to Save Your Progress?
+      <form action="/admin/account/save" method="POST" class="common-ajax">
+        <fieldset>
+          <label>your email:</label> <input type="text" name="email" rel="email_req"/> 
+          <button type="submit">Save My Progress</button>
+        </fieldset>
+      </form>
+    </div>
+    <?php else:?>
+    <div class="user-status owner">
+      Logged in as <?php echo $this->owner->email?>
+    </div>
+    <?php endif;?>
   </div>
   <div id="server_response">
     <span class="rsp"></span>
@@ -31,12 +46,15 @@
   <div id="header">
     <div>
     <?php
-      $services = array('testimonials'); # add reviews here
-      foreach($services as $link)
-        if($this->service == $link)
-          echo "<a href=\"/admin/$link/dashboard\" class=\"active\">$link</a> \n";
-        else
-          echo "<a href=\"/admin/$link/dashboard\">$link</a> \n";
+      if(!empty($sub_menu))
+        foreach($sub_menu as $data)
+        {
+          list($name, $url, $text, $class) = $data;
+          if($this->sub_active == $name)
+            echo "<a href=\"$url\" class=\"active $class\">$text</a> \n";
+          else
+            echo "<a href=\"$url\" class=\"$class\">$text</a> \n";
+        }
     ?>
     </div>
   </div>
@@ -47,12 +65,12 @@
       <?php 
         foreach(${"menu_$this->service"} as $data)
         {
-          list($name, $link, $text, $class) = $data;
+          list($name, $url, $text, $class) = $data;
           $class = (empty($class)) ? '' : $class;
           if($name == $this->active)
-            echo "<li class=\"$class $name\"><a href=\"$link\" class=\"active\">$text</a></li>\n";
+            echo "<li class=\"$class $name\"><a href=\"$url\" class=\"active\">$text</a></li>\n";
           else
-            echo "<li class=\"$class $name\"><a href=\"$link\">$text</a></li>\n";
+            echo "<li class=\"$class $name\"><a href=\"$url\">$text</a></li>\n";
         }
       ?>
       </ul> 
