@@ -30,9 +30,10 @@
       $testimonial->save();
     }
   
-    die('merge testimonials was good');
+    echo 'merge patrons into testimonials was good<br/>';
     
     
+    # phase out "site" dependability and update site_id to owner_id
     $owners = ORM::factory('owner')->find_all();
     foreach($owners as $owner)
     {
@@ -67,11 +68,9 @@
       }
       
     }
-    die('all good');
+    echo 'upate from site_id to owner_id was good<br/>';
   
-    
-    # db version 7
-    
+    /*
     # manually executed **
     $owners = ORM::factory('owner')->find_all();
     #die(kohana::debug($owners));
@@ -86,7 +85,7 @@
         $site->save();      
       }
     }
-
+    */
     
     die('update successful');
   }
