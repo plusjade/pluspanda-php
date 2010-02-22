@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = 'stfugid.com';
+$config['site_domain'] = 'self-made.us';
 #apikey for the sample account we want to display.
 $config['apikey'] = 'nbE6zpH';
 

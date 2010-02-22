@@ -38,7 +38,7 @@
     foreach($owners as $owner)
     {
       $testimonials = ORM::factory('testimonial')
-        ->where('owner_id', $owner->site->id)
+        ->where('owner_id', $owner->tconfig->id)
         ->find_all();
       # echo kohana::debug($testimonials);
       foreach($testimonials as $testimonial)
@@ -49,7 +49,7 @@
       
       #
       $questions = ORM::factory('question')
-        ->where('owner_id', $owner->site->id)
+        ->where('owner_id', $owner->tconfig->id)
         ->find_all();
       foreach($questions as $question)
       {
@@ -59,7 +59,7 @@
       
       #
       $tags = ORM::factory('tag')
-        ->where('owner_id', $owner->site->id)
+        ->where('owner_id', $owner->tconfig->id)
         ->find_all();
       foreach($tags as $tag)
       {
