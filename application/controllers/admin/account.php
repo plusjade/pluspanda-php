@@ -42,6 +42,11 @@
       $this->rsp->msg = 'Invalid Email!';
       $this->rsp->send(); 
     }
+    elseif($this->auth->unique_key_exists($_POST['email']))
+    {
+      $this->rsp->msg = 'Email already exists!';
+      $this->rsp->send(); 
+    }
     
     $pw = text::random('alnum', 8);
     $this->owner->email = $_POST['email'];
