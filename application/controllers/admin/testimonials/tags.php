@@ -34,7 +34,7 @@
       array('main', '/admin/testimonials/display','Main Panel',''),    
       array('css', '#css','Edit CSS','show-css'),
       array('tags', '/admin/testimonials/tags','Edit Categories',''),
-      array('help', '/admin/testimonials/help','Help',''),
+      array('help', '#help-page','(help)','fb-help'),
     );
     $this->active  = 'display';
     $this->sub_active  = 'tags';

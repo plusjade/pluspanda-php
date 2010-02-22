@@ -49,7 +49,7 @@ class Manage_Controller extends Admin_Template_Controller {
     $this->shell->sub_menu = array(
       array('main', '/admin/testimonials/manage','Main Panel',''),    
       array('collect', '/admin/testimonials/form','Collect Form',''),
-      array('help', '#help','(help)',''),
+      array('help', '#help-page','(help)','fb-help'),
     );
     $this->service = 'testimonials';
     $this->active  = 'manage';
@@ -62,7 +62,7 @@ class Manage_Controller extends Admin_Template_Controller {
  */
   private function get_testimonials()
   {
-    $limit = 25;
+    $limit = 100;
     $params = array(
       'owner_id' => $this->owner->id,
       'page'     => $this->active_page,
@@ -162,17 +162,15 @@ class Manage_Controller extends Admin_Template_Controller {
     $testimonial->c_position = $_POST['position'];
     $testimonial->url        = $_POST['url'];
     $testimonial->location   = $_POST['location'];
-    $testimonial->save();
-
-    $testimonial->body    = $_POST['body'];  
-    $testimonial->tag_id  = $_POST['tag'];
-    $testimonial->publish = (empty($_POST['publish']))
+    $testimonial->body       = $_POST['body'];  
+    $testimonial->tag_id     = $_POST['tag'];
+    $testimonial->publish    = (empty($_POST['publish']))
       ? 0
       : 1;
-    $testimonial->lock    = (empty($_POST['lock']))
+    $testimonial->lock       = (empty($_POST['lock']))
       ? 0
       : 1;
-    $testimonial->rating  = $_POST['rating'];
+    $testimonial->rating     = $_POST['rating'];
     $testimonial->save();
 
     $this->rsp->status   = 'success';

@@ -1,5 +1,6 @@
 
 
+
 /*
  * reviews stuff
  */
@@ -98,16 +99,17 @@ text-align:left;}
  * testimonials stuff
  */
  
-div.dashboard-page{
-}
- div.dashboard-page h3{padding:5px; margin-top:25px; color:#333; background:#ffffcc}
-div.dashboard-page h4{
+
+#help-page{display:none}
+.help-page-inner{width:500px}
+.help-page-inner h3{padding:5px; margin-top:25px; color:#333; border-bottom:1px dashed #ccc;}
+.help-page-inner h4{
 padding-left:25px;
 margin:15px 0;
 background: url('/static/images/marketing/check.gif') no-repeat 0 50%;
 color:#555
 }
-div.dashboard-page .indent{margin-left:25px; color:#555;line-height:1.5em;}
+.help-page-inner .indent{margin-left:25px; color:#555;line-height:1.5em;}
 
 
 /* MANAGER PAGE */

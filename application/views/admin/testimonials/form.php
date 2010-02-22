@@ -73,6 +73,33 @@
   </div>
 </div>
 
+<div id="help-page">
+  <div class="help-page-inner">
+    <h3>Collecting Testimonials Publically.</h3>
+    
+    <h4>Using Your Public "Add Testimonial" Form.</h4>
+    <div class="indent">
+      Your public "add testimonial" form can be seen here: <a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}")?>"><?php echo url::site("testimonials/add/{$this->owner->apikey}")?></a>
+      <br/>You can share this link with all of your customers. Once a customer gives the required identifer information,
+      his editable testimonial will be generated for him to fill out.
+   </div>
+    
+    <h4>Tip: Pre-populating The Public Form.</h4>
+    <div class="indent">
+      Make it easier for customers to submit testimonials by pre-populating
+      your public form with necessary identifer information.
+      <b>Example:</b>
+      <br/>You can restrict testimonial submission to only customers who have made a confirmed purchase
+      from you by revealing your pluspanda link on the "order confirmation" page or "thank you" email.
+      You can then pass identifier data into the url to pre-populate the fields.
+      The pluspanda link would look something like this: 
+      <br/><a href="<?php echo url::site("testimonials/add/{$this->owner->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?>"><?php echo url::site("testimonials/add/{$this->owner->apikey}?name=John%20Smith&meta=8239&key=Kas987sf")?></a>
+    </div>
+  
+  </div>
+</div>
+
+
 <script type="text/javascript">
   // override the normal submit event
   $('form.common-ajax').submit(function(){

@@ -20,6 +20,8 @@ class Tconfig_Model extends ORM {
     if ($this->loaded === FALSE)
     {
 
+
+    
     }
     return parent::save();
   }

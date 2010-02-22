@@ -35,7 +35,7 @@
     $this->shell->sub_menu = array(
       array('main', '/admin/testimonials/manage','Main Panel',''),    
       array('collect', '/admin/testimonials/form','Collect Form',''),
-      array('help', '#help','(help)',''),
+      array('help', '#help-page','(help)','fb-help'),
     );
     $this->active  = 'manage';
     $this->sub_active = 'collect';

@@ -36,6 +36,22 @@
 <?php endforeach;?>
 </ul>
 
+
+<div id="help-page">
+  <div class="help-page-inner">
+    <h3>Edit Categories</h3>
+    <div class="indent">
+      Categories allow you to group similar testimonials together so your customers can find testimonials most relevant to them.
+      <h4>Managing Categories</h4>
+      <div class="indent">
+        Add, edit, and rearrange testimonial categories.
+        Be sure to assign testimonials to particular categories within the Add Testimonials Tab.
+        Testimonials default to no specified category.
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function(){
     $(document).trigger('tstml.tags');

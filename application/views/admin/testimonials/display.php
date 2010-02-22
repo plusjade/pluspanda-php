@@ -48,7 +48,7 @@
              echo "<option value=\"$val\">$text</option>";
       ?>
       </select>
-      <div style="display:block;text-align:center;margin-top:5px;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Manager Tab</a></div>
+      <div style="display:block;text-align:center;margin-top:5px;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a></div>
     <div class="round-box-tabs buttons" style="float:right">
       <button type="submit" class="positive">Update Settings</button>
     </div> 
@@ -60,8 +60,50 @@
 <style id="custom-css" type="text/css"></style>
 <?php echo $embed_code?>
 
+<div style="clear:both;margin-top:25px;text-align:center;">
+  <h2>Go To Step 2 &rarr;</h2>
+  <h3><a href="/admin/testimonials/manage">Manage Your Testimonials</a></h3>
+</div>
+
+<div id="help-page">
+  <div class="help-page-inner">
+    <h3>Main Panel</h3>
+    <div class="indent">
+      Only testimonials marked "published" will display on your testimonials widget.
+
+      <h4>Configuring Layout Settings</h4>
+      <div class="indent">
+        <b>Choosing a theme</b> determines which layout your widget will use.
+        Set the <b>number of testimonials</b> you wish to display per each "page".
+        <b>Order testimonials by</b> allows you to set the sort order. Default is by creation date.
+        Choose custom order and then define the order by moving testimonials up and down in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a>
+      
+        <br/><br/>
+        Saving your changes will automatically update the widget view to reflect your changes.
+      </div>
+    </div>
+      
+    <h3>Edit CSS</h3>
+    <div class="indent">
+      Clicking on the "edit css" tab will reveal the css editor. The editor is <em>only</em> available within the main panel.
+      <br/>
+      <ul>
+        <li>
+          <b>Update View</b> will apply the current css to the widget in real time. Use this to see how your changes affect the layout.
+        </li>
+        <li>
+          <b>Load Stock</b> will load the stock css as originally designed by pluspanda.
+        </li>
+        <li>
+          <b>Toggle HTML view</b> will show the current HTML structure along with CSS attributes.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
-  $('.common-ajax button, a.update-css').click(function(){
+  $('.common-ajax button.positive, a.update-css').click(function(){
     $('head link#pandaTheme').remove();
     var css = $('textarea[name="css"]').val();
     $('style#custom-css').html(css);

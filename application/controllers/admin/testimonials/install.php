@@ -34,7 +34,7 @@
     $this->shell->content = $content;
     $this->shell->sub_menu = array(
       array('main', '/admin/testimonials/install','Main Panel',''),    
-      array('help', '/admin/testimonials/help','(help)',''),
+      array('help', '#help-page','(help)','fb-help'),
     );
     $this->active = 'install';
     $this->service = 'testimonials';

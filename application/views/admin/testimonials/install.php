@@ -1,5 +1,6 @@
 
-
+<?php
+/*
 <!--
 <textarea><?php echo $css?></textarea>
 <textarea><?php echo $html?></textarea>
@@ -16,12 +17,12 @@
 <script type="text/javascript">
   var count = $('#plusPandaYes div.t-wrapper').size();
   console.log(count);
-/*
-  $('#plusPandaYes div.t-wrapper:first')
-    .before('<span id="page-1" class="page-wrapper">');
-  $('#plusPandaYes div.t-wrapper:last')
-    .after('</span>');
-*/
+
+  //$('#plusPandaYes div.t-wrapper:first')
+  //  .before('<span id="page-1" class="page-wrapper">');
+  //$('#plusPandaYes div.t-wrapper:last')
+  //  .after('</span>');
+
   var page = 1;
   $('#plusPandaYes div.t-wrapper').each(function(i){
     
@@ -69,8 +70,18 @@
     }
   });
 </script>
-
 <br/><br/>
+*/
+if(empty($this->owner->email)):?>
+<h2 style="text-align:center; text-decoration:underline; color:#0066cc;">
+ <img src="/static/images/admin/warning.png" />
+  Remember to Save Your Account by Entering Your Email!
+ <img src="/static/images/admin/warning.png" />
+ <br/>
+ Otherwise this code will expire in 24 hours =(
+</h2>
+<?php endif;?>
+
 <div class="install-page">
   <div class="info">
     Place the install code in the exact place on your page where you want your widget to be displayed.
@@ -87,4 +98,22 @@
   </div>
   <textarea><?php echo $embed_code_lite?></textarea>
 
+  
+  <br/><br/>
+  <h2>Coming Soon: Export Your Layout</h2>
+  We are working on adding exporting of all html,css, javascript and data assets
+  to upload onto your own page. Please email <a href="mailto:plusjade@gmail.com">plusjade@gmail.com</a> if this is something you would be interested in, thanks!
 </div>
+
+<div id="help-page">
+  <div class="help-page-inner">
+    No help here yet!
+  </div>
+</div>
+
+<div style="clear:both;margin-top:25px;text-align:center;">
+  <h2>Success!</h2>
+  <span style="color:#555">(yup that's it)</span>
+</div>
+
+
