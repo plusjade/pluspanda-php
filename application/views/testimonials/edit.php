@@ -93,6 +93,9 @@
     </div>
   </div>    
       
+      
+<?php
+/*
   <h1>Survey Questions</h1>
   <div class="slider-wrap">
     <div id="t-questions" class="t-questions">
@@ -112,4 +115,9 @@
   </div>
 </form>
 </div>
+
+*/
+?>
+
+
 
