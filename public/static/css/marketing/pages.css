@@ -8,21 +8,26 @@ h2.home-header span{font-style:italic;}
 margin:10px 20px;
 padding-bottom:30px;
 overflow:auto;
+background: #fff url('/static/images/marketing/homepage-arrow.png') no-repeat 93% 84%;
 }
 
-.main-steps{margin:auto; width:490px;}
-.main-steps h3{padding:5px 10px; margin:0 30px; background:#eee; color:#999;
+.main-steps{margin:auto; width:490px;
+}
+.main-steps h3{
+padding:5px 10px; margin:0 30px; background:#eee; color:#999;
 -moz-border-radius:7px;
 -webkit-border-radius:7px;
 }
-.main-steps h3.active{margin:0; padding:8px;
+.main-steps h3.active{
+margin:0; padding:8px;
 background:#d1f0b9 url('/static/images/common/gradients.jpg') repeat-x 0px -205px; 
 border:4px solid #ffffcc;
 color:#fff;
+text-align:center;
 }
 .main-steps h3.active:hover{background:green; color:#fff;cursor:cursor;cursor:pointer}
-.main-steps div {padding:5px; margin:5px 30px; margin-bottom:10px; color:#999;}
-.main-steps div.active{color:#333; margin:5px;}
+.main-steps div {padding:5px; margin:5px 30px; margin-bottom:15px; color:#999;line-height:1.5em;}
+.main-steps div.active{color:#333; margin:5px;text-align:center;}
 
 
 .home-intro .pane-screenshot{
@@ -61,6 +66,18 @@ a#signup{
 a#signup:hover{
   background-position: 0 -63px;
 }
+a#layout{
+  display:block;
+  width:231px;
+  height:63px;
+  margin:0 auto;
+  background: #fff url('/static/images/marketing/layout-button.gif') no-repeat 0 0;
+}
+a#layout:hover{
+  background-position: 0 -62px;
+}
+
+
 a#demo{
   display:block;
   width:229px;

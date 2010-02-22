@@ -5,12 +5,10 @@
     <br/> to Your Website, <span>Fast and Easily.</span>
   </h2>
 
-
   <h6 class="home-main-text" style="display:none;">
     "Pluspanda lets you quickly build a professionally designed 'customer testimonials'
     <br/>web page for your marketing website.  It's as simple as 1 - 2 - 3"
   </h6>
-  
   
   <div class="main-steps">
     <h3 class="active">Step 1 - Choose Your Layout.</h3>
@@ -32,50 +30,11 @@
     
   </div>
   
-  
-<!--
-  <div class="pane-text">
-    <div>
-      <b>Hello!</b>
-      <br/>PlusPanda makes it wonderfully easy to collect, manage, 
-      and display customer testimonials on your website.
-      
-      <br/><br/>
-      Utilizing customer testimonials is a proven marketing strategy.
-      <a href="/cases">Highly profitable websites display testimonials</a>,
-      <br/>now you can too!
-    </div>
-    
-    As of <?php echo date("d M, Y")?> Pluspanda is in public beta.
-    <br/>All beta users get a plus account valued at $100, <b>free for life</b>.
-    <br/><br/>
-    <a href="/start" id="signup"></a>
-  </div>
-
-  <div class="pane-screenshot">
-    <ul>
-      <li><b>Quickly Collect Testimonials:</b>
-      <br/>Link your customers to their own personalized testmonial builder,
-      or encourage customers to freely add their own.
-      <br/><a href="<?php echo url::site('testimonials/add') .'/'. Kohana::config('core.apikey')?>?key=0_o&name=Brad%20Pitt&email=sample@email.com&meta=00142">Example Public Testimonial Builder</a>
-      </li>
-      <li><b>Conveniently Manage Testimonials:</b>
-      <br/>Quickly and easily add, edit, sort and publish testimonials
-      all from one centralized dashboard.
-      </li>
-      <li><b>Professionally Display Testimonials:</b>
-      <br/>Chose and customize a variety of layouts and install our widget
-      on your website in 20 seconds. Once published, updates are seen instantly,
-      so your testimonials are always fresh!
-      </li>
-    </ul>
-  </div>
-  -->
 </div>
 
 
 <div class="demo-switcher">
-  <span>Sample another Layout &#8594;</span>
+  <span>Select a layout to sample &#8594;</span>
   <ul>
   <?php 
   $themes = array('left','right','grid','gallery');
@@ -85,9 +44,13 @@
   </ul>
 </div>
 
-
 <div class="demo-widget">
-<?php echo t_build::embed_code(Kohana::config('core.apikey'), NULL,FALSE)?>
+  <a href="/admin/testimonials/display" id="layout" style="margin:25px auto"></a>
+
+  <?php echo t_build::embed_code(Kohana::config('core.apikey'), NULL,FALSE)?>
+
+  <br style="clear:both"/>
+  <a href="/admin/testimonials/display" id="layout" style="margin:25px auto;"></a>
 </div>
 
 
@@ -143,10 +106,6 @@
     You <u>know</u> you have better things to do! 
     <br/>So let us handle it, we are good at it. Thanks!
   </div>
-</div>
-
-<div style="clear:both; padding-top:30px;text-align:center">
-  <a href="/start" id="signup"></a>
 </div>
 
 

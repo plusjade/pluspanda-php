@@ -80,10 +80,6 @@
     $new_owner->password  = $_POST['password'];
     $new_owner->save();
   
-    # create the new tconfig.
-    $new_tconfig = ORM::factory('tconfig');
-    $new_tconfig->owner_id = $new_owner->id;
-    $new_tconfig->save();
     
     # log the user in and take to admin
     $this->auth->force_login($new_owner);
