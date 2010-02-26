@@ -11,46 +11,46 @@
   </h6>
   
   <div class="main-steps">
-    <h3 class="active">Step 1 - Choose Your Layout.</h3>
+    <h4 class="active">Step 1 - Choose Your Layout.</h4>
     <div class="active">
       Customize colors and styles with full CSS access.
     </div>
     
-    <h3>Step 2 - Add/Collect Testimonials.</h3>
+    <h4>Step 2 - Add/Collect Testimonials.</h4>
     <div>
       Have existing testimonials? Easily upload and organize them
-      <br/>or use our public testimonial collection form to collect testimonials.
+      or use our public testimonial collection form to collect testimonials.
     </div>
     
-    <h3>Step 3 - Install On Your Website.</h3>
+    <h4>Step 3 - Install On Your Website.</h4>
     <div>
       Fully export the finished code to place into your website
-      <br/>or use our javascript widget to add automatically.
+      or use our javascript widget to add automatically.
     </div>
     
   </div>
   
 </div>
 
-
+<!--
 <div class="demo-switcher">
+
   <span>Select a layout to sample &#8594;</span>
   <ul>
-  <?php 
-  $themes = array('left','right','grid','gallery');
-  foreach($themes as $theme):?>
+  <?php foreach(Kohana::config('core.themes') as $theme):?>
     <li><a href="#<?php echo $theme?>"><?php echo ucfirst($theme)?></a></li>
   <?php endforeach;?>
   </ul>
 </div>
-
+-->
 <div class="demo-widget">
-  <a href="/admin/testimonials/display" id="layout" style="margin:25px auto"></a>
+  
+  <a href="/admin/testimonials/display" class="layout" style="margin:0 auto 25px auto"></a>
 
   <?php echo t_build::embed_code(Kohana::config('core.apikey'), NULL,FALSE)?>
 
   <br style="clear:both"/>
-  <a href="/admin/testimonials/display" id="layout" style="margin:25px auto;"></a>
+  <a href="/admin/testimonials/display" class="layout" style="margin:25px auto;"></a>
 </div>
 
 

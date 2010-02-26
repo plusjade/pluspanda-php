@@ -19,9 +19,14 @@ class Tconfig_Model extends ORM {
   {
     if ($this->loaded === FALSE)
     {
-
-
-    
+      if(empty($this->theme))
+        $this->theme = 'list';
+        
+      if(empty($this->sort))
+        $this->sort = 'created';
+        
+      if(empty($this->per_page))
+        $this->per_page = 10;
     }
     return parent::save();
   }

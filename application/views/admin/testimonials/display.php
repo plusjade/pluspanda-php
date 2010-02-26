@@ -28,8 +28,7 @@
     <strong>Choose a Theme</strong> 
     <select name="theme" class="switch-theme">
     <?php 
-    $themes = array('left','right','grid','gallery');
-    foreach($themes as $theme)
+    foreach(Kohana::config('core.themes') as $theme)
       if($theme == $this->owner->tconfig->theme)
         echo "<option value=\"$theme\" selected=\"selected\">$theme</option>";
       else

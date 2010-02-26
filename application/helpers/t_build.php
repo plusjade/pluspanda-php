@@ -10,6 +10,7 @@ class t_build_Core {
 
 /*
  * build the html that each testimonial gets displayed in.
+ * for exporting purposes (need to change)
  */
   public static function item_html($testimonial, $apikey=0, $alt)
   {
@@ -50,90 +51,7 @@ class t_build_Core {
     <?php
   }
  
-/*
- * build the html that each testimonial gets displayed in.
- * this is for the javascript callback =)
- */
-  public static function stock_item_html($pos=0)
-  {
-    ob_start();
-    ?>
-<div id="t-' + item.id + '" class="t-wrapper '+ item.alt +'">
-  <div class="t-details">
-    <div class="image"><img src="'+ item.image +'"/></div>
-    <div class="t-details-meta">
-      <div class="t-name">
-        <span>'+ item.name +'</span>
-      </div>
-      <div class="t-position">
-        <span>'+ item.position +'</span>
-      </div>  
-      <div class="t-company">
-        <span>'+ item.company +'</span>
-      </div>
-      <div class="t-location">
-        <span>'+ item.location +'</span>
-      </div>      
-      <div class="t-url">
-        <a href="'+ item.url +'" target="_blank">'+ item.url +'</a>
-      </div>
-    </div>
-  </div>
-  <div class="t-content">
-    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
-    <div class="t-body">' +item.body+ '</div>
-    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
-    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
-  </div>
-</div>
-    <?php
-    return ob_get_clean();
-  }
 
-/*
- * build the html that each testimonial gets displayed in.
- * this is for the javascript callback =)
- */
-  public static function gallery_item_html()
-  {
-    ob_start();
-    ?>
-<div class="t-wrapper">
-  <div class="t-details">
-    <div class="image"><img src="'+ item.image +'"/></div>
-    <div class="t-details-meta">
-      <div class="t-name">
-        <span>'+ item.name +'</span>
-      </div>
-      <div class="t-position">
-        <span>'+ item.position +'</span>
-      </div>  
-      <div class="t-company">
-        <span>'+ item.company +'</span>
-      </div>
-      <div class="t-location">
-        <span>'+ item.location +'</span>
-      </div>      
-      <div class="t-url">
-        <a href="#">'+ item.url +'</a>
-      </div>
-    </div>
-  </div>
-  <div class="t-content">
-    <div class="t-rating _' +item.rating+ '" title="Rating: '+item.rating+ ' stars">&#160;</div>
-    <div class="t-body">' +item.body+ '</div>
-    <div class="t-date"><abbr class="timeago">' + item.created +'</abbr></div>
-    <div class="t-tag"><span>' +item.tag_name+ '</span></div>
-  </div>
-</div>    
-    <?php 
-    return ob_get_clean();
-  }
-  
-  
-  
-  
-  
   public static function admin_table_row($testimonial, $apikey)
   {
     $off = (0 == $testimonial->publish) ? 'class="off"' : '';
@@ -170,8 +88,6 @@ class t_build_Core {
   {
     ob_start();
     ?>
-    <div id="panda-select-tags">
-      <span>Show testimonials from:</span>
       <ul>
         <li><a href="#all" class="active">Everyone</a></li>
       <?php
@@ -180,12 +96,11 @@ class t_build_Core {
           echo "<li><a href=\"#$val\">$text</a></li>";
       foreach($tags as $tag)
         if($tag->id == $active_tag)
-          echo "<li><a href='#$tag->id' class=\"active\">$tag->name</a></li>";
+          echo '<li><a href="#' . $tag->id . '" class="active">' . $tag->name . '</a></li>';
         else
-          echo "<li><a href='#$tag->id'>$tag->name</a></li>";
+          echo '<li><a href="#' . $tag->id . '">' . $tag->name . '</a></li>';
       ?>
       </ul>
-    </div>
     <?php
     return ob_get_clean();
   }

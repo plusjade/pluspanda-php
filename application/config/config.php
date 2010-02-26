@@ -6,6 +6,7 @@
  */
 $config['site_domain'] = 'panda.com';
 $config['apikey'] = 'gAbpWSc5';
+$config['themes'] = array('list', 'legacy');
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is

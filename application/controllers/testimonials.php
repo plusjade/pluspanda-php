@@ -160,23 +160,19 @@ class Testimonials_Controller extends Controller {
   {
     $keys = array("\n","\r","\t");
     
-    # get all the html interfaces.    
-    $tag_list   = t_build::tag_list($this->tags, $this->active_tag);
-    $sorters    = t_build::sorters($this->active_tag, $this->active_sort, 'widget');    
-    $item_html  = t_build::stock_item_html();
-      
-    # build an object to hold the html.
-    $html = new StdClass(); 
-    $html->tag_list = str_replace($keys, '', $tag_list);
-    $html->sorters  = str_replace($keys, '', $sorters);
-
-    # load the settings view and place the html as json.
+    # get the html based on theme.
+    $wrapper = new View("testimonials/themes/$this->theme/wrapper");
+    $wrapper->tag_list = t_build::tag_list($this->tags, $this->active_tag);
+    
+    $item_html  = new View("testimonials/themes/$this->theme/item");
+    
+    # create the settings javascript file.
     $settings = new View('testimonials/widget_settings');
-    $settings->theme     = $this->theme;
-    $settings->apikey    = $this->apikey;
-    $settings->asset_url = t_paths::service($this->apikey, 'url');
-    $settings->json_html = json_encode($html);
-    $settings->item_html = str_replace($keys, '', $item_html);
+    $settings->theme           = $this->theme;
+    $settings->apikey          = $this->apikey;
+    $settings->asset_url       = t_paths::service($this->apikey, 'url');
+    $settings->panda_structure = str_replace($keys, '', $wrapper->render());
+    $settings->item_html       = str_replace($keys, '', $item_html->render());
 
     file_put_contents(
       $file,
@@ -188,6 +184,7 @@ class Testimonials_Controller extends Controller {
   
 /*
  * regenerates a fresh widget init file cache.
+ * this should be static relative to user layout settings.
  */
   private static function cache_init()
   {

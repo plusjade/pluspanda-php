@@ -4,7 +4,7 @@
     padding: 0;
     border: 0;
     outline: 0;
-    font-size: 12px;
+    font-size: 100%;
     vertical-align: baseline;
     background: transparent;
     font-family: "Gill Sans MT",verdana,sans-serif;
@@ -21,22 +21,21 @@
       cursor: cursor;
       cursor: pointer; }
 
-  #plusPandaYes #panda-select-tags {
+  #plusPandaYes div.panda-tags {
     clear: both;
     }
-  #plusPandaYes #panda-select-tags span{
+  #plusPandaYes div.panda-tags span{
     display:block;
     width:210px;
     margin-left:25px;
     padding:10px 10px 5px 10px;
     background: #eee;
-        font-size:1.2em;
       -moz-border-radius-topleft: 7px;
       -moz-border-radius-topright: 7px;
       -webkit-border-top-left-radius: 7px;
       -webkit-border-top-right-radius: 7px;    
   }
-    #plusPandaYes #panda-select-tags ul{
+    #plusPandaYes div.panda-tags ul{
       list-style:none;
       padding: 12px 10px;
       background: #555;
@@ -46,17 +45,16 @@
       -webkit-border-radius: 7px;
       -webkit-border-radius: 7px;
     }
-    #plusPandaYes #panda-select-tags li{
+    #plusPandaYes div.panda-tags li{
       display:inline;
     }
-    #plusPandaYes #panda-select-tags li a{
+    #plusPandaYes div.panda-tags li a{
       padding: 12px 10px;
       color:#fff;
-      font-size:1.3em;
       text-decoration:none;
     }
-    #plusPandaYes #panda-select-tags li a:hover,
-    #plusPandaYes #panda-select-tags li a.active{
+    #plusPandaYes div.panda-tags li a:hover,
+    #plusPandaYes div.panda-tags li a.active{
       color:#333;
       text-decoration:underline;
       background:#ffff99;
@@ -64,10 +62,11 @@
  #plusPandaYes a.show-more{
     display:block;
     clear:both;
-    float:left;
+    float:right;
     padding:6px 10px;
     background:#333;
     color:#fff;
+    font-size:12px;
     text-decoration:none;
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
@@ -83,16 +82,14 @@
     padding: 20px;
     text-align: left; }
   #plusPandaYes .t-wrapper {
+    clear: both;
     overflow: auto;
-    margin:13px;
-    width:46%;
-    height:250px;
-    float:left;
+    margin-bottom: 20px;
     }
   #plusPandaYes .t-details {
-    width:125px;
+    width:24%;
     float:left;
-    font-size:0.9em;
+    font-size:11px;
   }
   #plusPandaYes .t-details-meta{
     min-width:125px;
@@ -106,11 +103,10 @@
     margin:auto;
     margin-bottom:7px;
     background:#eee;
-    order-right:1px solid #ccc;
-    order-bottom:1px solid #ccc
+    border:3px solid #ccc
   }
   #plusPandaYes .t-content {
-    width:235px;
+    width:74%;
     float:right;
     overflow:auto;
   }  
@@ -135,32 +131,22 @@
     }
     #plusPandaYes .t-name span {
       font-weight: bold;
-      font-size:0.9em;
       font-style: italic; }
-      
+  #plusPandaYes .t-tag {
+    float: left; }
+    #plusPandaYes .t-tag span {
+      font-style: italic; }
   #plusPandaYes .t-body {
     clear: both;
-    height:125px;
     padding: 10px;
     background: #E6F5FC;
     margin: 2px 0;
-    overflow:auto;
-    font-size:12px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px; }
   #plusPandaYes .t-date {
-    font-size:0.9em;
-    text-align: right;}
+    float: right; }
     #plusPandaYes .t-date abbr {
       font-family: verdana; }
-  #plusPandaYes .t-tag {  
-    font-size:0.9em;
-    clear:both; padding-top:5px; text-align:right; }
-    #plusPandaYes .t-tag span {
-      font-style: italic; }
-      
-      
-      
   #plusPandaYes ul.panda-testimonials-sorters {
     clear: both;
     list-style: none;
@@ -187,5 +173,5 @@
     padding:8px;
     text-align:right;
     background:#ffff99;
-    font-size:0.9em;
+    font-size:11px;
   }

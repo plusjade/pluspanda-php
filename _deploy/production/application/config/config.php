@@ -6,6 +6,7 @@
  */
 $config['site_domain'] = 'pluspanda.com';
 $config['apikey'] = 'nbE6zpH';
+$config['themes'] = array('list', 'legacy');
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
