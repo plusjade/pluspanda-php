@@ -12,23 +12,13 @@ class Js_Controller {
  */
   public static function t_public()
   {
-    header('Content-type: text/javascript');
-    header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
-
-    $files = array(
-      'js/common/addon.js',
-      'js/common/facebox.js',
-      'js/common/jcrop.js',
-      'js/common/slider.js',
-      'js/testimonials/binds.js',
-    );
-    
-    ob_start();
-    foreach($files as $file)
-      if(file_exists(DOCROOT . "static/$file"))
-        readfile(DOCROOT . "static/$file");
-
-    die;
+    self::render(array(
+      'common/addon.js',
+      'common/facebox.js',
+      'common/jcrop.js',
+      'common/slider.js',
+      'testimonials/binds.js',
+    ));
   }
 
   
@@ -37,10 +27,7 @@ class Js_Controller {
  */
   public static function admin()
   {
-    header('Content-type: text/javascript');
-    header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
-
-    $files = array(
+    self::render(array(
       'common/addon.js',
       'common/jquery.ui.js',
       'common/json/json2.js',
@@ -51,8 +38,29 @@ class Js_Controller {
       'common/binds.js',
       'testimonials/binds.js',
       'admin/init.js',
-    );
-    
+    ));
+  }
+
+/*
+ * javascript bundle for pinky dashboard 
+ */
+  public static function pinky()
+  {
+    self::render(array(
+      'common/addon.js',
+      'common/jquery.tablesorter.min.js',
+    ));
+  }
+  
+  
+/*
+ * render the full javascript file.
+ */
+  public static function render($files)
+  {
+    header('Content-type: text/javascript');
+    header("Expires: Sat, 26 Jul 1995 05:00:00 GMT");  
+
     ob_start();
     foreach($files as $file)
       if(file_exists(DOCROOT . "static/js/$file"))
@@ -60,8 +68,8 @@ class Js_Controller {
 
     die;
   }
-
   
+
   public function __call($args, $method)
   {
     Event::run('system.404');

@@ -94,7 +94,34 @@ class Owner_Model extends ORM {
   {
     if ($id === NULL AND $this->loaded)
     {
-      #TODO: delete the associated everything!
+      # delete testimonial survey questions
+      ORM::factory('question')
+        ->where(array('owner_id' => $id))
+        ->delete_all();
+      echo 'survey questions deleted<br/>';
+      
+      # delete testimonial tags/categories
+      ORM::factory('tag')
+        ->where(array('owner_id' => $id))
+        ->delete_all();
+      echo 'testimonial tags deleted<br/>';
+      
+      # delete tconfigs
+      ORM::factory('tconfig')
+        ->where(array('owner_id' => $id))
+        ->delete_all();
+      echo 'tconfig settings deleted<br/>';
+      
+      # delete all testimonials
+      ORM::factory('testimonial')
+        ->where(array('owner_id' => $id))
+        ->delete_all();
+      echo 'testimonials deleted<br/>';
+      
+      # delete owner data folder.
+      $folder = t_paths::data($this->apikey);
+      if(dir::remove($folder))
+        echo "data directory $folder deleted<br/>";
     }
     
     return parent::delete($id);
