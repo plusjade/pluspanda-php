@@ -42,7 +42,7 @@
       $this->rsp->msg = 'Invalid Email!';
       $this->rsp->send(); 
     }
-    elseif($this->auth->unique_key_exists($_POST['email']))
+    elseif($this->owner->unique_key_exists($_POST['email']))
     {
       $this->rsp->msg = 'Email already exists!';
       $this->rsp->send(); 
