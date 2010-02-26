@@ -50,7 +50,7 @@
   foreach($testimonials as $testimonial)
     echo t_build::admin_table_row($testimonial, $this->owner->apikey);
 ?>
-  </body>
+  </tbody>
 </table>
 <!--
 <ul class="with-selected">
