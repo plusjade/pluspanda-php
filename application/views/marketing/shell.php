@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title><?php if(isset($title)) echo $title?> | PlusPanda</title>
-  <meta name="description" content="Embedable customer reviews." />
+  <meta name="description" content="<?php if(isset($meta)) echo $meta?>" />
   
   <link type="text/css" href="/css/marketing.css" media="screen" rel="stylesheet" />
   

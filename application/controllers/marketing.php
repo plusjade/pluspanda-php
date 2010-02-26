@@ -23,7 +23,7 @@
     if(empty($page_name) OR 'home' == $page_name)
       $this->index();
 
-    $pages = array('start','cases','faq','contact');
+    $pages = array('pricing','cases','faq','contact');
     if(in_array($page_name, $pages))
       $this->$page_name();
     else
@@ -36,6 +36,7 @@
  */
  private function index()
  {
+    $this->shell->meta = 'Embedable customer testimonials and reviews for your business website.';
     $this->shell->content = new View('marketing/testimonials/home');    
     $this->shell->title = 'Easily Collect, Manage, and Display Customer Testimonials On Your Website';
     die($this->shell);
@@ -46,10 +47,11 @@
  * display start page 
  * and handle the create account logic
  */
- private function start()
+ private function pricing()
  {
+    $this->shell->meta = 'Plans and pricing for testimonial and review layouts and templates for your website';
     $this->shell->content = new View('marketing/testimonials/start');
-    $this->shell->title = 'Get your free customer testimonials system now';
+    $this->shell->title = 'Plans and Pricing';
     
     if(empty($_POST))
       die($this->shell);
@@ -92,7 +94,7 @@
   private function cases()
   {
     $this->shell->content = new View('marketing/testimonials/cases');
-    $this->shell->title = 'Tons of businesses use customer testimonials as a proven marketing strategy | PlusPanda';
+    $this->shell->title = 'Tons of businesses use customer testimonials as a proven marketing strategy';
     die($this->shell);
   }
 
@@ -101,6 +103,7 @@
  */
   private function faq()
   {
+    $this->shell->meta = 'Pluspanda website testimonial template builder frequently asked questions';
     $this->shell->content = new View('marketing/testimonials/faq');
     $this->shell->title = 'Frequenty Asked Questions | PlusPanda';
     die($this->shell);
@@ -111,8 +114,9 @@
  */
   private function contact()
   {
+    $this->shell->meta = 'Pluspanda website testimonials builder contact information';
     $this->shell->content = new View('marketing/contact');
-    $this->shell->title = 'Contact me | PlusPanda';
+    $this->shell->title = 'Contact me';
     die($this->shell);
   }
   
