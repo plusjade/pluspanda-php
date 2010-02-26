@@ -24,7 +24,7 @@ class t_paths_Core {
  * return the path to the data directory
  * either url path or directory path.
  */
-  public static function data($apikey, $type='dir')
+  public static function data($apikey='filler', $type='dir')
   {
     if(!is_dir(DOCROOT . "data/$apikey"))
       mkdir(DOCROOT . "data/$apikey");
