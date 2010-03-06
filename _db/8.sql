@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
+ALTER TABLE  `testimonials` DROP  `patron_id`;
+
 
 UPDATE `version` SET  `at` =8;

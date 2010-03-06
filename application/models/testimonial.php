@@ -3,7 +3,7 @@
 class Testimonial_Model extends ORM {
   
   // Relationships
-  protected $has_one = array('patron', 'tag');
+  protected $has_one = array('tag');
 
   public function __set($key, $value)
   {
