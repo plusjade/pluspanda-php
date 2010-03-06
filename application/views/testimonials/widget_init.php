@@ -47,6 +47,8 @@ function buildIt() {
   });
   // init getting the data.
   $('div.panda-tags ul a:first').click();
+  // track
+  $.get('<?php echo url::site("track")?>',{key:pandaApikey,url:parent.location.href});
 }
 buildIt(); // init the build!
 
