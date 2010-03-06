@@ -13,6 +13,7 @@ Total owners: <b><?php echo $total?></b>
       <th>logins</th>
       <th>last login</th>
       <th>created</th>
+      <th>#t.</th>
       <th>x</th>
     </tr>
   </thead>
@@ -24,6 +25,7 @@ Total owners: <b><?php echo $total?></b>
       <td><?php echo $owner->logins?></td>
       <td><?php echo common_build::timeago($owner->last_login)?></td>
       <td><?php echo common_build::timeago($owner->created)?></td>
+      <td><?php echo $owner->tstmls?></td>
       <td><a href="/pinky/delete?id=<?php echo $owner->id?>">[x]</a></td>
     </tr>
 <?php endforeach;?>

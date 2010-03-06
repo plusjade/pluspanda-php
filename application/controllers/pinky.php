@@ -42,9 +42,12 @@
     $view = new View('pinky/dashboard');
     $view->total  = ORM::factory('owner')->count_all();
     $view->owners = ORM::factory('owner')
+      ->select('owners.*, COUNT(testimonials.owner_id) as tstmls')
+      ->join('testimonials','testimonials.owner_id', 'owners.id')
+      ->groupby('testimonials.owner_id')
       ->orderby('created', 'desc')
       ->find_all();
-      
+
     $this->shell->content = $view;
     die($this->shell);
  }
