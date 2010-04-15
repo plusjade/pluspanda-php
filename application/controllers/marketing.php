@@ -23,7 +23,13 @@
     if(empty($page_name) OR 'home' == $page_name)
       $this->index();
 
-    $pages = array('pricing','cases','faq','contact');
+    $pages = array(
+      'pricing',
+      'faq',
+      'contact',
+      'terms_of_service',
+      'privacy_policy'
+    );
     if(in_array($page_name, $pages))
       $this->$page_name();
     else
@@ -119,6 +125,27 @@
     $this->shell->title = 'Contact me';
     die($this->shell);
   }
+  
+/*
+ * display tos page.
+ */
+  private function terms_of_service()
+  {
+    $this->shell->content = new View('marketing/tos');
+    $this->shell->title = 'Terms of Service';
+    die($this->shell);
+  }
+  
+/*
+ * display privacy page.
+ */
+  private function privacy_policy()
+  {
+    $this->shell->content = new View('marketing/privacy');
+    $this->shell->title = 'Privacy Policy';
+    die($this->shell);
+  }
+  
   
 /*
  * 404 page

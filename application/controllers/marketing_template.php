@@ -22,9 +22,8 @@
     $this->shell->links = array(
       'home'    => 'Home',
       'pricing' => 'Pricing',
-      #'cases'   => 'Use-Cases',
+      #'cases'   => 'Use-Cases'
       'faq'     => 'FAQ',
-      #'forum'  => 'Forum',
       'contact' => 'Contact'
     );
   }

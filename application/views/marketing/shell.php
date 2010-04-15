@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title><?php if(isset($title)) echo $title?> | PlusPanda</title>
   <meta name="description" content="<?php if(isset($meta)) echo $meta?>" />
-  
+  <meta name="google-site-verification" content="V80VygXkuzvIBgN6-03u1PMHN05e1C2q0iK--hl3vPQ" />
   <link type="text/css" href="/css/marketing.css" media="screen" rel="stylesheet" />
   
   <script type="text/javascript" src="/static/js/common/jquery.js"></script>
@@ -36,9 +36,12 @@
       <p><strong>&copy; 2009 PlusPanda =)</strong></p>
       <ul class="footer-menu">
 <?php
+  $links['terms_of_service'] = 'TOS';
+  $links['privacy_policy'] = 'Privacy Policy';
   foreach($links as $url => $text)
     echo "<li><a href=\"/$url\">$text</a></li>\n";
 ?>
+        <li>
       </ul>
     </div>
   </div>
