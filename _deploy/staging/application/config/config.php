@@ -7,7 +7,7 @@
 $config['site_domain'] = 'self-made.us';
 #apikey for the sample account we want to display.
 $config['apikey'] = 'nbE6zpH';
-$config['themes'] = array('list', 'legacy');
+$config['themes'] = array('list', 'simple', 'legacy');
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
