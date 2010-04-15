@@ -16,12 +16,6 @@
       <span>Show Testimonials from: </span>
       <?php echo $tag_list?>
     </div>
-    <?php /* todo
-    <div class="panda-avg-rating">
-      <span>(Total: <b>14</b>)</span>
-      <span class="panda-rating-stars s4">****</span>
-    </div>
-    */?>
   </div>
 
   <div class="panda-container list"></div>

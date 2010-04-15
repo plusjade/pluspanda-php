@@ -199,6 +199,22 @@ h3.cases-head{text-align:center; border-bottom:1px dashed #ccc; margin:50px 80px
 /*contact page */
 #twitter, #jade, #ben, #location{width:750px; margin:0 auto; margin-bottom:80px; overflow:auto;}
 
+/* tos page */
+.tos-page{margin:0 70px;}
+.tos-page div, .tos-page p {line-height:1.6em; margin:5px 30px;}
+.tos-page li {
+  margin-bottom:5px;
+  line-height:1.6em;
+
+}
+.tos-page li.important {
+  padding:5px;
+  background:#ffffcc;
+  border:1px solid orange;
+}
+
+
+
 #twitter div.contact-text{
 width:365px;
 text-align:right;

@@ -113,7 +113,7 @@ color:#555
 
 
 /* MANAGER PAGE */
-
+#manage-buttons {overflow:hidden}
 #manage-buttons button, #manage-buttons a{
   float:right;
   padding:6px 10px;
@@ -128,7 +128,6 @@ color:#555
   -webkit-border-top-left-radius:7px;
   -webkit-border-top-right-radius:7px;
 }
-#manage-buttons a{position:relative;top:2px;}
 
 
 ul.tab-pagination{
