@@ -3,7 +3,14 @@
   table td{padding:8px;border-bottom:1px dashed #ccc;}
   table tr{}
 </style>
-Total owners: <b><?php echo $total?></b>
+
+<ul>
+  <li>Total owners: <b><?php echo $total?></b></li>
+  <li>Saved owners: <b><?php echo $saved?></b></li>
+  <li>Rate: <?php echo number_format(($saved/$total)*100, 2)?>%</li>
+  <li><a href="/pinky/delete_all">Delete Unsaved</a></li>
+</ul>
+
 
 <table class="owner-data">
   <thead>
@@ -25,7 +32,7 @@ Total owners: <b><?php echo $total?></b>
       <td><?php echo $owner->logins?></td>
       <td><?php echo common_build::timeago($owner->last_login)?></td>
       <td><?php echo common_build::timeago($owner->created)?></td>
-      <td><?php echo $owner->tstmls?></td>
+      <td><?php #echo $owner->tstmls?></td>
       <td><a href="/pinky/delete?id=<?php echo $owner->id?>">[x]</a></td>
     </tr>
 <?php endforeach;?>

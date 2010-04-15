@@ -41,12 +41,24 @@
 
     $view = new View('pinky/dashboard');
     $view->total  = ORM::factory('owner')->count_all();
+    $view->owners  = ORM::factory('owner')
+      ->orderby('created', 'desc')
+      ->find_all();
+    
+    /*
     $view->owners = ORM::factory('owner')
       ->select('owners.*, COUNT(testimonials.owner_id) as tstmls')
       ->join('testimonials','testimonials.owner_id', 'owners.id')
       ->groupby('testimonials.owner_id')
       ->orderby('created', 'desc')
       ->find_all();
+    echo kohana::debug($view->owners);
+    die;
+    */
+      
+    $view->saved = ORM::factory('owner')
+      ->where('email !=','')
+      ->count_all();
 
     $this->shell->content = $view;
     die($this->shell);
@@ -71,8 +83,35 @@
     die('owner successfully deleted');
   }
 
+  public function delete_all()
+  {
+    $time = time() - 90000;
 
+    # unsaved owners older than one day
+    $unsaved = ORM::factory('owner')
+      ->where(array(
+        'created <' => $time,
+        'email'     => ''
+      ))
+      ->orderby('created', 'desc')
+      ->find_all();
+      
+    if(isset($_GET['confirm']))
+      foreach($unsaved as $owner)
+      {
+        $owner->delete();
+      }
+    else
+    {
+      echo "There are <b>{$unsaved->count()}</b> unsaved accounts older than 24 hours.";
+      echo '<br/><br/>Add confirm to delete all';
+    }
+  
+  }
 
+  
+  
+  
 /*
  * check login
  */
