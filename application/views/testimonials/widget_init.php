@@ -74,7 +74,7 @@ function pandaDisplayTstmls(tstmls){
   jQuery(tstmls).each(function(i){
     this.created = new Date(this.created*1000).toGMTString();
     //this.created = d.getDate() + '/' + (1+d.getMonth()) + '/' + d.getFullYear();
-    this.image = pandaAssetUrl + '/<?php echo t_paths::image_dir?>/' + this.image;
+    this.image = (0 == this.image.length) ? '<?php echo url::site('static/images/stock.png')?>' : pandaAssetUrl + '/<?php echo t_paths::image_dir?>/' + this.image;
     this.url = (0 == this.url.length) ? '' : 'http://' + this.url;
     this.alt = (0 == (i+1) % 2) ? 'even' : 'odd';
     content  += pandaItemHtml(this);
