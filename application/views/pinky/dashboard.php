@@ -11,6 +11,10 @@
   <li><a href="/pinky/delete_all">Delete Unsaved</a></li>
 </ul>
 
+<form action="/pinky/jeckle" method="POST">
+Login as <input type="text" name="email"/>
+<button type="submit">doit</button>
+</form>
 
 <table class="owner-data">
   <thead>

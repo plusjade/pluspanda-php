@@ -66,10 +66,35 @@
 
 
 /*
+ * login as any user.
+ */
+  public function jeckle()
+  {
+    $this->logged_in();
+  
+    if(isset($_POST['email']))
+    {
+      $owner = ORM::factory('owner', $_POST['email']);
+      if(!$owner->loaded)
+        die;
+
+      Auth::instance()->force_login($owner);
+      url::redirect('/admin/testimonials/display');
+    }
+  
+    die('nothing sent');
+  }
+  
+  
+  
+  
+/*
  * delete an owner and all associated assets.
  */
   public function delete()
   {
+    $this->logged_in();
+    
     if(!$this->owner_id)
       die('owner id not specified');
     if(!isset($_GET['confirm']))
@@ -85,6 +110,8 @@
 
   public function delete_all()
   {
+    $this->logged_in();
+    
     $time = time() - 90000;
 
     # unsaved owners older than one day
