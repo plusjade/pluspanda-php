@@ -10,7 +10,6 @@ class Testimonials_Controller extends Controller {
   public $active_sort;
   public $active_page;
   public $limit;
-  public $is_api = FALSE;
 
   
   public function __construct($owner=NULL, $type=FALSE)
@@ -39,10 +38,7 @@ class Testimonials_Controller extends Controller {
       ->find_all();
       
     if('api' == $type)
-    {
-      $this->is_api = TRUE;
       $this->_ajax();
-    }
   }
 
 /* 
@@ -204,7 +200,7 @@ class Testimonials_Controller extends Controller {
   public function _ajax()
   {
     # fetch the widget environment.
-    if(isset($_GET['fetch']) AND 'testimonials' == $_GET['fetch'])
+    if(isset($_GET['fetch']))
       die($this->widget());
 
     # get testimonials in json
