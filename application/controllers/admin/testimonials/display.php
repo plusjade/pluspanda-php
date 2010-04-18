@@ -22,6 +22,10 @@
     $content->testimonials_html = $tstmls->get_html();
 
     $stylesheet = t_paths::css($this->owner->apikey) .'/'. $this->owner->tconfig->theme . '.css'; 
+    $stock  = DOCROOT .'static/css/testimonials/stock/'. $this->owner->tconfig->theme . '.css';
+    if(file_exists($stock) AND !file_exists($stylesheet))
+      copy($stock, $stylesheet);
+    
     $content->stylesheet  = (file_exists($stylesheet))
       ? file_get_contents($stylesheet)
       : '/* no custom file */';

@@ -1,30 +1,18 @@
-#pluspanda-testimonials html, #pluspanda-testimonials body, #pluspanda-testimonials div, #pluspanda-testimonials span, #pluspanda-testimonials applet, #pluspanda-testimonials object, #pluspanda-testimonials iframe,
-#pluspanda-testimonials h1, #pluspanda-testimonials h2, #pluspanda-testimonials h3, #pluspanda-testimonials h4, #pluspanda-testimonials h5, #pluspanda-testimonials h6, #pluspanda-testimonials p, #pluspanda-testimonials blockquote, #pluspanda-testimonials pre,
-#pluspanda-testimonials a, #pluspanda-testimonials abbr, #pluspanda-testimonials acronym, #pluspanda-testimonials address, #pluspanda-testimonials big, #pluspanda-testimonials cite, #pluspanda-testimonials code,
-#pluspanda-testimonials del, #pluspanda-testimonials dfn, #pluspanda-testimonials em, #pluspanda-testimonials font, #pluspanda-testimonials img, #pluspanda-testimonials ins, #pluspanda-testimonials kbd, #pluspanda-testimonials q, #pluspanda-testimonials s, #pluspanda-testimonials samp,
-#pluspanda-testimonials small, #pluspanda-testimonials strike, #pluspanda-testimonials strong, #pluspanda-testimonials sub, #pluspanda-testimonials sup, #pluspanda-testimonials tt, #pluspanda-testimonials var,
-#pluspanda-testimonials dl, #pluspanda-testimonials dt, #pluspanda-testimonials dd, #pluspanda-testimonials ol, #pluspanda-testimonials ul, #pluspanda-testimonials li,
-#pluspanda-testimonials fieldset, #pluspanda-testimonials form, #pluspanda-testimonials label, #pluspanda-testimonials legend,
-#pluspanda-testimonials table, #pluspanda-testimonials caption, #pluspanda-testimonials tbody, #pluspanda-testimonials tfoot, #pluspanda-testimonials thead, #pluspanda-testimonials tr, #pluspanda-testimonials th, #pluspanda-testimonials td{ 
+#pluspanda-testimonials html, #pluspanda-testimonials body, #pluspanda-testimonials div, #pluspanda-testimonials span, #pluspanda-testimonials applet, #pluspanda-testimonials object, #pluspanda-testimonials iframe, #pluspanda-testimonials h1, #pluspanda-testimonials h2, #pluspanda-testimonials h3, #pluspanda-testimonials h4, #pluspanda-testimonials h5, #pluspanda-testimonials h6, #pluspanda-testimonials p, #pluspanda-testimonials blockquote, #pluspanda-testimonials pre, #pluspanda-testimonials a, #pluspanda-testimonials abbr, #pluspanda-testimonials acronym, #pluspanda-testimonials address, #pluspanda-testimonials big, #pluspanda-testimonials cite, #pluspanda-testimonials code, #pluspanda-testimonials del, #pluspanda-testimonials dfn, #pluspanda-testimonials em, #pluspanda-testimonials font, #pluspanda-testimonials img, #pluspanda-testimonials ins, #pluspanda-testimonials kbd, #pluspanda-testimonials q, #pluspanda-testimonials s, #pluspanda-testimonials samp, #pluspanda-testimonials small, #pluspanda-testimonials strike, #pluspanda-testimonials strong, #pluspanda-testimonials sub, #pluspanda-testimonials sup, #pluspanda-testimonials tt, #pluspanda-testimonials var, #pluspanda-testimonials dl, #pluspanda-testimonials dt, #pluspanda-testimonials dd, #pluspanda-testimonials ol, #pluspanda-testimonials ul, #pluspanda-testimonials li, #pluspanda-testimonials fieldset, #pluspanda-testimonials form, #pluspanda-testimonials label, #pluspanda-testimonials legend, #pluspanda-testimonials table, #pluspanda-testimonials caption, #pluspanda-testimonials tbody, #pluspanda-testimonials tfoot, #pluspanda-testimonials thead, #pluspanda-testimonials tr, #pluspanda-testimonials th, #pluspanda-testimonials td{ 
 margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;
- }
-/* remember to define focus styles! */
+}
 :focus { outline: 0; }
-#pluspanda-testimonials body { line-height: 1; color: black; background: white; }
 #pluspanda-testimonials ol, #pluspanda-testimonials ul { list-style: none; }
-/* tables still need 'cellspacing="0"' in the markup */
 #pluspanda-testimonials table { border-collapse: separate;border-spacing: 0; }
 #pluspanda-testimonials caption, #pluspanda-testimonials th, #pluspanda-testimonials td { text-align: left;font-weight: normal; }
 #pluspanda-testimonials blockquote:before, #pluspanda-testimonials blockquote:after,
 #pluspanda-testimonials q:before, #pluspanda-testimonials q:after { content: ""; }
 #pluspanda-testimonials blockquote, #pluspanda-testimonials q { quotes: "" ""; }
 
-/*-------------------------------------------------------------------------------------------*/
-/*- GENERAL LAYOUT --------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------*/
-#pluspanda-testimonials { height: 100%; min-width: 500px; background: #fff; color: #555; font-size: 12px; font-family: Arial, sans-serif; }
+/* GENERAL LAYOUT  */
+#pluspanda-testimonials { height: 100%; min-width: 400px; background: #fff; color: #555; font-size: 12px; font-family: Arial, sans-serif; }
 
-#pluspanda-testimonials { margin: 40px auto; width: 700px;}
+#pluspanda-testimonials { margin:auto; }
   #pluspanda-testimonials .panda-header { border-bottom: 1px solid #d4d4d4; clear: both; display: inline-block; padding-bottom: 9px; margin-bottom: 15px; height: 57px; width: 100%; }
     #pluspanda-testimonials .title { position: relative; margin-bottom: 10px; height: 35px; }
       #pluspanda-testimonials .title h2 { color: #222; float: left; font-size: 1em; font-weight: bold; }
@@ -36,10 +24,10 @@ margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: 
               #pluspanda-testimonials .title .switcher a{ background: url(/static/images/themes/list/toggle_view_sprite.png) no-repeat 0 0; display: block; float: left; text-indent: -9999px; height: 25px; width: 38px; }
               #pluspanda-testimonials .title .switcher .grid a{ background-position: 0 0; }
                 #pluspanda-testimonials .title .switcher .grid a:hover{ background-position: 0 -25px; }
-                #pluspanda-testimonials .title .switcher .grid.current a{ background-position: 0 -50px; }
+                #pluspanda-testimonials .title .switcher .grid a.current{ background-position: 0 -50px; }
               #pluspanda-testimonials .title .switcher .list a{ background-position: -37px 0; }
                 #pluspanda-testimonials .title .switcher .list a:hover{ background-position: -37px -25px; }
-                #pluspanda-testimonials .title .switcher .list.current a{ background-position: -37px -50px; }
+                #pluspanda-testimonials .title .switcher .list a.current{ background-position: -37px -50px; }
     #pluspanda-testimonials .panda-tags { float: left; font-size: 0.9em; padding: 0 15px; }
         #pluspanda-testimonials .panda-tags span { color: #666; float: left; margin-right: 10px; }
         #pluspanda-testimonials .panda-tags ul { float: left;}

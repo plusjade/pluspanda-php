@@ -7,7 +7,7 @@
         <h2>Testimonials</h2>
         <ul class="switcher">
           <li class="grid"><a href="#grid">G-View</a></li>
-          <li class="list current"><a href="#list">L-View</a></li>
+          <li class="list"><a href="#list" class="current">L-View</a></li>
         </ul>
       </div>
       <div class="rgt"></div>

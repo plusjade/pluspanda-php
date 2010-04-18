@@ -24,9 +24,9 @@
 <form id="display-settings" action="/admin/testimonials/display/save" method="POST">
 
   <div class="round-box-top">Configure Theme Settings</div>
-  <div id="display-settings" class="round-box-body">
-    <strong>Choose a Theme</strong> 
-    <select name="theme" class="switch-theme">
+  <div class="round-box-body">
+    <strong>Which Theme?</strong> 
+    <br/><select name="theme" class="switch-theme">
     <?php 
     foreach(Kohana::config('core.themes') as $theme)
       if($theme == $this->owner->tconfig->theme)
@@ -35,29 +35,34 @@
          echo "<option value=\"$theme\">$theme</option>";
     ?>
     </select>
-     || <strong>Testimonials per page: #</strong> <input type="text" name="per_page" value="<?php echo $this->owner->tconfig->per_page?>" maxlength="2" style="width:25px"/>
-     || <strong>Order Testimonials by:</strong> 
-      <select name="sort">
-      <?php
-        $sorters = array('created'=>'Creation Date', 'position'=>'Custom Positions');
-        foreach($sorters as $val => $text)
-          if($val == $this->owner->tconfig->sort)
-            echo "<option value=\"$val\" selected=\"selected\">$text</option>";
-          else
-             echo "<option value=\"$val\">$text</option>";
-      ?>
-      </select>
-      <div style="display:block;text-align:center;margin-top:5px;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a></div>
-    <div class="round-box-tabs buttons" style="float:right">
+    
+    <br/><strong>Testimonials/page: #</strong>
+    <br/><input type="text" name="per_page" value="<?php echo $this->owner->tconfig->per_page?>" maxlength="2" style="width:25px"/>
+    <br/><strong>Order Testimonials by:</strong>  
+    <br/><select name="sort">
+    <?php
+      $sorters = array('created'=>'Creation Date', 'position'=>'Custom Positions');
+      foreach($sorters as $val => $text)
+        if($val == $this->owner->tconfig->sort)
+          echo "<option value=\"$val\" selected=\"selected\">$text</option>";
+        else
+           echo "<option value=\"$val\">$text</option>";
+    ?>
+    </select>
+    <div style="display:block; margin:10px 0;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a></div>
+    
+    <div class="round-box-tabs buttons" class="float:left;">
       <button type="submit" class="positive">Update Settings</button>
     </div> 
   </div>
 </form>
 
 
-<br style="clear:both"/>
+
 <style id="custom-css" type="text/css"></style>
-<?php echo $embed_code?>
+<div id="widget-wrapper">
+  <?php echo $embed_code?>
+</div>
 
 <div style="clear:both;margin-top:25px;text-align:center;">
   <h2>Go To Step 2 &rarr;</h2>
@@ -106,6 +111,7 @@
     $('head link#pandaTheme').remove();
     var css = $('textarea[name="css"]').val();
     $('style#custom-css').html(css);
+    return false;
   });
   
   $('a.load-stock').click(function(){
@@ -135,12 +141,24 @@
       $(document).trigger('rsp.server', rsp);
       $('#primary_content').html('<div class="ajax-loading">Loading...</div>');
       $.get('/admin/testimonials/display', function(data){
+        $('head link#pandaTheme').remove();
         $('#primary_content').html(data);
       });
     }
   });
   
   
+  
+  /* test */
+  $('#pluspanda-testimonials ul.switcher li a').click(function(){
+    $('#pluspanda-testimonials ul.switcher li a').removeClass('current');
+    $(this).addClass('current');
+
+    $('#pluspanda-testimonials div.panda-container')
+      .removeClass('list grid')
+      .addClass($(this).attr('href').substring(1));
+
+  });
 </script>
 
 

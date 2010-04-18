@@ -1,12 +1,13 @@
 
 
-
 /*
- * reviews stuff
+ * testimonials stuff
  */
+ 
 ul#sortable{
-  border:1px solid BLACK;
-list-style:none !important; margin:0 !important;padding:0 !important;}
+  border:1px solid #000;
+  list-style:none !important; margin:0 !important;padding:0 !important;
+} 
 .cat-item{
   margin: 10px 0;
   padding:8px;
@@ -47,58 +48,6 @@ a.del-cat{
   width:30px;
 }
 
-.panda-pagination{
-padding:5px;
-margin:5px 0;
-background:#333;
-color:#fff;
-text-align:right;
-}
-.panda-pagination .panda-showing{float:left;}
-.panda-pagination a{
-  color:#fff;
-}
-.panda-pagination a:hover{
-  color:orange;
-}
-
-.admin-reviews-list .review-wrapper{
-  border:1px solid blue;
-  margin-bottom:7px;
-}
-.admin-reviews-list .review-wrapper td{
-  border:1px solid red;
-  text-align:center;
-}
-.admin-reviews-list .review-wrapper td.review-rating{width:40px}
-.admin-reviews-list .review-wrapper td.review-body{text-align:left}
-.admin-reviews-list .review-wrapper td.options{width:40px}
-.admin-reviews-list .review-wrapper td.review-info{text-align:right}
-.admin-reviews-list .review-wrapper td div.review-tag{float:left}
-
-.admin-reviews-list .review-wrapper tr.flag-status td{
-background:pink;
-text-align:left;}
-
-.flag-review{
-  display:none;
-  position:absolute;
-  padding:10px; background:#ffffcc;
-  width:400px;
-  margin-left:10%;
-  border:5px solid #777;
-  -moz-border-radius:7px;
-  -webkit-border-radius:7px;
-}
-.flag-review.helper{display:block;}
-
-
-
-
-/*
- * testimonials stuff
- */
- 
 
 #help-page{display:none}
 .help-page-inner{width:500px}
@@ -243,6 +192,22 @@ clear: both;
 overflow: auto;
 margin-bottom:20px;
 }
+
+
+#display-settings{
+  float:left;
+  width:25%;
+}
+#widget-wrapper{
+  float:right;
+  width:73%;
+}
+
+
+
+
+
+
 
 /*
  * survey questions
