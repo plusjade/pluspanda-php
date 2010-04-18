@@ -1,7 +1,7 @@
 
 <div class="edit-window"></div>
 
-<!--
+<?php /*
 <form action ="/admin/testimonials/manage" metho="GET">
   Publish <select name="publish">
     <option value="all">All</option>
@@ -19,11 +19,10 @@
    <button type="submit">Submit Query</button>
    <br/>Sort by : Name, Company, Created, Updated,
 </form>
--->
+*/ ?>
 
 <div id="manage-buttons" class="buttons">
   <button class="positive">Save Positions</button>
-  <a href="/admin/testimonials/manage/edit?id=0" class="positive">Create New</a>
 </div>
 
 <?php #echo $pagination?>

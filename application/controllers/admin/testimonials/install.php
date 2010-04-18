@@ -9,6 +9,9 @@
   public function __construct()
   {
     parent::__construct();
+    
+    $this->parent_nav_active = 'install';
+    $this->child_nav_active = 'main';
   }
 
 /*
@@ -32,12 +35,14 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->sub_menu = array(
+    $this->shell->child_nav = array(
+      array('main', '/admin/testimonials/install','Main Panel',''),    
+    );
+    $this->shell->grandchild_nav = array(
       array('main', '/admin/testimonials/install','Main Panel',''),    
       array('help', '#help-page','(help)','fb-help'),
     );
-    $this->active = 'install';
-    $this->service = 'testimonials';
+
     die($this->shell);
   }
   

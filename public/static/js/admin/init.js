@@ -1,11 +1,11 @@
 
 $(document).ready(function(){
-    
+ 
   $('a[rel*=facebox]').live('click',function(){
     $.facebox({ ajax: this.href });
     return false;
   });
-  $('a.fb-help').click(function(){
+  $('li.fb-help a').click(function(){
     $.facebox({ div: this.href });
     return false;
   });
@@ -107,7 +107,7 @@ $(document).ready(function(){
 /*Testimonial Manager */
 
   // load the edit view into the bottom container
-    '.admin-new-testimonials-list table td.edit a, div#manage-buttons a' : function(e){  
+    '.admin-new-testimonials-list table td.edit a, li.create a' : function(e){  
       $('.edit-window').html('<div class="ajax-loading">Loading...</div>');
       $.get(e.target.href, function(data){
         $('.edit-window').hide().html(data).slideDown('slow');

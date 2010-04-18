@@ -9,6 +9,9 @@
   public function __construct()
   {
     parent::__construct();
+    $this->shell->parent_nav_active = 'account';
+    $this->shell->child_nav_active = 'account';
+    $this->shell->grandchild_nav_active = 'account';
   }
   
 /*
@@ -23,7 +26,6 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->active = 'account';
     die($this->shell);
   }
 

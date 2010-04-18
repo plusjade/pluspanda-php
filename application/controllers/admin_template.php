@@ -7,10 +7,10 @@
 abstract class Admin_Template_Controller extends Controller {
 
   // shell view name
-  public $shell   = 'admin/shell';
-  public $service = 'testimonials';
-  public $active  = 'display';
-  public $sub_active  = 'main';
+  public $shell                 = 'admin/shell';
+  public $parent_nav_active     = 'display';
+  public $child_nav_active      = 'main';
+  public $grandchild_nav_active = 'main';
   
 /**
  * shell loading and setup routine.
@@ -43,20 +43,13 @@ abstract class Admin_Template_Controller extends Controller {
     # Load the shell for non ajax only.
     $this->shell = new View($this->shell);
 
-    $this->shell->menu_testimonials = array(
+    $this->shell->parent_nav = array(
       array('display', '/admin/testimonials/display','1. Choose Layout',''),    
-      array('manage', '/admin/testimonials/manage','2. Add Testimonials','jax'),
-      array('install', '/admin/testimonials/install','3. Install','jax'),
+      array('manage', '/admin/testimonials/manage','2. Manage Testimonials','jax'),
+      array('install', '/admin/testimonials/install','3. Install On Your Site','jax'),
     );
-    
-    $this->shell->menu_reviews = array(
-      array('dashboard', '/admin/reviews/dashboard','Dashboard','jax'),
-      array('categories', '/admin/reviews/categories','Categories','jax'),
-      array('reviews', '/admin/reviews/manage','Reviews','jax'),
-      array('customers', '/admin/reviews/customers','Customers','jax'),
-      array('widget', '/admin/widget/reviews','Display',''),  
-      array('install', '/admin/install/reviews','Installation','jax'),
-    );
+    $this->shell->child_nav = '';
+    $this->shell->grandchild_nav = '';
   }
 
 /*

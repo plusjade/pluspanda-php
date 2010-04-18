@@ -97,8 +97,8 @@ ul.tab-pagination li a.active,
 ul.tab-pagination li a:hover {background:#333 }
 
 table.t-data{margin:0; padding:0; margin-bottom:20px;}
-table.t-data tr{border-bottom:1px solid #ccc; background:#fff}
-table.t-data tr.off{background:#eee; color:#777}
+table.t-data tr td{border-bottom:1px solid #ccc; background:#fff}
+table.t-data tr.off td{background:#eee; color:#777}
 table.t-data tr td{}
 
 /* tables */
@@ -196,11 +196,13 @@ margin-bottom:20px;
 
 #display-settings{
   float:left;
-  width:25%;
+  width:20%;
 }
+#display-settings fieldset { margin-bottom:10px;}
+#display-settings label {display:block;font-weight:bold;}
 #widget-wrapper{
   float:right;
-  width:73%;
+  width:78%;
 }
 
 

@@ -9,7 +9,8 @@
   public function __construct()
   {
     parent::__construct();
-    
+    $this->parent_nav_active  = 'display';
+
     $this->rsp = Response::instance();
   }
 
@@ -18,8 +19,8 @@
     $content = new View("admin/testimonials/display");
     $content->embed_code = t_build::embed_code($this->owner->apikey, NULL, FALSE);
     
-    $tstmls = new Testimonials_Controller($this->owner);
-    $content->testimonials_html = $tstmls->get_html();
+    #$tstmls = new Testimonials_Controller($this->owner);
+    #$content->testimonials_html = $tstmls->get_html();
 
     $stylesheet = t_paths::css($this->owner->apikey) .'/'. $this->owner->tconfig->theme . '.css'; 
     $stock  = DOCROOT .'static/css/testimonials/stock/'. $this->owner->tconfig->theme . '.css';
@@ -36,17 +37,19 @@
     if(request::is_ajax())
       die($content);
     
+    
     $this->shell->content = $content;
-    $this->shell->sub_menu = array(
+    $this->shell->child_nav = array(
+      array('main', '/admin/testimonials/display','Configure Layout',''),    
+      array('tags', '/admin/testimonials/tags','Set Categories',''),
+    );
+    $this->shell->grandchild_nav = array(
       array('main', '/admin/testimonials/display','Main Panel',''),    
       array('css', '#css','Edit CSS','show-css'),
-      array('tags', '/admin/testimonials/tags','Edit Categories',''),
       array('help', '#help-page','(help)','fb-help'),
     );
-    $this->active  = 'display';
-    $this->service = 'testimonials';
+
     die($this->shell);
-  
   }
   
 /*

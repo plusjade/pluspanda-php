@@ -9,7 +9,10 @@
   public function __construct()
   {
     parent::__construct();
-
+    $this->parent_nav_active  = 'display';
+    $this->child_nav_active  = 'tags';
+    $this->grandchild_nav_active  = 'main';
+    
     $this->tag_id = (isset($_GET['id']))
       ? $_GET['id']
       : NULL;
@@ -30,15 +33,15 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->sub_menu = array(
+    $this->shell->child_nav = array(
+      array('main', '/admin/testimonials/display','Configure Layout',''),    
+      array('tags', '/admin/testimonials/tags','Set Categories',''),
+    );
+    $this->shell->grandchild_nav = array(
       array('main', '/admin/testimonials/display','Main Panel',''),    
-      array('css', '#css','Edit CSS','show-css'),
-      array('tags', '/admin/testimonials/tags','Edit Categories',''),
       array('help', '#help-page','(help)','fb-help'),
     );
-    $this->active  = 'display';
-    $this->sub_active  = 'tags';
-    $this->service = 'testimonials';
+    
     die($this->shell);
   }
 

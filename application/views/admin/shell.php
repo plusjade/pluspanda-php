@@ -14,11 +14,16 @@
 <body>
 <div id="wrapper">
   <div id="top">
+    <a href="/admin/testimonials/display">
+      <img src="/static/images/admin/panda.png" />
+    </a>
+    
     <ul>
       <li><a href="/">Return Home</a></li>
       <li><a href="/admin/account">Account</a></li>
       <li><a href="/admin/login/logout">Logout</a></li>
     </ul>
+    
     <?php if(empty($this->owner->email)):?>
     <div class="user-status guest">
       <b>This Guest account will expire in 24 hours...</b>
@@ -26,7 +31,7 @@
       <form action="/admin/account/save" method="POST" class="common-ajax">
         <fieldset>
           <label>your email:</label> <input type="text" name="email" rel="email_req"/> 
-          <button type="submit">Save My Progress</button>
+          <input type="submit" value="Save My Progress" class="save-account"/>
         </fieldset>
       </form>
     </div>
@@ -35,7 +40,7 @@
       Logged in as <?php echo $this->owner->email?>
     </div>
     <?php endif;?>
-  </div>
+  </div>  
   <div id="server_response">
     <span class="rsp"></span>
     <div class="load" style="display:none">
@@ -43,47 +48,35 @@
     </div>
   </div>
      
-  <div id="header">
-    <div>
-    <?php
-      if(!empty($sub_menu))
-        foreach($sub_menu as $data)
-        {
-          list($name, $url, $text, $class) = $data;
-          if($this->sub_active == $name)
-            echo "<a href=\"$url\" class=\"active $class\">$text</a> \n";
-          else
-            echo "<a href=\"$url\" class=\"$class\">$text</a> \n";
-        }
-    ?>
-    </div>
+  <div id="parent_nav">
+    <?php echo navigation::render($parent_nav, $this->parent_nav_active)?>
   </div>
 
   <div id="content_wrapper">
-    <div id="sidebar">  
-      <ul>
-      <?php 
-        foreach(${"menu_$this->service"} as $data)
-        {
-          list($name, $url, $text, $class) = $data;
-          $class = (empty($class)) ? '' : $class;
-          if($name == $this->active)
-            echo "<li class=\"$class $name\"><a href=\"$url\" class=\"active\">$text</a></li>\n";
-          else
-            echo "<li class=\"$class $name\"><a href=\"$url\">$text</a></li>\n";
-        }
+    <div class="child_nav">
+      <?php
+      if($child_nav)
+        echo navigation::render($child_nav, $this->child_nav_active);
       ?>
-      </ul> 
     </div>
     
+    <div class="grandchild_nav">
+      <?php
+      if($grandchild_nav)
+        echo navigation::render($grandchild_nav, $this->grandchild_nav_active);
+      ?>
+    </div>
+
     <div id="primary_content">
       <?php if(isset($content)) echo $content?>
     </div>
     
     <div id="footer">© Copyright 2009 PlusPanda =] | <a href="#">Top</a></div>
+  
   </div>
   
 </div>
+
 <?php
 if(file_exists(DOCROOT . 'tracker.html'))
   include_once(DOCROOT . 'tracker.html');

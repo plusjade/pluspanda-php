@@ -24,8 +24,7 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->active  = 'help';
-    $this->service = 'testimonials';
+    $this->parent_nav_active  = 'help';
     die($this->shell);
   }
 

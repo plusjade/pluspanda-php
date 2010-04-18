@@ -9,6 +9,9 @@
   public function __construct()
   {
     parent::__construct();
+    $this->parent_nav_active  = 'manage';
+    $this->child_nav_active = 'collect';
+    $this->grandchild_nav_active = 'collect';
     
     $this->rsp = Response::instance();
   }
@@ -32,15 +35,16 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->sub_menu = array(
-      array('main', '/admin/testimonials/manage','Main Panel',''),    
-      array('collect', '/admin/testimonials/form','Collect Form',''),
+    $this->shell->child_nav = array(
+      array('main', '/admin/testimonials/manage','All Testimonials',''),    
+      array('collect', '/admin/testimonials/form','Add Testimonial Collection Form',''),
+    );
+    $this->shell->grandchild_nav = array(    
+      array('collect', '/admin/testimonials/form','Main Panel',''),
       array('help', '#help-page','(help)','fb-help'),
     );
-    $this->active  = 'manage';
-    $this->sub_active = 'collect';
+
     die($this->shell);
-  
   }
 
   

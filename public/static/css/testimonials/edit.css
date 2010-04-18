@@ -39,7 +39,7 @@ div.t-builder-wrapper .t-view{
    div.t-builder-wrapper .t-content {
     width:510px;
     float:right;
-    overflow:auto;
+    overflow:hidden;
   }  
   div.t-builder-wrapper .t-rating-wrapper{
     margin-bottom:5px;

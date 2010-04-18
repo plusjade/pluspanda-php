@@ -15,6 +15,7 @@ class Manage_Controller extends Admin_Template_Controller {
   public function __construct()
   {      
     parent::__construct();
+    $this->parent_nav_active  = 'manage';
     
     $this->active_tag     = (isset($_GET['tag'])) ? $_GET['tag'] : 'all';
     $this->publish        = (isset($_GET['publish'])) ? $_GET['publish'] : NULL;
@@ -46,13 +47,15 @@ class Manage_Controller extends Admin_Template_Controller {
       die($content);
     
     $this->shell->content = $content;
-    $this->shell->sub_menu = array(
-      array('main', '/admin/testimonials/manage','Main Panel',''),    
-      array('collect', '/admin/testimonials/form','Collect Form',''),
+    $this->shell->child_nav = array(
+      array('main', '/admin/testimonials/manage','All Testimonials',''),    
+      array('collect', '/admin/testimonials/form','Add Testimonial Collection Form',''),
+    );
+    $this->shell->grandchild_nav = array(
+      array('main', '/admin/testimonials/manage','Main Panel',''),
+      array('create', '/admin/testimonials/manage/edit?id=0','Create New Testimonial',''),
       array('help', '#help-page','(help)','fb-help'),
     );
-    $this->service = 'testimonials';
-    $this->active  = 'manage';
     die($this->shell);
   }
 

@@ -11,9 +11,6 @@
     <textarea name="css" style="width:99%; height:200px"><?php echo $stylesheet?></textarea>
     <div class="stock-css" style="display:none"><?php echo $stock?></div>
   
-    <br/><br/><a href="#" class="toggle-html">Toggle HTML View</a> - <small>(use as reference for css customizations)</small>
-    <br/><textarea name="html" style="display:none;width:99%;height:200px;"><?php echo $testimonials_html?></textarea>
-    
     <div class="round-box-tabs buttons">
       <button type="submit" class="positive">Save CSS</button>
     </div> 
@@ -23,34 +20,41 @@
 
 <form id="display-settings" action="/admin/testimonials/display/save" method="POST">
 
-  <div class="round-box-top">Configure Theme Settings</div>
+  <div class="round-box-top" style="text-align:center">Theme Settings</div>
   <div class="round-box-body">
-    <strong>Which Theme?</strong> 
-    <br/><select name="theme" class="switch-theme">
-    <?php 
-    foreach(Kohana::config('core.themes') as $theme)
-      if($theme == $this->owner->tconfig->theme)
-        echo "<option value=\"$theme\" selected=\"selected\">$theme</option>";
-      else
-         echo "<option value=\"$theme\">$theme</option>";
-    ?>
-    </select>
-    
-    <br/><strong>Testimonials/page: #</strong>
-    <br/><input type="text" name="per_page" value="<?php echo $this->owner->tconfig->per_page?>" maxlength="2" style="width:25px"/>
-    <br/><strong>Order Testimonials by:</strong>  
-    <br/><select name="sort">
-    <?php
-      $sorters = array('created'=>'Creation Date', 'position'=>'Custom Positions');
-      foreach($sorters as $val => $text)
-        if($val == $this->owner->tconfig->sort)
-          echo "<option value=\"$val\" selected=\"selected\">$text</option>";
+    <fieldset>
+      <label>Which Theme?</label> 
+      <select name="theme" class="switch-theme">
+      <?php 
+      foreach(Kohana::config('core.themes') as $theme)
+        if($theme == $this->owner->tconfig->theme)
+          echo "<option value=\"$theme\" selected=\"selected\">$theme</option>";
         else
-           echo "<option value=\"$val\">$text</option>";
-    ?>
-    </select>
-    <div style="display:block; margin:10px 0;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a></div>
+           echo "<option value=\"$theme\">$theme</option>";
+      ?>
+      </select>
+    </fieldset>
     
+    <fieldset>
+      <label>Testimonials per page:</label>
+      #<input type="text" name="per_page" value="<?php echo $this->owner->tconfig->per_page?>" maxlength="2" style="width:25px"/>
+    </fieldset>
+    
+    <fieldset>
+      <label>Order Testimonials by:</label>  
+      <select name="sort">
+      <?php
+        $sorters = array('created'=>'Creation Date', 'position'=>'Custom Positions');
+        foreach($sorters as $val => $text)
+          if($val == $this->owner->tconfig->sort)
+            echo "<option value=\"$val\" selected=\"selected\">$text</option>";
+          else
+             echo "<option value=\"$val\">$text</option>";
+      ?>
+      </select>
+    </fieldset>
+    
+    <div style="display:block; margin:10px 0;font-size:0.9em">Define custom order positions by arranging testimonials in the <a href="/admin/testimonials/manage">Add Testimonials Tab</a></div>
     <div class="round-box-tabs buttons" class="float:left;">
       <button type="submit" class="positive">Update Settings</button>
     </div> 
@@ -64,10 +68,6 @@
   <?php echo $embed_code?>
 </div>
 
-<div style="clear:both;margin-top:25px;text-align:center;">
-  <h2>Go To Step 2 &rarr;</h2>
-  <h3><a href="/admin/testimonials/manage">Manage Your Testimonials</a></h3>
-</div>
 
 <div id="help-page">
   <div class="help-page-inner">
@@ -126,9 +126,9 @@
   });
   
   $('form#theme-css-wrapper').hide();
-  $('a.show-css').click(function(){
+  $('li.show-css a').click(function(){
     $('form#theme-css-wrapper').slideDown('fast');
-    $(this).addClass('active');
+    //$(this).addClass('active');
     return false;
   });
   

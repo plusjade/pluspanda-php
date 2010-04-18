@@ -6,11 +6,6 @@
   <?php echo $testimonials?>
 </div>
 
-<div style="clear:both;margin-top:25px;text-align:center;">
-  <h2>Go To Step 3 &rarr;</h2>
-  <h3><a href="/admin/testimonials/install">Install Your Testimonials</a></h3>
-</div>
-
 <div id="help-page">
   <div class="help-page-inner">
     <h3>Adding &amp; Editing Testimonials.</h3>

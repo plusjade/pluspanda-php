@@ -9,6 +9,7 @@
   public function __construct()
   {      
     parent::__construct();
+    $this->parent_nav_active  = 'collect';
     
     $this->requests = (isset($_GET['requests']) AND is_numeric($_GET['requests'])) ? $_GET['requests'] : FALSE;  
     
@@ -47,8 +48,6 @@
       die($content);
     
     $this->shell->content = $content;
-    $this->active  = 'collect';
-    $this->service = 'testimonials';
     die($this->shell);
   }
 
