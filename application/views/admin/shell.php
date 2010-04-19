@@ -4,7 +4,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>PlusPanda Admin Panel</title>
 
-  <!--  REQUIRED FOR IE6 SUPPORT -->
   <style type="text/css">img, div { behavior: url(iepngfix.htc) }</style> 
   <link href="/css/admin.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="/static/js/common/jquery.js"></script>
@@ -40,7 +39,7 @@
       Logged in as <?php echo $this->owner->email?>
     </div>
     <?php endif;?>
-  </div>  
+  </div>
   <div id="server_response">
     <span class="rsp"></span>
     <div class="load" style="display:none">
