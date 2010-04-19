@@ -24,7 +24,9 @@ class Testimonial_Model extends ORM {
     }
     else
       $this->updated = time();
-      
+    
+    $this->url = str_replace('http://','', strtolower($this->url));
+    
     #$this->body_edit = json_encode($this->body_edit);
     return parent::save();
   }
