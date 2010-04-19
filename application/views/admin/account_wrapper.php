@@ -9,7 +9,7 @@ Your email: <?php echo $this->owner->email?>
  
 <form action="/admin/account/change_password" class="common-ajax" method="POST">
   <fieldset>
-    <label>Old Password</label> <input type="password" name="old_pw" />
+    <label>Old Password</label> <input type="password" name="old_pw" value="<?php if(isset($_GET['old'])) echo $_GET['old']?>" />
   </fieldset>
 
   <fieldset>

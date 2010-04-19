@@ -9,9 +9,7 @@
   public function __construct()
   {
     parent::__construct();
-    $this->shell->parent_nav_active = 'account';
-    $this->shell->child_nav_active = 'account';
-    $this->shell->grandchild_nav_active = 'account';
+
   }
   
 /*
@@ -59,7 +57,8 @@
     $body =
       "Hi there, thanks for saving your progess over at http://pluspanda.com \r\n"
       ."Your auto-generated password is: $pw \r\n"
-      ."You should change this password as soon as you get a chance!\r\n\n"
+      ."Change your password to something more appropriate by going here:\r\n"
+      ."http://pluspanda.com/admin/account?old=$pw \r\n\n"
       ."Thank you! - Jade from pluspanda";
     
     # to do FIX THE HEADERS.
@@ -70,7 +69,21 @@
       
     mail($_POST['email'], $subject, $body, $headers);
 
-
+    # add to mailing list.
+    include Kohana::find_file('vendor/mailchimp','MCAPI');
+    $config = Kohana::config('mailchimp');
+    $mailchimp = new MCAPI($config['apikey']);
+    $mailchimp->listSubscribe(
+            $config['list_id'],
+            $_POST['email'],
+            '',
+            'text',
+            FALSE,
+            TRUE,
+            TRUE,
+            FALSE
+     );
+    
     $this->rsp->status = 'success';
     $this->rsp->msg = 'Thanks, Account Saved!';
     $this->rsp->send(); 

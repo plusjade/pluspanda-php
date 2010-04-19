@@ -194,7 +194,7 @@ $(document).ready(function(){
     },
 
   // common ajax form 
-    'form.common-ajax button' :function(e){
+    'form.common-ajax button, form.common-ajax input[type=submit]' :function(e){
       $('form.common-ajax').ajaxSubmit({
         dataType : 'json',
         beforeSubmit: function(fields, form){
