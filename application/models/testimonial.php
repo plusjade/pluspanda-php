@@ -158,7 +158,7 @@ class Testimonial_Model extends ORM {
  * handle uploaded file as image
  */
   public function save_image($apikey, $files, $id=NULL)
-  {
+  { 
     #echo kohana::debug($files); die();
     $image_types = array(
       '.jpg'  => 'jpeg',
@@ -166,7 +166,7 @@ class Testimonial_Model extends ORM {
       '.png'  => 'png',
       '.gif'  => 'gif',
       '.tiff' => 'tiff',
-      '.bmp'  => 'bmp',
+      #'.bmp'  => 'bmp', image library does not support bmp
     );      
     $img_dir = t_paths::image($apikey);
     
