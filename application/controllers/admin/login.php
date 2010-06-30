@@ -52,6 +52,58 @@
 
 
 
+# reset and resend a password
+  public function reset()
+  {
+    if($this->owner->logged_in())
+      url::redirect('/admin/testimonials/display');
+
+    $login_shell = new View('admin/login_shell');
+    $login_shell->content = new View('admin/reset');
+
+    if(empty($_POST))
+      die($login_shell);      
+      
+    $post = new Validation($_POST);
+    $post->pre_filter('trim');
+    $post->add_rules('email', 'required', 'valid::email');
+
+    # if Post is good, atttempt to log owner in.    
+    if($post->validate())
+    {
+      $owner =  ORM::factory('owner')->find($_POST['email']);
+      if(!$owner->loaded)
+        die('email does not have an account');
+      
+      $pw = text::random('alnum', 8);
+      $owner->password = $pw;
+      $owner->save();
+      
+      $replyto = 'unknown';
+      $body =
+        "Your auto-generated password is: $pw \r\n"
+        ."Change your password to something more appropriate by going here:\r\n"
+        ."http://pluspanda.com/admin/account?old=$pw \r\n\n"
+        ."Thank you! - Jade from pluspanda";
+      
+      # to do FIX THE HEADERS.
+      $subject = 'Your Pluspanda Password Has Been Reset =)';      
+      $headers = "From: noreply@pluspanda.com \r\n" .
+        "Reply-To: Jade \r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        
+      mail($_POST['email'], $subject, $body, $headers);
+
+
+      die('Please check your email for your new password!');   
+    }
+      
+    # error
+    $login_shell->content->alert = alerts::display(array('error'=>'Invalid Email or Password.'));
+    $login_shell->content->values = $_POST;
+    die($login_shell);  
+  }      
+
 /*
  * NOT IN USE.
  * force an external login from created account screen.
