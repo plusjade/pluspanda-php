@@ -1,0 +1,11 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+/**
+ * config parameters specific to the mailchimp api.
+ */
+
+ 
+/*
+ * mailchimp apikey.
+ */
+$config['apikey'] = '_APIKEY_';
+$config['list_id'] = '_MAILCHIMP-MAIN-LIST-ID_';

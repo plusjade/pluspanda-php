@@ -10,4 +10,8 @@
 
 application/logs/*
 application/cache/*
+application/config/database.php
+application/config/mailchimp.php
+_deploy/capistrano/config/deploy.rb
 public/data/*
+public/_tracker.html

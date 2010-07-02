@@ -1,6 +1,39 @@
 
-PlusPanda! =)
+Pluspanda is a service that collects and displays testimonials. --
+As of 1 July, 2010 this codebase runs http://pluspanda.com
 
-Time to blow up...
+DOCUMENTATION:
+-----------------------------
+This original version is based on the kohana php framework v2.3.4
+http://kohanaframework.org/download
+Kohana is a PHP5 MVC framework that takes much inspiration from rails.
+Please read the docs at kohana to understand pluspanda.
+Pluspanda uses Javascript and JSONP to display data.
 
-tick tick tick tick
+
+GOALS:
+-----------------------------
+Pluspanda is intended to be a "widget service" allowing
+users to collect testimonials from their customers, manage them
+from a central interface, and then display them in various ways
+across varying sites through plugins, primarily with javascript.
+
+
+
+FUTURE:
+-----------------------------
+Pluspanda is being recoded in ruby on rails.
+There will NOT be any more improvements to this version of pluspanda.
+
+RoR makes it easier to build a RESTful service based heavily on JSON outputs
+which is conveniently exactly what pluspanda is intended to do.
+
+Going with RoR aligns with the vision I have for making 
+easy api services for specific, simple tasks.
+
+
+
+
+
+
+
